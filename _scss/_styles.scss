@@ -1,0 +1,22 @@
+* {
+  font-family: 'Indie Flower', cursive;
+}
+
+body {
+  background: white;
+  padding: 1rem;
+}
+
+.card {
+  margin: 0.5rem 0;
+
+  .link-banner {
+    display: block;
+    height: 200px;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+  }
+}
