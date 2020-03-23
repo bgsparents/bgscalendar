@@ -20,3 +20,37 @@ body {
     background-color: transparent;
   }
 }
+
+@media (max-width: 576px) {
+  .card {
+    position: relative;
+    overflow: hidden;
+
+    .card-header {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      border-bottom-width: 0;
+      border-right: 1px solid rgba(0,0,0,.125);
+      padding: .25rem .25rem;
+
+      .link-banner {
+        height: 100%;
+        width: 100px;
+      }
+    }
+
+    .card-body {
+      margin-left: calc(100px + .5rem);
+      padding: .5rem .5rem;
+      height: 100px;
+
+      .card-text {
+        text-overflow: ellipsis;
+        overflow: scroll;
+        max-height: 3rem;
+      }
+    }
+  }
+}
