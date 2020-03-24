@@ -1,18 +1,24 @@
-name,description,url,image,login_url,username_field,username,username_field,password
-Purple Mash,"Computing and digital skills across the curriculum for KS1 and KS2
-",https://www.purplemash.com/sch/pilgrims,purple-mash.png,,,,,
-Times Table Rock Stars,Times Tables Rock Stars is a carefully sequenced programme of daily times tables practice.,https://play.ttrockstars.com/login/13936,tt-rock-stars.png,,,,,
-Oxford Owl,This is a free e-book library,https://www.oxfordowl.co.uk/,oxford-owl.png,,,,,
-Reading Chest,Pilgrims have won a three month membership to Reading Chest. This offers parents the ability to access a borrowing system for reading scheme books. Please follow the link and enter the code: Pi893159,https://www.readingchest.co.uk,reading-chest.png,,,,,
-ICT games,Free games for literacy and numeracy.,https://www.ictgames.com/,ict-games.png,,,,,
-Top Marks,Resources and games for all areas of the curriculum,https://www.topmarks.co.uk/,topmarks.png,,,,,
-Phonics Play,"The key phonic resource we use in school. To access please use: Username: march20, Password: home",https://new.phonicsplay.co.uk/,phonicsplay.png,https://new.phonicsplay.co.uk/secure/login,amember_login,march20,amember_pass,home
-Twinkl,"Resources for a range of subjects. Go to <a href=""https://www.twinkl.co.uk/offer"">https://www.twinkl.co.uk/offer</a> and enter the code: UKTWINKLHELPS",https://www.twinkl.co.uk,twinkl.png,,,,,
+name,description,url,image,section
+Pre School Activies 23/03/20,Pre School learning from home activities,/worksheets/pre-school-activities-200323.pdf,pilgrims.jpg,school
+Pre School Additional Activies 23/03/20,Pre School additional activities to support your child's learning for a two week block.  ,/worksheets/pre-school-additional-activities-200323.pdf,pilgrims.jpg,school
+Y2 Activities 23/03/20,Year 2 learning from home activities,/worksheets/y2-activities-200323.pdf,pilgrims.jpg,school
+Y2 Additional Activities 23/03/20,Year 2l additional activities to support your child's learning for a two week block.  ,/worksheets/y2-additional-activities-200323.pdf,pilgrims.jpg,school
+Purple Mash,"Computing and digital skills across the curriculum for KS1 and KS2<br><br><i>Tasks will either be set in 'Work'  or set as a '2Do' .
+If work has been set in the 'Work' folder you will need to click on Group -  Remote Lesson Year 2 - Week 1 (down the left hand side). 
+Remember to click on the little triangle not the title of the folder. </i>
+",https://www.purplemash.com/sch/pilgrims,purple-mash.png,school
+Times Table Rock Stars,Times Tables Rock Stars is a carefully sequenced programme of daily times tables practice.,https://play.ttrockstars.com/login/13936,tt-rock-stars.png,school
+Oxford Owl,This is a free e-book library,https://www.oxfordowl.co.uk/,oxford-owl.png,school
+Reading Chest,Pilgrims have won a three month membership to Reading Chest. This offers parents the ability to access a borrowing system for reading scheme books. Please follow the link and enter the code: Pi893159,https://www.readingchest.co.uk,reading-chest.png,school
+ICT games,Free games for literacy and numeracy.,https://www.ictgames.com/,ict-games.png,school
+Top Marks,Resources and games for all areas of the curriculum,https://www.topmarks.co.uk/,topmarks.png,school
+Phonics Play,"The key phonic resource we use in school. To access please use: Username: march20, Password: home",https://new.phonicsplay.co.uk/,phonicsplay.png,school
+Twinkl,"Resources for a range of subjects. Go to <a href=""https://www.twinkl.co.uk/offer"">https://www.twinkl.co.uk/offer</a> and enter the code: UKTWINKLHELPS",https://www.twinkl.co.uk,twinkl.png,school
 Education City,Pilgrims has a subscription to this resource which covers an extensive range of literacy and numeracy areas for the foundation stage and key stage1. The link provided must be used to access the Pilgrims subscription. You do not need to login.,"https://ec1.educationcity.com/
 home/autoLoginChk/NDQ1NzZ8
 NzgyMzYyfGM4NjJjMjUyY2JlNjZk
 YjJlYmEwNjBjZTMxYzAzMGIxOWJ
-kOGY2NGM=",education-city.jpg,,,,,
-BBC Bitesize,Educational clips and videos on a number of different subjects.,https://www.bbc.co.uk/bitesize/primary,bbc-bitesize.png,,,,,
-The Body Coach,Free PE lessons for all children online every day beginning at 9AM.,https://www.youtube.com/user/thebodycoach1/videos,joe-wickes.jpg,,,,,
-Cosmic Kids Yoga,"Yoga, mindfulness and relaxation designed specially for kids aged 3+",https://www.youtube.com/channel/UC5uIZ2KOZZeQDQo_Gsi_qbQ,cosmic-kids-yoga.jpg,,,,,
+kOGY2NGM=",education-city.jpg,school
+BBC Bitesize,Educational clips and videos on a number of different subjects.,https://www.bbc.co.uk/bitesize/primary,bbc-bitesize.png,school
+The Body Coach,Free PE lessons for all children online every day beginning at 9AM.,https://www.youtube.com/user/thebodycoach1/videos,joe-wickes.jpg,school
+Cosmic Kids Yoga,"Yoga, mindfulness and relaxation designed specially for kids aged 3+",https://www.youtube.com/channel/UC5uIZ2KOZZeQDQo_Gsi_qbQ,cosmic-kids-yoga.jpg,school
