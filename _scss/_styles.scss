@@ -2,6 +2,17 @@
   font-family: 'Indie Flower', cursive;
 }
 
+header {
+  h1 {
+    background-image: url('/img/logo.png');
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: contain;
+    padding-left: 2rem;
+
+  }
+}
+
 body {
   background: white;
   padding: 1rem;
