@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+<div class="row">
+
+    {% for link in site.data[page.dataset] %}
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+        <div class="card">
+            <div class="card-header">
+                <a href="{{link.url}}" target="_blank" class="link-banner" style="background-image: url('/img/links/{{link.image}}')"></a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><a href="{{link.url}}" target="_blank">{{link.name}}</a></h5>
+                <p class="card-text">{{link.description}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
