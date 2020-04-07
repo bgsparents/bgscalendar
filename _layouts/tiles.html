@@ -11,7 +11,7 @@ layout: default
                 <a href="{{link.url}}" target="_blank" class="link-banner" style="background-image: url('/img/links/{{link.image}}')"></a>
             </div>
             <div class="card-body">
-                <h5 class="card-title"><a href="{{link.url}}" target="_blank">{{link.name}}</a></h5>
+                <h5 class="card-title"><a href="{{link.url}}" target="{{link.target | default: '_blank'}}">{{link.name}}</a></h5>
                 <p class="card-text">{{link.description}}</p>
             </div>
         </div>
