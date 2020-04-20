@@ -1,5 +1,6 @@
 name,description,url,image,section,target
-Handwriting Template Generator,Generate your own handwriting templates,/apps/handwriting,handwriting-generator.png,school,_blank
+Handwriting Template Generator,Generate your own handwriting templates,/apps/handwriting,handwriting-generator.png,school,_self
+Number Formation Template,Template to help with number formation,/worksheets/handwriting/numbers.pdf,handwriting-numbers.png,school,_blank
 Pre School Activities 20/04/20,Pre School learning from home activities,/worksheets/pre-school-activities-200420.pdf,pilgrims.jpg,school,_blank
 Pre School Additional Activities 20/04/20,Pre School additional activities to support your child's learning for a two week block.  ,/worksheets/pre-school-additional-activities-200420.pdf,pilgrims.jpg,school,_blank
 Handwriting Letter B,Letter B handwriting template,/worksheets/handwriting/b.pdf,letter-b.png,school,_blank

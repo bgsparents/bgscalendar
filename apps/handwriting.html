@@ -3,8 +3,8 @@ layout: default
 title: Handwriting Template Generator
 ---
 
-<div class="card d-print-none">
-    <div class="card-body">
+<div class="widget d-print-none">
+    <div class="widget-body">
         <div class="form-group">
             <label for="text">Text to Generate</label>
             <input id="text" type="text" class="form-control" />
@@ -24,8 +24,8 @@ title: Handwriting Template Generator
 </div>
 
 
-<div class="card" id="hw-container">
-    <div class="card-body" id="hw-target">
+<div class="widget mt-4" id="hw-container">
+    <div class="widget-body" id="hw-target">
         <div class="hw-example"></div>
         <div class="hw-line"></div>
         <div class="hw-line"></div>
@@ -61,8 +61,31 @@ title: Handwriting Template Generator
         /*unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;*/
     }
 
+    .widget {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .25rem;
+    }
+
+    .widget-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1.25rem;
+        background-image: linear-gradient(135deg, #f5ebf3 10%, #ffffff 10%, #ffffff 50%, #f5ebf3 50%, #f5ebf3 60%, #ffffff 60%, #ffffff 100%);
+        background-size: 14.14px 14.14px;
+    }
+
     #hw-container {
         background: #cccccc;
+        overflow-x: auto;
     }
 
     #hw-target {
