@@ -1,0 +1,233 @@
+---
+layout: default
+title: Handwriting Template Generator
+---
+
+<div class="card d-print-none">
+    <div class="card-body">
+        <div class="form-group">
+            <label for="text">Text to Generate</label>
+            <input id="text" type="text" class="form-control" />
+            <small id="textHelp" class="form-text text-muted">Enter the text you want to create a handwriting template for</small>
+        </div>
+        <div class="form-group">
+            <label for="image">Image Link</label>
+            <input id="image" type="text" class="form-control" />
+            <small id="imageHelp" class="form-text text-muted">
+                If you want to include an image on the bottom half then you can add a URL/Link to an image here.
+            </small>
+        </div>
+        <div class="form-group text-right">
+            <button class="btn btn-primary" id="print">Print</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="card" id="hw-container">
+    <div class="card-body" id="hw-target">
+        <div class="hw-example"></div>
+        <div class="hw-line"></div>
+        <div class="hw-line"></div>
+        <div class="hw-line"></div>
+        <div class="hw-line img-hide"></div>
+        <div class="hw-line img-hide"></div>
+        <div class="hw-blank"></div>
+        <div class="hw-blank img-hide"></div>
+        <div class="hw-blank img-hide"></div>
+        <div class="hw-blank img-hide"></div>
+<!--        <div class="hw-blank img-hide"></div>-->
+        <img id="hw-image">
+        <span class="hw-line" id="template"></span>
+    </div>
+</div>
+
+<style>
+    @font-face {
+        font-family: 'CCW Cursive Arrow 1';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('CCW Cursive Arrow 1'), local('CCWCursiveArrow1'), url(/fonts/CCWCursiveArrow1.woff2) format('woff2');
+        /*unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;*/
+    }
+
+    @font-face {
+        font-family: 'CCW Cursive Lined 1';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('CCW Cursive Lined 1'), local('CCWCursiveLined1'), url(/fonts/CCWCursiveLined1.woff2) format('woff2');
+        /*unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;*/
+    }
+
+    #hw-container {
+        background: #cccccc;
+    }
+
+    #hw-target {
+        font-family: "CCW Cursive Arrow 1";
+        font-size: 35pt;
+        height: 297mm;
+        width: 210mm;
+        margin: 2rem auto;
+        padding: 0 2rem;
+        background: white;
+    }
+
+    .hw-example,
+    .hw-blank,
+    .hw-line {
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 2rem 0;
+        font-family: "CCW Cursive Lined 1";
+    }
+
+    .hw-blank,
+    .hw-line {
+        color: #a3a3a3;
+    }
+
+    .hw-example {
+        font-family: "CCW Cursive Arrow 1";
+    }
+
+    #template {
+        position: absolute;
+        top: -1000px;
+        left: -1000px;
+    }
+
+    #hw-image {
+        display: none;
+        max-height: 145mm;
+        max-width: 80%;
+        margin: 2rem auto;
+    }
+
+    .has-image .img-hide {
+        display: none !important;
+    }
+
+    .has-image #hw-image {
+        display: block !important;
+    }
+
+    @media print {
+        header, footer{ display: none !important; }
+
+        #hw-container {
+            background: white;
+            border-width: 0 !important;
+        }
+
+        #hw-target {
+            padding: 0;
+        }
+
+        @page :left {
+            margin-left: 0;
+        }
+
+        @page :right {
+            margin-left: 0;
+        }
+    }
+
+</style>
+
+<script>
+    $(function() {
+        var input = $('#text');
+        var template = $('#template');
+        var example = $('.hw-example');
+        var lines = $('.hw-line');
+        var blanks = $('.hw-blank');
+        var pageWidth = $('#hw-target').width();
+        var spaceWidth = template.html('&nbsp;').width();
+
+        var imageIn = $('#image');
+        var imageEl = $('#hw-image');
+
+        blanks.html(calc('&nbsp;'));
+
+        function param(key) {
+            var url = window.location.search.substring(1);
+            var tokens = url.split('&');
+
+            for (var i = 0; i < tokens.length; i++) {
+                var name = tokens[i].split('=');
+                if (name[0] === key) {
+                    return name[1] === undefined ? true : decodeURIComponent(name[1]);
+                }
+            }
+            return '';
+        }
+
+        function calc(text) {
+            var out = text;
+            template.html(out);
+
+            var n = parseInt(pageWidth / template.width());
+            for (var i = 1; i < n; ++i) {
+                out += text;
+            }
+
+            n = parseInt((pageWidth - template.width()) / spaceWidth);
+            for (var i = 0; i < n; ++i) {
+                out += '&nbsp;';
+            }
+            return out;
+        }
+
+        function updateText() {
+            var text = '&nbsp;' + input.val() + '&nbsp;';
+            var repeated = calc(text);
+            example.html(text);
+            lines.html(repeated);
+            updateUrl(input.val(), imageIn.val());
+        }
+
+        function updateImage() {
+            var src = imageIn.val();
+            if (src.startsWith('http')) {
+                $('body').addClass('has-image');
+                imageEl.attr('src', src);
+                updateUrl(input.val(), imageIn.val());
+            } else {
+                $('body').removeClass('has-image');
+                updateUrl(input.val());
+            }
+        }
+
+        function updateUrl(text, image) {
+            var url = window.location.protocol + "//" + window.location.host + window.location.pathname + '?t=' + text;
+            if (image) {
+                url += '&i=' + image;
+            }
+            window.history.pushState({path:url}, '', url);
+        }
+
+        input.keyup(updateText);
+        input.val(param('t'));
+
+        imageEl.on('error', function() {
+            $('body').removeClass('has-image');
+            updateUrl(input.val());
+        });
+
+        imageIn.change(updateImage);
+        imageIn.val(param('i'));
+
+        $('#print').click(function() {
+            window.print();
+        });
+
+        updateText();
+        updateImage();
+    });
+
+</script>
+
+
