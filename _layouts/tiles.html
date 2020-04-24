@@ -1,10 +1,16 @@
 ---
 layout: default
 ---
-
 <div class="row">
+    {% if page.archived == true %}
+        {% assign data = site.data[page.dataset] | where:"archived","yes" %}
+    {% elsif page.archived == false %}
+        {% assign data = site.data[page.dataset] | where:"archived","no" %}
+    {% else %}
+        {% assign data = site.data[page.dataset] %}
+    {% endif %}
 
-    {% for link in site.data[page.dataset] %}
+    {% for link in data %}
     <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
         <div class="card">
             <div class="card-header">
