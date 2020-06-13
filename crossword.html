@@ -1,6 +1,7 @@
 <html>
 <head>
-    <title></title>
+<!--    <meta name="viewport" content="user-scalable=0">-->
+    <title>Crossword Coop</title>
     <style>
         * {
             font-family: 'Open Sans', sans-serif;
@@ -45,6 +46,30 @@
         #ic_number {
             display: inline-block;
             font-weight: 700;
+        }
+
+        #keyboard {
+            background: #ddf9ff;
+            border: 2px solid black;
+            border-top-width: 0;
+        }
+
+        #keyboard .row {
+            padding: 4px;
+            text-align: center;
+        }
+
+        #keyboard span {
+            background: #cccccc;
+            line-height: 1.5rem;
+            padding: 2px 5px;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            display: inline-block;
+            margin: 1px;
+            border: 1px solid #a3a3a3;
+            border-radius: 2px;
+            text-align: center;
         }
 
         .number {
@@ -107,6 +132,28 @@
                 <span>O</span>
                 <span>P</span>
             </div>
+            <div class="row">
+                <span>A</span>
+                <span>S</span>
+                <span>D</span>
+                <span>F</span>
+                <span>G</span>
+                <span>H</span>
+                <span>J</span>
+                <span>K</span>
+                <span>L</span>
+                <span>BS</span>
+            </div>
+            <div class="row">
+                <span>Z</span>
+                <span>X</span>
+                <span>C</span>
+                <span>V</span>
+                <span>B</span>
+                <span>N</span>
+                <span>M</span>
+                <span>DEL</span>
+            </div>
         </div>
     </div>
     <div id="across">
@@ -142,6 +189,7 @@
         function init(puzzle) {
             buildData(puzzle);
             drawGrid(puzzle);
+            hookupKeyboard();
             getAnswers();
             setInterval(getAnswers, 2000);
         }
@@ -272,6 +320,30 @@
             }
         }
 
+        function hookupKeyboard() {
+            $("#keyboard span").click(function () {
+                if (!focused) {
+                    return;
+                }
+
+                var key = $(this).text();
+                if (key === 'BS') {
+                    $("#" + focused.letter + " .letter").text('');
+                    pushLetter(focused.letter, '');
+                    moveNext(-1);
+                } else if (key === 'DEL') {
+                    $("#" + focused.letter + " .letter").text('');
+                    pushLetter(focused.letter, '');
+                } else {
+                    $("#" + focused.letter + " .letter").text(key);
+                    pushLetter(focused.letter, key);
+                    moveNext(1);
+                }
+
+                focused.cell.cell.focus();
+            });
+        }
+
         function moveNext(n) {
             if (cw.clues[focused.id - 1].direction === 'across') {
                 for (var i = 1; i < cw.grid.length; ++i) {
@@ -350,12 +422,13 @@
             }
         }
 
-        function letterFocus() {
+        function letterFocus(e) {
+            console.log(e)
             var letter = $(this);
             var letterId = letter.attr('id');
             var gridCell = letter.data('cell');
 
-            if (focused && letterId === focused.letter) {
+            if (e.type === 'click' && focused && letterId === focused.letter) {
                 if (focused.id === gridCell.across && gridCell.down) {
                     focused.id = gridCell.down;
                 } else if (focused.id === gridCell.down && gridCell.across) {
