@@ -232,6 +232,23 @@
                         grid[xl[0] - 1][y - 1][dir] = id;
                     }
                 }
+
+                var linksXml = word.find('cells');
+                linksXml.each(function () {
+                    var link =  $(this)
+                    var xl = link.attr('x').split('-').map(n => parseInt(n));
+                    var yl = link.attr('y').split('-').map(n => parseInt(n));
+
+                    if (xl.length > 1) {
+                        for (var x = xl[0]; x <= xl[1]; ++x) {
+                            grid[x - 1][yl[0] - 1][dir] = id;
+                        }
+                    } else {
+                        for (var y = yl[0]; y <= yl[1]; ++y) {
+                            grid[xl[0] - 1][y - 1][dir] = id;
+                        }
+                    }
+                });
             });
 
             cluesXml.each(function () {
