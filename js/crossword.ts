@@ -336,7 +336,9 @@ class CwBoard {
 
     private hookupNotes() {
         $("#notes-input").blur((e) => {
-           this.fireNoteListeners(this.focused.id, $("#notes-input").val());
+            let note = $("#notes-input").val();
+            this.crossword.clue(this.focused.id).note = note;
+            this.fireNoteListeners(this.focused.id, note);
         });
     }
 
@@ -391,7 +393,10 @@ class CwBoard {
 
         if (data.notes) {
             for (let clueId in data.notes) {
-                this.crossword.clue(parseInt(clueId)).note = data.notes[clueId].note;
+                let note = data.notes[clueId].note;
+                let clue = this.crossword.clue(parseInt(clueId));
+                clue.note = note;
+                clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
             }
         }
 

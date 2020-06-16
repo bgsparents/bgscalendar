@@ -281,7 +281,9 @@ var CwBoard = /** @class */ (function () {
     CwBoard.prototype.hookupNotes = function () {
         var _this = this;
         $("#notes-input").blur(function (e) {
-            _this.fireNoteListeners(_this.focused.id, $("#notes-input").val());
+            var note = $("#notes-input").val();
+            _this.crossword.clue(_this.focused.id).note = note;
+            _this.fireNoteListeners(_this.focused.id, note);
         });
     };
     CwBoard.prototype.fireNoteListeners = function (clueId, note) {
@@ -332,7 +334,10 @@ var CwBoard = /** @class */ (function () {
         }
         if (data.notes) {
             for (var clueId in data.notes) {
-                this.crossword.clue(parseInt(clueId)).note = data.notes[clueId].note;
+                var note = data.notes[clueId].note;
+                var clue = this.crossword.clue(parseInt(clueId));
+                clue.note = note;
+                clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
             }
         }
         this.updateNote();
