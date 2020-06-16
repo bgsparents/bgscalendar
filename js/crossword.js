@@ -327,6 +327,8 @@ var CwBoard = /** @class */ (function () {
         $('#' + cell.id).addClass('focus');
         $('.highlight').removeClass('highlight');
         $('.c' + this.focused.id).addClass('highlight');
+        $('body').toggleClass('down', direction == CwClueDirection.down);
+        $('body').toggleClass('across', direction == CwClueDirection.across);
         $('#ic_number').text(clue.number);
         $('#ic_clue').text(clue.clue);
         $('#ic_format').text('(' + clue.format + ')');
@@ -435,6 +437,7 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.push = function (data, callback) {
         var _this = this;
+        data['code'] = this.data.code;
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,

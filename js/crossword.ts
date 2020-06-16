@@ -385,6 +385,8 @@ class CwBoard {
         $('#' + cell.id).addClass('focus');
         $('.highlight').removeClass('highlight');
         $('.c' + this.focused.id).addClass('highlight');
+        $('body').toggleClass('down', direction == CwClueDirection.down);
+        $('body').toggleClass('across', direction == CwClueDirection.across);
         $('#ic_number').text(clue.number);
         $('#ic_clue').text(clue.clue);
         $('#ic_format').text('(' + clue.format + ')');
@@ -527,6 +529,8 @@ class CwStorage {
     }
 
     push(data: object, callback: (data : CwData) => void) {
+        data['code'] = this.data.code;
+
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,

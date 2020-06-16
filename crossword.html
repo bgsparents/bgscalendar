@@ -27,6 +27,10 @@
             border-width: 0;
         }
 
+        .down #notes-input {
+            background: #dfffd5;
+        }
+
         #notes-input {
             border-width: 0;
             border: none;
@@ -91,6 +95,10 @@
             padding: 10px;
         }
 
+        .down #header {
+            background: #a2ffc5;
+        }
+
         #header #title {
 
         }
@@ -108,6 +116,10 @@
             padding: 10px;
         }
 
+        .down #ic_container {
+            background: #a2ffc5;
+        }
+
         #ic_number {
             display: inline-block;
             font-weight: 700;
@@ -117,6 +129,10 @@
             background: #ddf9ff;
             border: 2px solid black;
             border-top-width: 0;
+        }
+
+        .down #keyboard {
+            background: #dfffd5 !important;
         }
 
         #keyboard .row {
@@ -182,9 +198,18 @@
             background: #ddf9ff;
         }
 
+        .down #grid td.highlight {
+            background: #dfffd5;
+        }
+
         #grid td:focus {
             background: #9eecff !important;
         }
+
+        .down #grid td:focus {
+            background: #aeffb9 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -239,7 +264,7 @@
                 <span>DEL</span>
             </div>
         </div>
-        <div id="notes"><textarea id="notes-input">asdad</textarea></div>
+        <div id="notes"><textarea id="notes-input" maxlength="256"></textarea></div>
     </div>
     <div id="across">
 
@@ -252,5 +277,5 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="js/crossword.js?cb=3"></script>
+<script src="js/crossword.js?cb=5"></script>
 </html>
