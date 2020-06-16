@@ -472,8 +472,8 @@ class CwStorage {
 
     fetch(callback: (data : CwData) => void, error?: (errorThrown : string) => void) {
         $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), (data) => {
+            this.updateData(JSON.parse(data));
             this.refreshed = new Date();
-            this.data = JSON.parse(data);
             callback(this.data);
         }).fail(function (jqXHR, textStatus, errorThrown) {
             if (error) {
@@ -524,6 +524,7 @@ class CwStorage {
 
         data.solvers[uuid].timestamp = new Date().getTime();
         data.solvers[uuid].cellId = cellId;
+        data.solvers[uuid].version = "v001";
 
         this.push(data, callback);
     }
@@ -536,14 +537,41 @@ class CwStorage {
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(data),
             success: (response) => {
-                this.refreshed = new Date();
-                this.data = response;
+                console.log("update");
+                this.updateData(JSON.parse(response.data));
                 callback(response);
             },
             error: () => { alert("couldn't update db"); },
             contentType: "application/merge-patch+json",
             dataType: "json"
         });
+    }
+
+    save() {
+        $.ajax({
+            type: "PUT",
+            url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
+            data: JSON.stringify(this.data),
+            success: (response) => {
+                console.log("Full data save for recovery");
+            },
+            error: () => { alert("couldn't update db"); },
+            contentType: "application/json",
+            dataType: "json"
+        });
+    }
+
+    private updateData(data) {
+        this.refreshed = new Date();
+        console.log(data);
+        if (data.code) {
+            this.data = data;
+        } else {
+            if (this.data.code) {
+                console.log("saving");
+                this.save();
+            }
+        }
     }
 
     static create(crossword: CwCrossword, code: string, callback: (id: string) => void) {

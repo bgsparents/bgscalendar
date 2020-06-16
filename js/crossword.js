@@ -390,8 +390,8 @@ var CwStorage = /** @class */ (function () {
     CwStorage.prototype.fetch = function (callback, error) {
         var _this = this;
         $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), function (data) {
+            _this.updateData(JSON.parse(data));
             _this.refreshed = new Date();
-            _this.data = JSON.parse(data);
             callback(_this.data);
         }).fail(function (jqXHR, textStatus, errorThrown) {
             if (error) {
@@ -433,6 +433,7 @@ var CwStorage = /** @class */ (function () {
         }
         data.solvers[uuid].timestamp = new Date().getTime();
         data.solvers[uuid].cellId = cellId;
+        data.solvers[uuid].version = "v001";
         this.push(data, callback);
     };
     CwStorage.prototype.push = function (data, callback) {
@@ -443,14 +444,40 @@ var CwStorage = /** @class */ (function () {
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(data),
             success: function (response) {
-                _this.refreshed = new Date();
-                _this.data = response;
+                console.log("update");
+                _this.updateData(JSON.parse(response.data));
                 callback(response);
             },
             error: function () { alert("couldn't update db"); },
             contentType: "application/merge-patch+json",
             dataType: "json"
         });
+    };
+    CwStorage.prototype.save = function () {
+        $.ajax({
+            type: "PUT",
+            url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
+            data: JSON.stringify(this.data),
+            success: function (response) {
+                console.log("Full data save for recovery");
+            },
+            error: function () { alert("couldn't update db"); },
+            contentType: "application/json",
+            dataType: "json"
+        });
+    };
+    CwStorage.prototype.updateData = function (data) {
+        this.refreshed = new Date();
+        console.log(data);
+        if (data.code) {
+            this.data = data;
+        }
+        else {
+            if (this.data.code) {
+                console.log("saving");
+                this.save();
+            }
+        }
     };
     CwStorage.create = function (crossword, code, callback) {
         var data = { code: code, grid: {} };
