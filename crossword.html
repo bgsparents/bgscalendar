@@ -7,8 +7,56 @@
             font-family: 'Open Sans', sans-serif;
         }
 
+        html, body {
+            height:100%;
+        }
+
+        #notes {
+            background: #ddf9ff;
+            border: 2px solid black;
+            border-top-width: 0;
+            flex: 1;
+            font-size: 0.8rem;
+        }
+
+        #notes-input {
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            background: #ddf9ff;
+            border-width: 0;
+        }
+
+        #notes-input {
+            border-width: 0;
+            border: none;
+            overflow: auto;
+            outline: none;
+
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+
+            resize: none; /*remove the resize handle on the bottom right*/
+        }
+
+        .no-id #cw-form {
+            display: block !important;
+        }
+
+        #cw-form {
+            display: none;
+        }
+
+        .has-id #grid_container {
+            //display: inline-block !important;
+            display: flex !important;
+            flex-direction: column;
+            height: 100%;
+        }
+
         #grid_container {
-            display: inline-block;
+            display: none;
         }
 
         @media only screen and (max-device-width: 782px) {
@@ -34,6 +82,23 @@
 
         #grid td.block {
             background: black;
+        }
+
+        #header {
+            background: #ddf9ff;
+            border: 2px solid black;
+            border-bottom-width: 0;
+            padding: 10px;
+        }
+
+        #header #title {
+
+        }
+
+        #header #last-refresh {
+            float: right;
+            font-size: 0.6rem;
+            color: #777;
         }
 
         #ic_container {
@@ -109,10 +174,14 @@
 </head>
 <body>
     <div id="cw-form">
-        <label>Crossword ID:</label> <input type="text" value="c_200413" id="cw-code" required="required" />
+        <label>Crossword ID:</label> <input type="text" value="c_200616" id="cw-code" required="required" />
         <button id="cw-button">Create</button>
     </div>
     <div id="grid_container">
+        <div id="header">
+            <span id="title"></span>
+            <span id="last-refresh"></span>
+        </div>
         <table id="grid"></table>
         <div id="ic_container">
             <span id="ic_number"></span>
@@ -155,6 +224,7 @@
                 <span>DEL</span>
             </div>
         </div>
+        <div id="notes"><textarea id="notes-input">asdad</textarea></div>
     </div>
     <div id="across">
 
@@ -167,385 +237,386 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="js/crossword.js"></script>
 <script>
-    var id = window.location.hash ? window.location.hash.substr(1) : null;
-    var answers;
-
-    if (id) {
-        $('#cw-form').hide();
-        console.log('hash ' + id);
-        var cw = {};
-        var focused = {};
-
-        getAnswers();
-
-        function getCrossword(code) {
-            $.get("https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/independent/daily-crossword/" + code + ".xml", function (data) {
-                var puzzle = $(data);
-                init(puzzle);
-            });
-        }
-
-        function init(puzzle) {
-            buildData(puzzle);
-            drawGrid(puzzle);
-            hookupKeyboard();
-            getAnswers();
-            setInterval(getAnswers, 2000);
-        }
-
-        function buildData(puzzle) {
-            var gridXml = puzzle.find("grid");
-            var wordXml = puzzle.find("word");
-            var cluesXml = puzzle.find("clue");
-            var width = parseInt(gridXml.attr('width'));
-            var height = parseInt(gridXml.attr('height'));
-            var clues = new Array(wordXml.length);
-            var grid = new Array(width);
-
-            for (var x = 1; x <= width; ++x) {
-                grid[x - 1] = new Array(height);
-                for (var y = 1; y <= height; ++y) {
-                    grid[x - 1][y - 1] = {};
-                    grid[x - 1][y - 1]['x'] = x;
-                    grid[x - 1][y - 1]['y'] = y;
-                }
-            }
-
-            wordXml.each(function () {
-                var word = $(this);
-                var id = parseInt(word.attr('id'));
-                var xl = word.attr('x').split('-').map(n => parseInt(n));
-                var yl = word.attr('y').split('-').map(n => parseInt(n));
-                var dir = xl.length > 1 ? 'across' : 'down';
-
-                clues[id - 1] = {
-                    'direction': dir
-                };
-
-                if (xl.length > 1) {
-                    for (var x = xl[0]; x <= xl[1]; ++x) {
-                        grid[x - 1][yl[0] - 1][dir] = id;
-                    }
-                } else {
-                    for (var y = yl[0]; y <= yl[1]; ++y) {
-                        grid[xl[0] - 1][y - 1][dir] = id;
-                    }
-                }
-
-                var linksXml = word.find('cells');
-                linksXml.each(function () {
-                    var link =  $(this)
-                    var xl = link.attr('x').split('-').map(n => parseInt(n));
-                    var yl = link.attr('y').split('-').map(n => parseInt(n));
-
-                    if (xl.length > 1) {
-                        for (var x = xl[0]; x <= xl[1]; ++x) {
-                            grid[x - 1][yl[0] - 1][dir] = id;
-                        }
-                    } else {
-                        for (var y = yl[0]; y <= yl[1]; ++y) {
-                            grid[xl[0] - 1][y - 1][dir] = id;
-                        }
-                    }
-                });
-            });
-
-            cluesXml.each(function () {
-                var clueXml = $(this);
-                var id = parseInt(clueXml.attr('word'));
-                clues[id - 1]['number'] = clueXml.attr('number');
-                clues[id - 1]['format'] = clueXml.attr('format');
-                clues[id - 1]['clue'] = clueXml.text();
-            });
-
-            cw.grid = grid;
-            cw.clues = clues;
-        }
-
-        function drawGrid(puzzle) {
-            var grid = puzzle.find("grid");
-            var width = grid.attr('width');
-            var height = grid.attr('height');
-            var table = $("#grid");
-
-            for (var y = 1; y <= height; ++y) {
-                var row = $('<tr>');
-                for (var x = 1; x <= width; ++x) {
-                    var cell = $('<td>');
-                    cell.attr('id', x + '-' + y);
-                    row.append(cell);
-                }
-                table.append(row);
-            }
-
-            $('#grid_container').css({width: 'calc(2rem * 15 + 16 * 2px)'});
-
-            puzzle.find("cell").each(function () {
-                var x = parseInt($(this).attr('x'));
-                var y = parseInt($(this).attr('y'));
-                var type = $(this).attr('type');
-                var number = $(this).attr('number');
-                var cell = $('#' + x + '-' + y);
-
-                if (type === 'block') {
-                    cell.addClass('block');
-                } else {
-                    if (number) {
-                        cell.append($('<span>' + number + '</span>').addClass('number'));
-                    }
-                    var gridCell = cw.grid[x - 1][y - 1];
-                    cell.append($('<div>').addClass('letter'));
-                    if (gridCell.across) {
-                        cell.addClass('c' + gridCell.across);
-                    }
-                    if (gridCell.down) {
-                        cell.addClass('c' + gridCell.down);
-                    }
-
-                    gridCell.cell = cell;
-                    cell.attr('tabindex', x + y * width);
-                    cell.data('cell', cw.grid[x - 1][y - 1]);
-                    cell.focus(letterFocus);
-                    cell.click(letterFocus);
-                    cell.keydown(keyDownListener);
-                }
-            });
-        }
-
-        function keyDownListener(e) {
-            if (e.which === 37) {
-                moveX(-1);
-            } else if (e.which === 38) {
-                moveY(-1);
-            } else if (e.which === 39) {
-                moveX(1);
-            } else if (e.which === 40) {
-                moveY(1);
-            } else if (e.which === 8) {
-                $("#" + focused.letter + " .letter").text('');
-                pushLetter(focused.letter, '');
-                moveNext(-1);
-            } else if (e.which === 46) {
-                $("#" + focused.letter + " .letter").text('');
-                pushLetter(focused.letter, '');
-            } else if ((e.which > 64 && e.which < 91) || (e.which > 96 && e.which < 123)) {
-                var letter = String.fromCharCode(e.which).toUpperCase();
-                $("#" + focused.letter + " .letter").text(letter);
-                pushLetter(focused.letter, letter);
-                moveNext(1);
-            }
-        }
-
-        function hookupKeyboard() {
-            $("#keyboard span").click(function () {
-                if (!focused) {
-                    return;
-                }
-
-                var key = $(this).text();
-                if (key === 'BS') {
-                    $("#" + focused.letter + " .letter").text('');
-                    pushLetter(focused.letter, '');
-                    moveNext(-1);
-                } else if (key === 'DEL') {
-                    $("#" + focused.letter + " .letter").text('');
-                    pushLetter(focused.letter, '');
-                } else {
-                    $("#" + focused.letter + " .letter").text(key);
-                    pushLetter(focused.letter, key);
-                    moveNext(1);
-                }
-
-                focused.cell.cell.focus();
-            });
-        }
-
-        function moveNext(n) {
-            if (cw.clues[focused.id - 1].direction === 'across') {
-                for (var i = 1; i < cw.grid.length; ++i) {
-                    var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
-                    var cell = cw.grid[x][focused.cell.y - 1];
-                    if (cell.across === focused.id) {
-                        cell.cell.focus();
-                        return;
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                var h = cw.grid[focused.cell.y - 1].length;
-                for (var i = 1; i < h; ++i) {
-                    var y = (focused.cell.y + h + (i * n) - 1) % h;
-                    var cell = cw.grid[focused.cell.x - 1][y];
-                    if (cell.down === focused.id) {
-                        cell.cell.focus();
-                        return;
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            if (n > 0) {
-                findClue(((focused.id + cw.clues.length + n - 1) % cw.clues.length) + 1);
-            }
-        }
-
-        function findClue(id) {
-            for (var x = 0; x < cw.grid.length; ++x) {
-                for (var y = 0; y < cw.grid[x].length; ++y) {
-                    var cell = cw.grid[x][y];
-                    if (cell.across === id || cell.down === id) {
-                        focused.id = id;
-                        cell.cell.focus();
-                        return;
-                    }
-                }
-            }
-        }
-
-        function getX(n) {
-            for (var i = 1; i < cw.grid.length; ++i) {
-                var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
-                var cell = cw.grid[x][focused.cell.y - 1];
-                if (cell.cell) {
-                    cell.cell.focus();
-                    break;
-                }
-            }
-        }
-
-        function moveX(n) {
-            for (var i = 1; i < cw.grid.length; ++i) {
-                var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
-                var cell = cw.grid[x][focused.cell.y - 1];
-                if (cell.cell) {
-                    cell.cell.focus();
-                    break;
-                }
-            }
-        }
-
-        function moveY(n) {
-            var h = cw.grid[focused.cell.y - 1].length;
-            for (var i = 1; i < h; ++i) {
-                var y = (focused.cell.y + h + (i * n) - 1) % h;
-                var cell = cw.grid[focused.cell.x - 1][y];
-                if (cell.cell) {
-                    cell.cell.focus();
-                    break;
-                }
-            }
-        }
-
-        function letterFocus(e) {
-            console.log(e)
-            var letter = $(this);
-            var letterId = letter.attr('id');
-            var gridCell = letter.data('cell');
-
-            if (e.type === 'click' && focused && letterId === focused.letter) {
-                if (focused.id === gridCell.across && gridCell.down) {
-                    focused.id = gridCell.down;
-                } else if (focused.id === gridCell.down && gridCell.across) {
-                    focused.id = gridCell.across;
-                }
-            } else if (focused && (focused.id === gridCell.down || focused.id === gridCell.across)) {
-                focused.id = focused.id;
-            } else if (gridCell.down) {
-                focused.id = gridCell.down;
-            } else if (gridCell.across) {
-                focused.id = gridCell.across;
-            }
-
-            focused.letter = letterId;
-            focused.cell = gridCell;
-            var clue = cw.clues[focused.id - 1];
-            $('.highlight').removeClass('highlight');
-            $('.c' + focused.id).addClass('highlight');
-            $('#ic_number').text(clue.number + clue.direction[0].toUpperCase());
-            $('#ic_clue').text(clue.clue);
-            $('#ic_format').text('(' + clue.format + ')');
-        }
-
-        function fillAnswers(grid) {
-            for (cellId in grid) {
-                $('#' + cellId + ' .letter').text(grid[cellId].letter);
-            }
-        }
-
-        function getAnswers() {
-            $.get("https://extendsclass.com/api/json-storage/bin/" + id + "?cb=" + new Date().getTime(), function (data) {
-                if (!cw.grid) {
-                    getCrossword(JSON.parse(data).code);
-                } else {
-                    fillAnswers(JSON.parse(data).grid);
-                }
-            }).fail(function () {
-                console.log("error");
-            });
-        }
-
-        function pushLetter(key, value) {
-            function success(response) {
-                fillAnswers(data.grid)
-            }
-
-            function error() {
-                alert("couldn't update db");
-            }
-
-            var data = {
-                grid: {}
-            };
-
-            data.grid[key] = {
-                letter: value
-            };
-
-
-            $.ajax({
-                type: "PATCH",
-                url: "https://extendsclass.com/api/json-storage/bin/" + id,
-                data: JSON.stringify(data),
-                success: success,
-                error: error,
-                contentType: "application/merge-patch+json",
-                dataType: "json"
-            });
-        }
-
-    } else {
-        console.log('nohash')
-        $('#cw-button').click(function () {
-            var code = $('#cw-code').val();
-            createAnswers(code);
-        });
-
-        function createAnswers(code) {
-            function success(response) {
-                console.log(response);
-                //answers = JSON.parse(data);
-                window.location.href += "#" + response.id;
-                window.location.reload();
-            }
-
-            function error() {
-                alert("couldn't create db");
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "https://extendsclass.com/api/json-storage/bin",
-                data: JSON.stringify({ code: code, grid: {} }),
-                success: success,
-                error: error,
-                contentType: "application/json",
-                dataType: "json"
-            });
-        }
-    }
+    // var id = window.location.hash ? window.location.hash.substr(1) : null;
+    // var answers;
+    //
+    // if (id) {
+    //     $('#cw-form').hide();
+    //     console.log('hash ' + id);
+    //     var cw = {};
+    //     var focused = {};
+    //
+    //     getAnswers();
+    //
+    //     function getCrossword(code) {
+    //         $.get("https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/independent/daily-crossword/" + code + ".xml", function (data) {
+    //             var puzzle = $(data);
+    //             init(puzzle);
+    //         });
+    //     }
+    //
+    //     function init(puzzle) {
+    //         buildData(puzzle);
+    //         drawGrid(puzzle);
+    //         hookupKeyboard();
+    //         getAnswers();
+    //         setInterval(getAnswers, 2000);
+    //     }
+    //
+    //     function buildData(puzzle) {
+    //         var gridXml = puzzle.find("grid");
+    //         var wordXml = puzzle.find("word");
+    //         var cluesXml = puzzle.find("clue");
+    //         var width = parseInt(gridXml.attr('width'));
+    //         var height = parseInt(gridXml.attr('height'));
+    //         var clues = new Array(wordXml.length);
+    //         var grid = new Array(width);
+    //
+    //         for (var x = 1; x <= width; ++x) {
+    //             grid[x - 1] = new Array(height);
+    //             for (var y = 1; y <= height; ++y) {
+    //                 grid[x - 1][y - 1] = {};
+    //                 grid[x - 1][y - 1]['x'] = x;
+    //                 grid[x - 1][y - 1]['y'] = y;
+    //             }
+    //         }
+    //
+    //         wordXml.each(function () {
+    //             var word = $(this);
+    //             var id = parseInt(word.attr('id'));
+    //             var xl = word.attr('x').split('-').map(n => parseInt(n));
+    //             var yl = word.attr('y').split('-').map(n => parseInt(n));
+    //             var dir = xl.length > 1 ? 'across' : 'down';
+    //
+    //             clues[id - 1] = {
+    //                 'direction': dir
+    //             };
+    //
+    //             if (xl.length > 1) {
+    //                 for (var x = xl[0]; x <= xl[1]; ++x) {
+    //                     grid[x - 1][yl[0] - 1][dir] = id;
+    //                 }
+    //             } else {
+    //                 for (var y = yl[0]; y <= yl[1]; ++y) {
+    //                     grid[xl[0] - 1][y - 1][dir] = id;
+    //                 }
+    //             }
+    //
+    //             var linksXml = word.find('cells');
+    //             linksXml.each(function () {
+    //                 var link =  $(this)
+    //                 var xl = link.attr('x').split('-').map(n => parseInt(n));
+    //                 var yl = link.attr('y').split('-').map(n => parseInt(n));
+    //
+    //                 if (xl.length > 1) {
+    //                     for (var x = xl[0]; x <= xl[1]; ++x) {
+    //                         grid[x - 1][yl[0] - 1][dir] = id;
+    //                     }
+    //                 } else {
+    //                     for (var y = yl[0]; y <= yl[1]; ++y) {
+    //                         grid[xl[0] - 1][y - 1][dir] = id;
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //
+    //         cluesXml.each(function () {
+    //             var clueXml = $(this);
+    //             var id = parseInt(clueXml.attr('word'));
+    //             clues[id - 1]['number'] = clueXml.attr('number');
+    //             clues[id - 1]['format'] = clueXml.attr('format');
+    //             clues[id - 1]['clue'] = clueXml.text();
+    //         });
+    //
+    //         cw.grid = grid;
+    //         cw.clues = clues;
+    //     }
+    //
+    //     function drawGrid(puzzle) {
+    //         var grid = puzzle.find("grid");
+    //         var width = grid.attr('width');
+    //         var height = grid.attr('height');
+    //         var table = $("#grid");
+    //
+    //         for (var y = 1; y <= height; ++y) {
+    //             var row = $('<tr>');
+    //             for (var x = 1; x <= width; ++x) {
+    //                 var cell = $('<td>');
+    //                 cell.attr('id', x + '-' + y);
+    //                 row.append(cell);
+    //             }
+    //             table.append(row);
+    //         }
+    //
+    //         $('#grid_container').css({width: 'calc(2rem * 15 + 16 * 2px)'});
+    //
+    //         puzzle.find("cell").each(function () {
+    //             var x = parseInt($(this).attr('x'));
+    //             var y = parseInt($(this).attr('y'));
+    //             var type = $(this).attr('type');
+    //             var number = $(this).attr('number');
+    //             var cell = $('#' + x + '-' + y);
+    //
+    //             if (type === 'block') {
+    //                 cell.addClass('block');
+    //             } else {
+    //                 if (number) {
+    //                     cell.append($('<span>' + number + '</span>').addClass('number'));
+    //                 }
+    //                 var gridCell = cw.grid[x - 1][y - 1];
+    //                 cell.append($('<div>').addClass('letter'));
+    //                 if (gridCell.across) {
+    //                     cell.addClass('c' + gridCell.across);
+    //                 }
+    //                 if (gridCell.down) {
+    //                     cell.addClass('c' + gridCell.down);
+    //                 }
+    //
+    //                 gridCell.cell = cell;
+    //                 cell.attr('tabindex', x + y * width);
+    //                 cell.data('cell', cw.grid[x - 1][y - 1]);
+    //                 cell.focus(letterFocus);
+    //                 cell.click(letterFocus);
+    //                 cell.keydown(keyDownListener);
+    //             }
+    //         });
+    //     }
+    //
+    //     function keyDownListener(e) {
+    //         if (e.which === 37) {
+    //             moveX(-1);
+    //         } else if (e.which === 38) {
+    //             moveY(-1);
+    //         } else if (e.which === 39) {
+    //             moveX(1);
+    //         } else if (e.which === 40) {
+    //             moveY(1);
+    //         } else if (e.which === 8) {
+    //             $("#" + focused.letter + " .letter").text('');
+    //             pushLetter(focused.letter, '');
+    //             moveNext(-1);
+    //         } else if (e.which === 46) {
+    //             $("#" + focused.letter + " .letter").text('');
+    //             pushLetter(focused.letter, '');
+    //         } else if ((e.which > 64 && e.which < 91) || (e.which > 96 && e.which < 123)) {
+    //             var letter = String.fromCharCode(e.which).toUpperCase();
+    //             $("#" + focused.letter + " .letter").text(letter);
+    //             pushLetter(focused.letter, letter);
+    //             moveNext(1);
+    //         }
+    //     }
+    //
+    //     function hookupKeyboard() {
+    //         $("#keyboard span").click(function () {
+    //             if (!focused) {
+    //                 return;
+    //             }
+    //
+    //             var key = $(this).text();
+    //             if (key === 'BS') {
+    //                 $("#" + focused.letter + " .letter").text('');
+    //                 pushLetter(focused.letter, '');
+    //                 moveNext(-1);
+    //             } else if (key === 'DEL') {
+    //                 $("#" + focused.letter + " .letter").text('');
+    //                 pushLetter(focused.letter, '');
+    //             } else {
+    //                 $("#" + focused.letter + " .letter").text(key);
+    //                 pushLetter(focused.letter, key);
+    //                 moveNext(1);
+    //             }
+    //
+    //             focused.cell.cell.focus();
+    //         });
+    //     }
+    //
+    //     function moveNext(n) {
+    //         if (cw.clues[focused.id - 1].direction === 'across') {
+    //             for (var i = 1; i < cw.grid.length; ++i) {
+    //                 var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
+    //                 var cell = cw.grid[x][focused.cell.y - 1];
+    //                 if (cell.across === focused.id) {
+    //                     cell.cell.focus();
+    //                     return;
+    //                 } else {
+    //                     break;
+    //                 }
+    //             }
+    //         } else {
+    //             var h = cw.grid[focused.cell.y - 1].length;
+    //             for (var i = 1; i < h; ++i) {
+    //                 var y = (focused.cell.y + h + (i * n) - 1) % h;
+    //                 var cell = cw.grid[focused.cell.x - 1][y];
+    //                 if (cell.down === focused.id) {
+    //                     cell.cell.focus();
+    //                     return;
+    //                 } else {
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //
+    //         if (n > 0) {
+    //             findClue(((focused.id + cw.clues.length + n - 1) % cw.clues.length) + 1);
+    //         }
+    //     }
+    //
+    //     function findClue(id) {
+    //         for (var x = 0; x < cw.grid.length; ++x) {
+    //             for (var y = 0; y < cw.grid[x].length; ++y) {
+    //                 var cell = cw.grid[x][y];
+    //                 if (cell.across === id || cell.down === id) {
+    //                     focused.id = id;
+    //                     cell.cell.focus();
+    //                     return;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //
+    //     function getX(n) {
+    //         for (var i = 1; i < cw.grid.length; ++i) {
+    //             var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
+    //             var cell = cw.grid[x][focused.cell.y - 1];
+    //             if (cell.cell) {
+    //                 cell.cell.focus();
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //
+    //     function moveX(n) {
+    //         for (var i = 1; i < cw.grid.length; ++i) {
+    //             var x = (focused.cell.x + cw.grid.length + (i * n) - 1) % cw.grid.length;
+    //             var cell = cw.grid[x][focused.cell.y - 1];
+    //             if (cell.cell) {
+    //                 cell.cell.focus();
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //
+    //     function moveY(n) {
+    //         var h = cw.grid[focused.cell.y - 1].length;
+    //         for (var i = 1; i < h; ++i) {
+    //             var y = (focused.cell.y + h + (i * n) - 1) % h;
+    //             var cell = cw.grid[focused.cell.x - 1][y];
+    //             if (cell.cell) {
+    //                 cell.cell.focus();
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //
+    //     function letterFocus(e) {
+    //         console.log(e)
+    //         var letter = $(this);
+    //         var letterId = letter.attr('id');
+    //         var gridCell = letter.data('cell');
+    //
+    //         if (e.type === 'click' && focused && letterId === focused.letter) {
+    //             if (focused.id === gridCell.across && gridCell.down) {
+    //                 focused.id = gridCell.down;
+    //             } else if (focused.id === gridCell.down && gridCell.across) {
+    //                 focused.id = gridCell.across;
+    //             }
+    //         } else if (focused && (focused.id === gridCell.down || focused.id === gridCell.across)) {
+    //             focused.id = focused.id;
+    //         } else if (gridCell.down) {
+    //             focused.id = gridCell.down;
+    //         } else if (gridCell.across) {
+    //             focused.id = gridCell.across;
+    //         }
+    //
+    //         focused.letter = letterId;
+    //         focused.cell = gridCell;
+    //         var clue = cw.clues[focused.id - 1];
+    //         $('.highlight').removeClass('highlight');
+    //         $('.c' + focused.id).addClass('highlight');
+    //         $('#ic_number').text(clue.number + clue.direction[0].toUpperCase());
+    //         $('#ic_clue').text(clue.clue);
+    //         $('#ic_format').text('(' + clue.format + ')');
+    //     }
+    //
+    //     function fillAnswers(grid) {
+    //         for (cellId in grid) {
+    //             $('#' + cellId + ' .letter').text(grid[cellId].letter);
+    //         }
+    //     }
+    //
+    //     function getAnswers() {
+    //         $.get("https://extendsclass.com/api/json-storage/bin/" + id + "?cb=" + new Date().getTime(), function (data) {
+    //             if (!cw.grid) {
+    //                 getCrossword(JSON.parse(data).code);
+    //             } else {
+    //                 fillAnswers(JSON.parse(data).grid);
+    //             }
+    //         }).fail(function () {
+    //             console.log("error");
+    //         });
+    //     }
+    //
+    //     function pushLetter(key, value) {
+    //         function success(response) {
+    //             fillAnswers(data.grid)
+    //         }
+    //
+    //         function error() {
+    //             alert("couldn't update db");
+    //         }
+    //
+    //         var data = {
+    //             grid: {}
+    //         };
+    //
+    //         data.grid[key] = {
+    //             letter: value
+    //         };
+    //
+    //
+    //         $.ajax({
+    //             type: "PATCH",
+    //             url: "https://extendsclass.com/api/json-storage/bin/" + id,
+    //             data: JSON.stringify(data),
+    //             success: success,
+    //             error: error,
+    //             contentType: "application/merge-patch+json",
+    //             dataType: "json"
+    //         });
+    //     }
+    //
+    // } else {
+    //     console.log('nohash')
+    //     $('#cw-button').click(function () {
+    //         var code = $('#cw-code').val();
+    //         createAnswers(code);
+    //     });
+    //
+    //     function createAnswers(code) {
+    //         function success(response) {
+    //             console.log(response);
+    //             //answers = JSON.parse(data);
+    //             window.location.href += "#" + response.id;
+    //             window.location.reload();
+    //         }
+    //
+    //         function error() {
+    //             alert("couldn't create db");
+    //         }
+    //
+    //         $.ajax({
+    //             type: "POST",
+    //             url: "https://extendsclass.com/api/json-storage/bin",
+    //             data: JSON.stringify({ code: code, grid: {} }),
+    //             success: success,
+    //             error: error,
+    //             contentType: "application/json",
+    //             dataType: "json"
+    //         });
+    //     }
+    // }
 
 </script>
 </html>
