@@ -263,6 +263,9 @@ var CwBoard = /** @class */ (function () {
         else if (e.which === 8) {
             this.backspace();
         }
+        else if (e.which === 32) {
+            this.letter('');
+        }
         else if (e.which === 46) {
             this.delete();
         }

@@ -319,6 +319,8 @@ class CwBoard {
             this.moveFocus(this.focused.cell.nextY(1));
         } else if (e.which === 8) {
             this.backspace();
+        } else if (e.which === 32) {
+            this.letter('');
         } else if (e.which === 46) {
             this.delete();
         } else if ((e.which > 64 && e.which < 91) || (e.which > 96 && e.which < 123)) {
