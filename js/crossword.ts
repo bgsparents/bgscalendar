@@ -208,6 +208,7 @@ class CwBoard {
     gridContainer: JQuery;
     gridTable: JQuery;
     answerListeners: Array<(CwCell, string) => void> = [];
+    locationListeners: Array<(CwCell) => void> = [];
     noteListeners: Array<(number, any) => void> = [];
 
     constructor(crossword: CwCrossword) {
@@ -294,6 +295,10 @@ class CwBoard {
 
     private fireAnswerListeners(cell: CwCell, answer: string) {
         this.answerListeners.forEach(l => { l(cell, answer); });
+    }
+
+    private fireLocationListeners(cell: CwCell) {
+        this.locationListeners.forEach(l => { l(cell); });
     }
 
     private keyDownListener(e, cell: CwCell) {
@@ -384,9 +389,10 @@ class CwBoard {
         $('#ic_clue').text(clue.clue);
         $('#ic_format').text('(' + clue.format + ')');
         this.updateNote();
+        this.fireLocationListeners(cell);
     }
 
-    update(data: CwData) {
+    update(uuid: string, data: CwData) {
         for (let cellId in data.grid) {
             $('#' + cellId + ' .letter').text(data.grid[cellId].letter);
         }
@@ -397,6 +403,18 @@ class CwBoard {
                 let clue = this.crossword.clue(parseInt(clueId));
                 clue.note = note;
                 clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+            }
+        }
+
+        if (data.solvers) {
+            $('.watched').removeClass('watched');
+            const keys = Object.keys(data.solvers);
+            const now = new Date().getTime();
+            for (const key of keys) {
+                const solver = data.solvers[key];
+                if (key != uuid && (now - solver.timestamp) < 120000) {
+                    $('#' + solver.cellId).addClass('watched');
+                }
             }
         }
 
@@ -415,6 +433,10 @@ class CwBoard {
         this.noteListeners.push(listener);
     }
 
+    registerLocationListener(listener: (cell: CwCell) => void) {
+        this.locationListeners.push(listener);
+    }
+
     registerAnswerListener(listener: (cell: CwCell, answer: string) => void) {
         this.answerListeners.push(listener);
     }
@@ -429,6 +451,7 @@ interface CwData {
     url?: string;
     grid?: object;
     notes?: object;
+    solvers?: object;
 }
 
 class CwStorage {
@@ -484,6 +507,25 @@ class CwStorage {
         this.push(data, callback);
     }
 
+    pushLocation(uuid, cellId, callback: (data : CwData) => void) {
+        let data = {
+            solvers: this.data.solvers
+        };
+
+        if (!data.solvers) {
+            data.solvers = {};
+        }
+
+        if (!data.solvers[uuid]) {
+            data.solvers[uuid] = {};
+        }
+
+        data.solvers[uuid].timestamp = new Date().getTime();
+        data.solvers[uuid].cellId = cellId;
+
+        this.push(data, callback);
+    }
+
     push(data: object, callback: (data : CwData) => void) {
         $.ajax({
             type: "PATCH",
@@ -519,9 +561,11 @@ class CwApp {
     id: string;
     storage: CwStorage;
     board: CwBoard;
+    uuid: string;
 
     constructor(id: string) {
         this.id = id;
+        this.uuid = this.fetchUuid();
         $('body').addClass(this.hasId() ? 'has-id' : 'no-id');
     }
 
@@ -538,13 +582,64 @@ class CwApp {
         return !!this.id;
     }
 
+    private uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    private fetchUuid() {
+        let uuid;
+        if (window.localStorage) {
+            uuid = window.localStorage.getItem("cw-uuid");
+        } else {
+            uuid = this.getCookie("cw-uuid");
+        }
+
+        if (!uuid) {
+            uuid = this.uuidv4();
+            if (window.localStorage) {
+                window.localStorage.setItem("cw-uuid", uuid);
+            } else {
+                this.setCookie("cw-uuid", uuid, 365);
+            }
+        }
+
+        return uuid;
+    }
+
+    private getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
+    }
+
+    private setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
     private initBoard(data: CwData) {
         $('body').addClass('has-id');
         CwBoard.loadIndependentXml(data.code, (board) => {
             this.board = board;
-            this.board.update(data);
+            this.board.update(this.uuid, data);
             this.board.registerAnswerListener(this.storageAnswerUpdate.bind(this));
             this.board.registerNoteListener(this.storageNoteUpdate.bind(this));
+            this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
             $("#title").text(this.board.crossword.title);
             window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
             window.setInterval(this.ageRefresh.bind(this), 1000);
@@ -553,13 +648,19 @@ class CwApp {
 
     private storageAnswerUpdate(cell: CwCell, answer: string) {
         this.storage.pushLetter(cell.id, answer, (data: CwData) => {
-            this.board.update(data);
+            this.board.update(this.uuid, data);
         });
     }
 
     private storageNoteUpdate(clueId: number, note: string) {
         this.storage.pushNotes(clueId, note, (data: CwData) => {
-            this.board.update(data);
+            this.board.update(this.uuid, data);
+        });
+    }
+
+    private storageLocationUpdate(cell: CwCell) {
+        this.storage.pushLocation(this.uuid, cell.id, (data: CwData) => {
+            this.board.update(this.uuid, data);
         });
     }
 
@@ -569,7 +670,7 @@ class CwApp {
 
     private storageIntervalRefresh() {
         this.storage.fetch((data: CwData) => {
-            this.board.update(data);
+            this.board.update(this.uuid, data);
         });
     }
 

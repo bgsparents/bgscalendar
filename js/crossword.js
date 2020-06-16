@@ -158,6 +158,7 @@ var CwBoardCell = /** @class */ (function () {
 var CwBoard = /** @class */ (function () {
     function CwBoard(crossword) {
         this.answerListeners = [];
+        this.locationListeners = [];
         this.noteListeners = [];
         this.crossword = crossword;
         this.focused = {};
@@ -234,6 +235,9 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.fireAnswerListeners = function (cell, answer) {
         this.answerListeners.forEach(function (l) { l(cell, answer); });
+    };
+    CwBoard.prototype.fireLocationListeners = function (cell) {
+        this.locationListeners.forEach(function (l) { l(cell); });
     };
     CwBoard.prototype.keyDownListener = function (e, cell) {
         if (e.which === 37) {
@@ -327,8 +331,9 @@ var CwBoard = /** @class */ (function () {
         $('#ic_clue').text(clue.clue);
         $('#ic_format').text('(' + clue.format + ')');
         this.updateNote();
+        this.fireLocationListeners(cell);
     };
-    CwBoard.prototype.update = function (data) {
+    CwBoard.prototype.update = function (uuid, data) {
         for (var cellId in data.grid) {
             $('#' + cellId + ' .letter').text(data.grid[cellId].letter);
         }
@@ -338,6 +343,18 @@ var CwBoard = /** @class */ (function () {
                 var clue = this.crossword.clue(parseInt(clueId));
                 clue.note = note;
                 clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+            }
+        }
+        if (data.solvers) {
+            $('.watched').removeClass('watched');
+            var keys = Object.keys(data.solvers);
+            var now = new Date().getTime();
+            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+                var key = keys_1[_i];
+                var solver = data.solvers[key];
+                if (key != uuid && (now - solver.timestamp) < 120000) {
+                    $('#' + solver.cellId).addClass('watched');
+                }
             }
         }
         this.updateNote();
@@ -351,6 +368,9 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.registerNoteListener = function (listener) {
         this.noteListeners.push(listener);
+    };
+    CwBoard.prototype.registerLocationListener = function (listener) {
+        this.locationListeners.push(listener);
     };
     CwBoard.prototype.registerAnswerListener = function (listener) {
         this.answerListeners.push(listener);
@@ -399,6 +419,20 @@ var CwStorage = /** @class */ (function () {
         };
         this.push(data, callback);
     };
+    CwStorage.prototype.pushLocation = function (uuid, cellId, callback) {
+        var data = {
+            solvers: this.data.solvers
+        };
+        if (!data.solvers) {
+            data.solvers = {};
+        }
+        if (!data.solvers[uuid]) {
+            data.solvers[uuid] = {};
+        }
+        data.solvers[uuid].timestamp = new Date().getTime();
+        data.solvers[uuid].cellId = cellId;
+        this.push(data, callback);
+    };
     CwStorage.prototype.push = function (data, callback) {
         var _this = this;
         $.ajax({
@@ -432,6 +466,7 @@ var CwStorage = /** @class */ (function () {
 var CwApp = /** @class */ (function () {
     function CwApp(id) {
         this.id = id;
+        this.uuid = this.fetchUuid();
         $('body').addClass(this.hasId() ? 'has-id' : 'no-id');
     }
     CwApp.prototype.start = function () {
@@ -447,14 +482,61 @@ var CwApp = /** @class */ (function () {
     CwApp.prototype.hasId = function () {
         return !!this.id;
     };
+    CwApp.prototype.uuidv4 = function () {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    };
+    CwApp.prototype.fetchUuid = function () {
+        var uuid;
+        if (window.localStorage) {
+            uuid = window.localStorage.getItem("cw-uuid");
+        }
+        else {
+            uuid = this.getCookie("cw-uuid");
+        }
+        if (!uuid) {
+            uuid = this.uuidv4();
+            if (window.localStorage) {
+                window.localStorage.setItem("cw-uuid", uuid);
+            }
+            else {
+                this.setCookie("cw-uuid", uuid, 365);
+            }
+        }
+        return uuid;
+    };
+    CwApp.prototype.getCookie = function (cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
+    };
+    CwApp.prototype.setCookie = function (cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    };
     CwApp.prototype.initBoard = function (data) {
         var _this = this;
         $('body').addClass('has-id');
         CwBoard.loadIndependentXml(data.code, function (board) {
             _this.board = board;
-            _this.board.update(data);
+            _this.board.update(_this.uuid, data);
             _this.board.registerAnswerListener(_this.storageAnswerUpdate.bind(_this));
             _this.board.registerNoteListener(_this.storageNoteUpdate.bind(_this));
+            _this.board.registerLocationListener(_this.storageLocationUpdate.bind(_this));
             $("#title").text(_this.board.crossword.title);
             window.setInterval(_this.storageIntervalRefresh.bind(_this), 2000);
             window.setInterval(_this.ageRefresh.bind(_this), 1000);
@@ -463,13 +545,19 @@ var CwApp = /** @class */ (function () {
     CwApp.prototype.storageAnswerUpdate = function (cell, answer) {
         var _this = this;
         this.storage.pushLetter(cell.id, answer, function (data) {
-            _this.board.update(data);
+            _this.board.update(_this.uuid, data);
         });
     };
     CwApp.prototype.storageNoteUpdate = function (clueId, note) {
         var _this = this;
         this.storage.pushNotes(clueId, note, function (data) {
-            _this.board.update(data);
+            _this.board.update(_this.uuid, data);
+        });
+    };
+    CwApp.prototype.storageLocationUpdate = function (cell) {
+        var _this = this;
+        this.storage.pushLocation(this.uuid, cell.id, function (data) {
+            _this.board.update(_this.uuid, data);
         });
     };
     CwApp.prototype.ageRefresh = function () {
@@ -478,7 +566,7 @@ var CwApp = /** @class */ (function () {
     CwApp.prototype.storageIntervalRefresh = function () {
         var _this = this;
         this.storage.fetch(function (data) {
-            _this.board.update(data);
+            _this.board.update(_this.uuid, data);
         });
     };
     CwApp.prototype.showForm = function () {
