@@ -264,7 +264,7 @@ var CwBoard = /** @class */ (function () {
             if (!_this.focused) {
                 return;
             }
-            var key = $(_this).text();
+            var key = $(e.target).text();
             if (key === 'BS') {
                 _this.backspace();
             }
@@ -272,9 +272,10 @@ var CwBoard = /** @class */ (function () {
                 _this.delete();
             }
             else {
+                console.log(key);
                 _this.letter(key);
             }
-            _this.moveFocus(_this.focused.cell.cell);
+            _this.moveFocus(_this.focused.cell);
         });
     };
     CwBoard.prototype.hookupNotes = function () {

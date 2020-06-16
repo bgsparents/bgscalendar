@@ -320,16 +320,17 @@ class CwBoard {
                 return;
             }
 
-            var key = $(this).text();
+            var key = $(e.target).text();
             if (key === 'BS') {
                 this.backspace();
             } else if (key === 'DEL') {
                 this.delete();
             } else {
+                console.log(key)
                 this.letter(key)
             }
 
-            this.moveFocus(this.focused.cell.cell);
+            this.moveFocus(this.focused.cell);
         });
     }
 
