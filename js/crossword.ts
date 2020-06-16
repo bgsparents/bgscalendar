@@ -449,7 +449,7 @@ class CwStorage {
             if (error) {
                 error(errorThrown);
             } else {
-                alert("Failed to load storage");
+                //alert("Failed to load storage");
                 console.error("Failed to load storage - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
             }
         });
