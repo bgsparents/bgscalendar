@@ -7,6 +7,15 @@
             font-family: 'Open Sans', sans-serif;
         }
 
+        .unselectable,
+        .unselectable * {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         html, body {
             height:100vh;
         }
@@ -114,6 +123,7 @@
             border: 2px solid black;
             border-top-width: 0;
             padding: 10px;
+            min-height: calc(2rem + 12px)
         }
 
         .down #ic_container {
@@ -218,17 +228,17 @@
         <button id="cw-button">Create</button>
     </div>
     <div id="grid_container">
-        <div id="header">
+        <div id="header" class="unselectable">
             <span id="title"></span>
             <span id="last-refresh"></span>
         </div>
-        <table id="grid"></table>
-        <div id="ic_container">
+        <table id="grid" class="unselectable"></table>
+        <div id="ic_container" class="unselectable">
             <span id="ic_number"></span>
             <span id="ic_clue"></span>
             <span id="ic_format"></span>
         </div>
-        <div id="keyboard">
+        <div id="keyboard" class="unselectable">
             <div class="row">
                 <span>Q</span>
                 <span>W</span>
@@ -262,6 +272,14 @@
                 <span>N</span>
                 <span>M</span>
                 <span>DEL</span>
+            </div>
+            <div class="row">
+                <span data-action="prev">&#8630;</span>
+                <span data-action="left">&#8592;</span>
+                <span data-action="down">&#8595;</span>
+                <span data-action="up">&#8593;</span>
+                <span data-action="right">&#8594;</span>
+                <span data-action="next">&#8631;</span>
             </div>
         </div>
         <div id="notes"><textarea id="notes-input" maxlength="256"></textarea></div>

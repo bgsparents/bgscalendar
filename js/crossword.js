@@ -35,17 +35,17 @@ var CwCell = /** @class */ (function () {
         var currentId;
         if (direction === CwClueDirection.across) {
             var cell = this.nextX(n);
-            if (cell.across === this.across && cell.x > (this.x * n)) {
+            if (cell.across === this.across || cell.x > (this.x * n)) {
                 return cell;
             }
-            currentId = cell.across;
+            currentId = this.across;
         }
         else {
             var cell = this.nextY(n);
-            if (cell.down === this.down && cell.y > (this.y * n)) {
+            if (cell.down === this.down || cell.y > (this.y * n)) {
                 return cell;
             }
-            currentId = cell.down;
+            currentId = this.down;
         }
         if (!haltAtClueBoundary) {
             var next = (currentId - 1 + this.cw.clues.length + n) % this.cw.clues.length;
@@ -79,6 +79,12 @@ var CwCrossword = /** @class */ (function () {
         this.loadXml("https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/independent/daily-crossword/" + code + ".xml", callback, error);
     };
     CwCrossword.prototype.clue = function (id) {
+        if (id > this.clues.length) {
+            id = 1;
+        }
+        else if (id < 1) {
+            id = this.clues.length;
+        }
         return this.clues[id - 1];
     };
     CwCrossword.prototype.cell = function (x, y) {
@@ -161,11 +167,12 @@ var CwBoard = /** @class */ (function () {
         this.locationListeners = [];
         this.noteListeners = [];
         this.crossword = crossword;
-        this.focused = {};
         this.drawGrid();
         this.hookupKeyboard();
         this.hookupNotes();
         var firstCell = this.crossword.clue(1).firstCell;
+        this.focused = {};
+        this.focus(firstCell, firstCell.across ? CwClueDirection.across : CwClueDirection.down);
         this.moveFocus(this.crossword.clue(1).firstCell);
     }
     CwBoard.loadXml = function (url, callback) {
@@ -227,6 +234,7 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.letter = function (letter) {
         this.setFocused(letter.toUpperCase());
+        var nextCell = this.focused.cell.next(1, this.focused.direction, false);
         this.moveFocus(this.focused.cell.next(1, this.focused.direction, false));
     };
     CwBoard.prototype.setFocused = function (value) {
@@ -269,14 +277,33 @@ var CwBoard = /** @class */ (function () {
                 return;
             }
             var key = $(e.target).text();
+            var action = $(e.target).data("action");
+            console.log(key == "→");
             if (key === 'BS') {
                 _this.backspace();
             }
             else if (key === 'DEL') {
                 _this.delete();
             }
+            else if (action === 'prev') {
+                _this.moveFocus(_this.crossword.clue(_this.focused.id - 1).firstCell);
+            }
+            else if (action === 'next') {
+                _this.moveFocus(_this.crossword.clue(_this.focused.id + 1).firstCell);
+            }
+            else if (action === 'right') {
+                _this.moveFocus(_this.focused.cell.nextX(1));
+            }
+            else if (action === 'up') {
+                _this.moveFocus(_this.focused.cell.nextY(-1));
+            }
+            else if (action === 'left') {
+                _this.moveFocus(_this.focused.cell.nextX(-1));
+            }
+            else if (action === 'down') {
+                _this.moveFocus(_this.focused.cell.nextY(1));
+            }
             else {
-                console.log(key);
                 _this.letter(key);
             }
             _this.moveFocus(_this.focused.cell);
@@ -284,7 +311,7 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.hookupNotes = function () {
         var _this = this;
-        $("#notes-input").blur(function (e) {
+        $("#notes-input").keyup(function (e) {
             var note = $("#notes-input").val();
             _this.crossword.clue(_this.focused.id).note = note;
             _this.fireNoteListeners(_this.focused.id, note);
@@ -309,10 +336,10 @@ var CwBoard = /** @class */ (function () {
         else if (this.focused && (this.focused.id === cell.down || this.focused.id === cell.across)) {
             direction = this.focused.direction;
         }
-        else if (cell.down) {
+        else if (direction == CwClueDirection.across && !cell.across) {
             direction = CwClueDirection.down;
         }
-        else if (cell.across) {
+        else if (direction == CwClueDirection.down && !cell.down) {
             direction = CwClueDirection.across;
         }
         this.focus(cell, direction);
@@ -381,6 +408,7 @@ var CwBoard = /** @class */ (function () {
 }());
 var CwStorage = /** @class */ (function () {
     function CwStorage(id) {
+        this.patchData = {};
         this.id = id;
         this.data = {};
     }
@@ -389,19 +417,24 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.fetch = function (callback, error) {
         var _this = this;
-        $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), function (data) {
-            _this.updateData(JSON.parse(data));
-            _this.refreshed = new Date();
-            callback(_this.data);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            if (error) {
-                error(errorThrown);
-            }
-            else {
-                //alert("Failed to load storage");
-                console.error("Failed to load storage - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
-            }
-        });
+        if (Object.keys(this.patchData).length > 0) {
+            this.pushActual(callback);
+        }
+        else {
+            $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), function (data) {
+                _this.updateData(JSON.parse(data));
+                _this.refreshed = new Date();
+                callback(_this.data);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                if (error) {
+                    error(errorThrown);
+                }
+                else {
+                    //alert("Failed to load storage");
+                    console.error("Failed to load storage - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
+                }
+            });
+        }
     };
     CwStorage.prototype.pushLetter = function (key, value, callback) {
         var data = {
@@ -437,15 +470,30 @@ var CwStorage = /** @class */ (function () {
         this.push(data, callback);
     };
     CwStorage.prototype.push = function (data, callback) {
+        this.patchData = this.merge(this.patchData, data);
+    };
+    CwStorage.prototype.merge = function (target, source) {
+        for (var _i = 0, _a = Object.keys(source); _i < _a.length; _i++) {
+            var key = _a[_i];
+            if (source[key] instanceof Object) {
+                if (!target[key]) {
+                    target[key] = {};
+                }
+                Object.assign(source[key], this.merge(target[key], source[key]));
+            }
+        }
+        return Object.assign(target || {}, source);
+    };
+    CwStorage.prototype.pushActual = function (callback) {
         var _this = this;
-        data['code'] = this.data.code;
+        this.patchData['code'] = this.data.code;
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
-            data: JSON.stringify(data),
+            data: JSON.stringify(this.patchData),
             success: function (response) {
-                console.log("update");
                 _this.updateData(JSON.parse(response.data));
+                _this.patchData = {};
                 callback(response);
             },
             error: function () { alert("couldn't update db"); },
@@ -468,12 +516,12 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.updateData = function (data) {
         this.refreshed = new Date();
-        console.log(data);
         if (data.code) {
             this.data = data;
         }
         else {
             if (this.data.code) {
+                this.data = this.merge(this.data, this.patchData);
                 console.log("saving");
                 this.save();
             }
@@ -568,8 +616,9 @@ var CwApp = /** @class */ (function () {
             _this.board.registerNoteListener(_this.storageNoteUpdate.bind(_this));
             _this.board.registerLocationListener(_this.storageLocationUpdate.bind(_this));
             $("#title").text(_this.board.crossword.title);
-            window.setInterval(_this.storageIntervalRefresh.bind(_this), 2000);
+            _this.intervalId = window.setInterval(_this.storageIntervalRefresh.bind(_this), 2000);
             window.setInterval(_this.ageRefresh.bind(_this), 1000);
+            document.addEventListener("visibilitychange", _this.browserFocusListener.bind(_this));
         });
     };
     CwApp.prototype.storageAnswerUpdate = function (cell, answer) {
@@ -589,6 +638,15 @@ var CwApp = /** @class */ (function () {
         this.storage.pushLocation(this.uuid, cell.id, function (data) {
             _this.board.update(_this.uuid, data);
         });
+    };
+    CwApp.prototype.browserFocusListener = function (e) {
+        window.clearInterval(this.intervalId);
+        if (document.visibilityState === 'visible') {
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+        }
+        else {
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 60000);
+        }
     };
     CwApp.prototype.ageRefresh = function () {
         $("#last-refresh").text("Refreshed " + this.storage.age() + "s ago");

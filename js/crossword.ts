@@ -58,16 +58,16 @@ class CwCell {
         let currentId;
         if (direction === CwClueDirection.across) {
             let cell = this.nextX(n);
-            if (cell.across === this.across && cell.x > (this.x * n)) {
+            if (cell.across === this.across || cell.x > (this.x * n)) {
                 return cell;
             }
-            currentId = cell.across;
+            currentId = this.across;
         } else {
             let cell = this.nextY(n);
-            if (cell.down === this.down && cell.y > (this.y * n)) {
+            if (cell.down === this.down || cell.y > (this.y * n)) {
                 return cell;
             }
-            currentId = cell.down;
+            currentId = this.down;
         }
 
         if (!haltAtClueBoundary) {
@@ -114,6 +114,11 @@ class CwCrossword {
     }
 
     clue(id: number) {
+        if (id > this.clues.length) {
+            id = 1;
+        } else if (id < 1) {
+            id = this.clues.length;
+        }
         return this.clues[id - 1];
     }
 
@@ -213,11 +218,12 @@ class CwBoard {
 
     constructor(crossword: CwCrossword) {
         this.crossword = crossword;
-        this.focused = {};
         this.drawGrid();
         this.hookupKeyboard();
         this.hookupNotes();
         let firstCell = this.crossword.clue(1).firstCell;
+        this.focused = {};
+        this.focus(firstCell, firstCell.across ? CwClueDirection.across : CwClueDirection.down);
         this.moveFocus(this.crossword.clue(1).firstCell);
     }
 
@@ -285,6 +291,7 @@ class CwBoard {
 
     private letter(letter: string) {
         this.setFocused(letter.toUpperCase());
+        let nextCell = this.focused.cell.next(1, this.focused.direction, false);
         this.moveFocus(this.focused.cell.next(1, this.focused.direction, false));
     }
 
@@ -326,12 +333,25 @@ class CwBoard {
             }
 
             var key = $(e.target).text();
+            var action = $(e.target).data("action");
+            console.log(key == "→");
             if (key === 'BS') {
                 this.backspace();
             } else if (key === 'DEL') {
                 this.delete();
+            } else if (action === 'prev') {
+                this.moveFocus(this.crossword.clue(this.focused.id - 1).firstCell);
+            } else if (action === 'next') {
+                this.moveFocus(this.crossword.clue(this.focused.id + 1).firstCell);
+            } else if (action === 'right') {
+                this.moveFocus(this.focused.cell.nextX(1));
+            } else if (action === 'up') {
+                this.moveFocus(this.focused.cell.nextY(-1));
+            } else if (action === 'left') {
+                this.moveFocus(this.focused.cell.nextX(-1));
+            } else if (action === 'down') {
+                this.moveFocus(this.focused.cell.nextY(1));
             } else {
-                console.log(key)
                 this.letter(key)
             }
 
@@ -340,7 +360,7 @@ class CwBoard {
     }
 
     private hookupNotes() {
-        $("#notes-input").blur((e) => {
+        $("#notes-input").keyup((e) => {
             let note = $("#notes-input").val();
             this.crossword.clue(this.focused.id).note = note;
             this.fireNoteListeners(this.focused.id, note);
@@ -365,9 +385,9 @@ class CwBoard {
             }
         } else if (this.focused && (this.focused.id === cell.down || this.focused.id === cell.across)) {
             direction = this.focused.direction;
-        } else if (cell.down) {
+        } else if (direction == CwClueDirection.across && !cell.across) {
             direction = CwClueDirection.down;
-        } else if (cell.across) {
+        } else if (direction == CwClueDirection.down && !cell.down) {
             direction = CwClueDirection.across;
         }
 
@@ -460,6 +480,7 @@ class CwStorage {
     id: string;
     data: CwData;
     refreshed: Date;
+    patchData: object = {};
 
     constructor(id: string) {
         this.id = id;
@@ -471,18 +492,22 @@ class CwStorage {
     }
 
     fetch(callback: (data : CwData) => void, error?: (errorThrown : string) => void) {
-        $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), (data) => {
-            this.updateData(JSON.parse(data));
-            this.refreshed = new Date();
-            callback(this.data);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            if (error) {
-                error(errorThrown);
-            } else {
-                //alert("Failed to load storage");
-                console.error("Failed to load storage - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
-            }
-        });
+        if (Object.keys(this.patchData).length > 0) {
+            this.pushActual(callback);
+        } else {
+            $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), (data) => {
+                this.updateData(JSON.parse(data));
+                this.refreshed = new Date();
+                callback(this.data);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                if (error) {
+                    error(errorThrown);
+                } else {
+                    //alert("Failed to load storage");
+                    console.error("Failed to load storage - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
+                }
+            });
+        }
     }
 
     pushLetter(key, value, callback: (data : CwData) => void) {
@@ -530,15 +555,32 @@ class CwStorage {
     }
 
     push(data: object, callback: (data : CwData) => void) {
-        data['code'] = this.data.code;
+        this.patchData = this.merge(this.patchData, data);
+    }
+
+    private merge(target: object, source: object) {
+        for (const key of Object.keys(source)) {
+            if (source[key] instanceof Object) {
+                if (!target[key]) {
+                    target[key] = {};
+                }
+                (<any>Object).assign(source[key], this.merge(target[key], source[key]))
+            }
+        }
+
+        return (<any>Object).assign(target || {}, source);
+    }
+
+    private pushActual(callback: (data : CwData) => void) {
+        this.patchData['code'] = this.data.code;
 
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
-            data: JSON.stringify(data),
+            data: JSON.stringify(this.patchData),
             success: (response) => {
-                console.log("update");
                 this.updateData(JSON.parse(response.data));
+                this.patchData = {};
                 callback(response);
             },
             error: () => { alert("couldn't update db"); },
@@ -563,11 +605,11 @@ class CwStorage {
 
     private updateData(data) {
         this.refreshed = new Date();
-        console.log(data);
         if (data.code) {
             this.data = data;
         } else {
             if (this.data.code) {
+                this.data = this.merge(this.data, this.patchData);
                 console.log("saving");
                 this.save();
             }
@@ -594,6 +636,7 @@ class CwApp {
     storage: CwStorage;
     board: CwBoard;
     uuid: string;
+    intervalId: number;
 
     constructor(id: string) {
         this.id = id;
@@ -673,8 +716,9 @@ class CwApp {
             this.board.registerNoteListener(this.storageNoteUpdate.bind(this));
             this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
             $("#title").text(this.board.crossword.title);
-            window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
             window.setInterval(this.ageRefresh.bind(this), 1000);
+            document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
         });
     }
 
@@ -694,6 +738,15 @@ class CwApp {
         this.storage.pushLocation(this.uuid, cell.id, (data: CwData) => {
             this.board.update(this.uuid, data);
         });
+    }
+
+    private browserFocusListener(e) {
+        window.clearInterval(this.intervalId);
+        if (document.visibilityState === 'visible') {
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+        } else {
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 60000);
+        }
     }
 
     private ageRefresh() {
