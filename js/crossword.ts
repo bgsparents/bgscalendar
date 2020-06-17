@@ -336,7 +336,6 @@ class CwBoard {
 
             var key = $(e.target).text();
             var action = $(e.target).data("action");
-            console.log(key == "→");
             if (key === 'BS') {
                 this.backspace();
             } else if (key === 'DEL') {
@@ -587,6 +586,7 @@ class CwStorage {
                 callback(response);
             },
             error: () => {
+                console.error("error: merging data back into patch data");
                 this.patchData = this.merge(this.patchData, data);
                 alert("couldn't update db");
             },
@@ -615,6 +615,7 @@ class CwStorage {
             this.data = data;
         } else {
             if (this.data.code) {
+                console.log("merging patch data into data");
                 this.data = this.merge(this.data, this.patchData);
                 console.log("saving");
                 this.save();
@@ -765,7 +766,7 @@ class CwApp {
     }
 
     private locationRefresh() {
-        this.storage.pushLocation(this.uuid, this.board.focused.cell, null);
+        this.storage.pushLocation(this.uuid, this.board.focused.cell.id, null);
     }
 
     private storageIntervalRefresh() {

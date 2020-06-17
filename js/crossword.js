@@ -281,7 +281,6 @@ var CwBoard = /** @class */ (function () {
             }
             var key = $(e.target).text();
             var action = $(e.target).data("action");
-            console.log(key == "→");
             if (key === 'BS') {
                 _this.backspace();
             }
@@ -501,6 +500,7 @@ var CwStorage = /** @class */ (function () {
                 callback(response);
             },
             error: function () {
+                console.error("error: merging data back into patch data");
                 _this.patchData = _this.merge(_this.patchData, data);
                 alert("couldn't update db");
             },
@@ -528,6 +528,7 @@ var CwStorage = /** @class */ (function () {
         }
         else {
             if (this.data.code) {
+                console.log("merging patch data into data");
                 this.data = this.merge(this.data, this.patchData);
                 console.log("saving");
                 this.save();
@@ -663,7 +664,7 @@ var CwApp = /** @class */ (function () {
         $("#last-refresh").text("Refreshed " + this.storage.age() + "s ago");
     };
     CwApp.prototype.locationRefresh = function () {
-        this.storage.pushLocation(this.uuid, this.board.focused.cell, null);
+        this.storage.pushLocation(this.uuid, this.board.focused.cell.id, null);
     };
     CwApp.prototype.storageIntervalRefresh = function () {
         var _this = this;
