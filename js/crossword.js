@@ -11,6 +11,9 @@ var CwCell = /** @class */ (function () {
         this.type = 'block';
         this.id = x + '-' + y;
     }
+    CwCell.prototype.isBlock = function () {
+        return this.type == 'block';
+    };
     CwCell.prototype.nextX = function (n) {
         var cx = this.x - 1;
         for (var i = 1; i < this.cw.width; ++i) {
@@ -90,6 +93,10 @@ var CwCrossword = /** @class */ (function () {
     CwCrossword.prototype.cell = function (x, y) {
         return this.grid[x - 1][y - 1];
     };
+    CwCrossword.prototype.cellFromId = function (cellId) {
+        var coord = cellId.split("-").map(function (n) { return parseInt(n); });
+        return this.cell(coord[0], coord[1]);
+    };
     CwCrossword.prototype.initClues = function (cluesXml, wordXml) {
         var _this = this;
         this.clues = new Array(wordXml.length);
@@ -166,6 +173,8 @@ var CwBoard = /** @class */ (function () {
         this.answerListeners = [];
         this.locationListeners = [];
         this.noteListeners = [];
+        this.lettersTotal = 0;
+        this.lettersFilled = 0;
         this.crossword = crossword;
         this.drawGrid();
         this.hookupKeyboard();
@@ -198,6 +207,7 @@ var CwBoard = /** @class */ (function () {
                     tableCell.addClass('block');
                 }
                 else {
+                    this_1.lettersTotal++;
                     if (cell.number) {
                         tableCell.append($('<span>' + cell.number + '</span>').addClass('number'));
                     }
@@ -237,8 +247,42 @@ var CwBoard = /** @class */ (function () {
         var nextCell = this.focused.cell.next(1, this.focused.direction, false);
         this.moveFocus(this.focused.cell.next(1, this.focused.direction, false));
     };
+    CwBoard.prototype.setLetter = function (cell, value) {
+        var el = $("#" + cell.id + " .letter");
+        var currentValue = el.text();
+        if (currentValue == value) {
+            return;
+        }
+        el.text(value);
+        cell.cell.toggleClass('wrong', value.length > 0 && value != cell.solution);
+        this.lettersFilled += value.length - currentValue.length;
+        $("#complete_percentage").text(Math.floor(100 * this.lettersFilled / this.lettersTotal));
+        this.checkSolutions();
+    };
+    CwBoard.prototype.getLetter = function (cell) {
+        var el = $("#" + cell.id + " .letter");
+        return el.text();
+    };
+    CwBoard.prototype.checkSolutions = function () {
+        var el = $("#complete");
+        if (this.lettersFilled == this.lettersTotal) {
+            var hasMistake = false;
+            for (var x = 1; x <= this.crossword.width; ++x) {
+                for (var y = 1; y <= this.crossword.height; ++y) {
+                    var cell = this.crossword.cell(x, y);
+                    if (!cell.isBlock() && this.getLetter(cell) != cell.solution) {
+                        hasMistake = true;
+                    }
+                }
+            }
+            el.addClass(hasMistake ? 'wrong' : 'right');
+        }
+        else {
+            el.removeClass("wrong right");
+        }
+    };
     CwBoard.prototype.setFocused = function (value) {
-        $("#" + this.focused.cell.id + " .letter").text(value);
+        this.setLetter(this.focused.cell, value);
         this.fireAnswerListeners(this.focused.cell, value);
     };
     CwBoard.prototype.fireAnswerListeners = function (cell, answer) {
@@ -366,7 +410,7 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.update = function (uuid, data) {
         for (var cellId in data.grid) {
-            $('#' + cellId + ' .letter').text(data.grid[cellId].letter);
+            this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
         }
         if (data.notes) {
             for (var clueId in data.notes) {

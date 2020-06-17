@@ -115,10 +115,21 @@
 
         }
 
-        #header #last-refresh {
+        #header .header-info {
             float: right;
             font-size: 0.6rem;
             color: #777;
+        }
+
+        #header #last-refresh {
+        }
+
+        #header #complete.right {
+            color: green;
+        }
+
+        #header #complete.wrong {
+            color: red;
         }
 
         #ic_container {
@@ -233,7 +244,10 @@
     <div id="grid_container">
         <div id="header" class="unselectable">
             <span id="title"></span>
-            <span id="last-refresh"></span>
+            <div class="header-info">
+                <div id="last-refresh"></div>
+                <div id="complete"><span id="complete_percentage">0</span>% Completed</div>
+            </div>
         </div>
         <table id="grid" class="unselectable"></table>
         <div id="ic_container" class="unselectable">
