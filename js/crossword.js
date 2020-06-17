@@ -384,7 +384,7 @@ var CwBoard = /** @class */ (function () {
             for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
                 var key = keys_1[_i];
                 var solver = data.solvers[key];
-                if (key != uuid && (now - solver.timestamp) < 120000) {
+                if (key != uuid && (now - solver.timestamp) < 300000) {
                     $('#' + solver.cellId).addClass('watched');
                 }
             }
@@ -489,17 +489,21 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.pushActual = function (callback) {
         var _this = this;
-        this.patchData['code'] = this.data.code;
+        var data = this.patchData;
+        data['code'] = this.data.code;
+        this.patchData = {};
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
-            data: JSON.stringify(this.patchData),
+            data: JSON.stringify(data),
             success: function (response) {
                 _this.updateData(JSON.parse(response.data));
-                _this.patchData = {};
                 callback(response);
             },
-            error: function () { alert("couldn't update db"); },
+            error: function () {
+                _this.patchData = _this.merge(_this.patchData, data);
+                alert("couldn't update db");
+            },
             contentType: "application/merge-patch+json",
             dataType: "json"
         });
@@ -620,6 +624,7 @@ var CwApp = /** @class */ (function () {
             _this.board.registerLocationListener(_this.storageLocationUpdate.bind(_this));
             $("#title").text(_this.board.crossword.title);
             _this.intervalId = window.setInterval(_this.storageIntervalRefresh.bind(_this), 2000);
+            _this.focusId = window.setInterval(_this.locationRefresh.bind(_this), 150000);
             window.setInterval(_this.ageRefresh.bind(_this), 1000);
             document.addEventListener("visibilitychange", _this.browserFocusListener.bind(_this));
         });
@@ -644,8 +649,11 @@ var CwApp = /** @class */ (function () {
     };
     CwApp.prototype.browserFocusListener = function (e) {
         window.clearInterval(this.intervalId);
+        window.clearInterval(this.focusId);
         if (document.visibilityState === 'visible') {
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
+            this.locationRefresh();
         }
         else {
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 60000);
@@ -653,6 +661,9 @@ var CwApp = /** @class */ (function () {
     };
     CwApp.prototype.ageRefresh = function () {
         $("#last-refresh").text("Refreshed " + this.storage.age() + "s ago");
+    };
+    CwApp.prototype.locationRefresh = function () {
+        this.storage.pushLocation(this.uuid, this.board.focused.cell, null);
     };
     CwApp.prototype.storageIntervalRefresh = function () {
         var _this = this;

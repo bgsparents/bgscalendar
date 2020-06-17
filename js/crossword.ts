@@ -436,7 +436,7 @@ class CwBoard {
             const now = new Date().getTime();
             for (const key of keys) {
                 const solver = data.solvers[key];
-                if (key != uuid && (now - solver.timestamp) < 120000) {
+                if (key != uuid && (now - solver.timestamp) < 300000) {
                     $('#' + solver.cellId).addClass('watched');
                 }
             }
@@ -574,18 +574,22 @@ class CwStorage {
     }
 
     private pushActual(callback: (data : CwData) => void) {
-        this.patchData['code'] = this.data.code;
+        let data = this.patchData;
+        data['code'] = this.data.code;
+        this.patchData = {};
 
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
-            data: JSON.stringify(this.patchData),
+            data: JSON.stringify(data),
             success: (response) => {
                 this.updateData(JSON.parse(response.data));
-                this.patchData = {};
                 callback(response);
             },
-            error: () => { alert("couldn't update db"); },
+            error: () => {
+                this.patchData = this.merge(this.patchData, data);
+                alert("couldn't update db");
+            },
             contentType: "application/merge-patch+json",
             dataType: "json"
         });
@@ -639,6 +643,7 @@ class CwApp {
     board: CwBoard;
     uuid: string;
     intervalId: number;
+    focusId: number;
 
     constructor(id: string) {
         this.id = id;
@@ -719,6 +724,7 @@ class CwApp {
             this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
             $("#title").text(this.board.crossword.title);
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
             window.setInterval(this.ageRefresh.bind(this), 1000);
             document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
         });
@@ -744,8 +750,11 @@ class CwApp {
 
     private browserFocusListener(e) {
         window.clearInterval(this.intervalId);
+        window.clearInterval(this.focusId);
         if (document.visibilityState === 'visible') {
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
+            this.locationRefresh();
         } else {
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 60000);
         }
@@ -753,6 +762,10 @@ class CwApp {
 
     private ageRefresh() {
         $("#last-refresh").text("Refreshed " + this.storage.age() + "s ago");
+    }
+
+    private locationRefresh() {
+        this.storage.pushLocation(this.uuid, this.board.focused.cell, null);
     }
 
     private storageIntervalRefresh() {
