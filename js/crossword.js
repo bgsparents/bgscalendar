@@ -58,10 +58,14 @@ var CwCell = /** @class */ (function () {
     };
     return CwCell;
 }());
+function _(json) {
+    console.log(json);
+}
 var CwCrossword = /** @class */ (function () {
     function CwCrossword(data) {
         var wordXml = data.find("word");
         this.title = $(data.find("metadata")).find("title").text();
+        console.log("title=" + this.title);
         this.initClues(data.find("clue"), wordXml);
         this.initGrid(data.find("grid"), wordXml);
     }
@@ -76,6 +80,14 @@ var CwCrossword = /** @class */ (function () {
                 alert("Failed to load crossword data");
                 console.error("Failed to load crossword data - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
             }
+        });
+    };
+    CwCrossword.loadJs = function (url, callback, error) {
+        $.ajax({
+            url: url,
+            dataType: "jsonp",
+        }).fail(function () {
+            callback(new CwCrossword($(CrosswordPuzzleData)));
         });
     };
     CwCrossword.loadIndependentXml = function (code, callback, error) {
@@ -186,6 +198,11 @@ var CwBoard = /** @class */ (function () {
     }
     CwBoard.loadXml = function (url, callback) {
         CwCrossword.loadXml(url, function (cw) {
+            callback(new CwBoard(cw));
+        });
+    };
+    CwBoard.loadJs = function (url, callback) {
+        CwCrossword.loadJs(url, function (cw) {
             callback(new CwBoard(cw));
         });
     };
@@ -659,20 +676,30 @@ var CwApp = /** @class */ (function () {
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     };
     CwApp.prototype.initBoard = function (data) {
-        var _this = this;
         $('body').addClass('has-id');
-        CwBoard.loadIndependentXml(data.code, function (board) {
-            _this.board = board;
-            _this.board.update(_this.uuid, data);
-            _this.board.registerAnswerListener(_this.storageAnswerUpdate.bind(_this));
-            _this.board.registerNoteListener(_this.storageNoteUpdate.bind(_this));
-            _this.board.registerLocationListener(_this.storageLocationUpdate.bind(_this));
-            $("#title").text(_this.board.crossword.title);
-            _this.intervalId = window.setInterval(_this.storageIntervalRefresh.bind(_this), 2000);
-            _this.focusId = window.setInterval(_this.locationRefresh.bind(_this), 150000);
-            window.setInterval(_this.ageRefresh.bind(_this), 1000);
-            document.addEventListener("visibilitychange", _this.browserFocusListener.bind(_this));
-        });
+        if (data.data_url) {
+            if (data.data_url.endsWith('.js')) {
+                CwBoard.loadJs(data.data_url, this.initBoardComplete.bind(this));
+            }
+            else {
+                CwBoard.loadXml(data.data_url, this.initBoardComplete.bind(this));
+            }
+        }
+        else {
+            CwBoard.loadIndependentXml(data.code, this.initBoardComplete.bind(this));
+        }
+    };
+    CwApp.prototype.initBoardComplete = function (board) {
+        this.board = board;
+        this.board.update(this.uuid, this.storage.data);
+        this.board.registerAnswerListener(this.storageAnswerUpdate.bind(this));
+        this.board.registerNoteListener(this.storageNoteUpdate.bind(this));
+        this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
+        $("#title").text(this.board.crossword.title);
+        this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+        this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
+        window.setInterval(this.ageRefresh.bind(this), 1000);
+        document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
     };
     CwApp.prototype.storageAnswerUpdate = function (cell, answer) {
         var _this = this;
