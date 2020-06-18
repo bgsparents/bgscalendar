@@ -374,14 +374,19 @@ var CwBoard = /** @class */ (function () {
     };
     CwBoard.prototype.hookupNotes = function () {
         var _this = this;
+        $("#notes-input").blur(function (e) {
+            var note = $("#notes-input").val();
+            _this.crossword.clue(_this.focused.id).note = note;
+            _this.fireNoteListeners(_this.focused.id, note, false);
+        });
         $("#notes-input").keyup(function (e) {
             var note = $("#notes-input").val();
             _this.crossword.clue(_this.focused.id).note = note;
-            _this.fireNoteListeners(_this.focused.id, note);
+            _this.fireNoteListeners(_this.focused.id, note, true);
         });
     };
-    CwBoard.prototype.fireNoteListeners = function (clueId, note) {
-        this.noteListeners.forEach(function (l) { l(clueId, note); });
+    CwBoard.prototype.fireNoteListeners = function (clueId, note, lock) {
+        this.noteListeners.forEach(function (l) { l(clueId, note, lock); });
     };
     CwBoard.prototype.moveFocus = function (cell) {
         cell.cell.focus();
@@ -431,10 +436,17 @@ var CwBoard = /** @class */ (function () {
         }
         if (data.notes) {
             for (var clueId in data.notes) {
-                var note = data.notes[clueId].note;
                 var clue = this.crossword.clue(parseInt(clueId));
-                clue.note = note;
-                clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+                var note = data.notes[clueId].note;
+                if (note !== undefined) {
+                    clue.note = note;
+                    clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+                }
+                var lockid = data.notes[clueId].lock;
+                if (lockid !== undefined) {
+                    clue.noteLocked = lockid != null && lockid != uuid;
+                    clue.firstCell.cell.toggleClass('note-locked', clue.noteLocked);
+                }
             }
         }
         if (data.solvers) {
@@ -454,7 +466,14 @@ var CwBoard = /** @class */ (function () {
     CwBoard.prototype.updateNote = function () {
         var el = $("#notes-input");
         if (!el.get(0).matches(":focus")) {
-            var note = this.crossword.clue(this.focused.id).note;
+            var clue = this.crossword.clue(this.focused.id);
+            var note = clue.note;
+            if (clue.noteLocked) {
+                el.attr('readonly', 'readonly');
+            }
+            else {
+                el.removeAttr('readonly');
+            }
             el.val(note ? note : '');
         }
     };
@@ -485,9 +504,7 @@ var CwStorage = /** @class */ (function () {
         }
         else {
             $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), function (data) {
-                _this.updateData(JSON.parse(data));
-                _this.refreshed = new Date();
-                callback(_this.data);
+                _this.updateData(JSON.parse(data), callback);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (error) {
                     error(errorThrown);
@@ -508,12 +525,13 @@ var CwStorage = /** @class */ (function () {
         };
         this.push(data, callback);
     };
-    CwStorage.prototype.pushNotes = function (key, value, callback) {
+    CwStorage.prototype.pushNotes = function (key, value, lockuuid, callback) {
         var data = {
             notes: {}
         };
         data.notes[key] = {
-            note: value
+            note: value,
+            lock: lockuuid,
         };
         this.push(data, callback);
     };
@@ -547,6 +565,59 @@ var CwStorage = /** @class */ (function () {
         }
         return Object.assign(target || {}, source);
     };
+    CwStorage.prototype.diff = function (obj1, obj2) {
+        if (this.isValue(obj1) || this.isValue(obj2)) {
+            return this.compareValues(obj1, obj2);
+        }
+        var diff = {};
+        for (var key_1 in obj1) {
+            var value2 = undefined;
+            if (obj2[key_1] !== undefined) {
+                value2 = obj2[key_1];
+            }
+            var diffValue = this.diff(obj1[key_1], value2);
+            if (diffValue !== undefined) {
+                diff[key_1] = diffValue;
+            }
+        }
+        for (var key in obj2) {
+            if (obj1[key] !== undefined) {
+                continue;
+            }
+            diff[key] = this.diff(undefined, obj2[key]);
+        }
+        return Object.keys(diff).length == 0 ? undefined : diff;
+    };
+    CwStorage.prototype.compareValues = function (value1, value2) {
+        if (value1 === value2) {
+            return undefined;
+        }
+        if (this.isDate(value1) && this.isDate(value2) && value1.getTime() === value2.getTime()) {
+            return undefined;
+        }
+        if (value1 === undefined) {
+            return value2;
+        }
+        if (value2 === undefined) {
+            return null;
+        }
+        return value2;
+    };
+    CwStorage.prototype.isFunction = function (x) {
+        return Object.prototype.toString.call(x) === '[object Function]';
+    };
+    CwStorage.prototype.isArray = function (x) {
+        return Object.prototype.toString.call(x) === '[object Array]';
+    };
+    CwStorage.prototype.isDate = function (x) {
+        return Object.prototype.toString.call(x) === '[object Date]';
+    };
+    CwStorage.prototype.isObject = function (x) {
+        return Object.prototype.toString.call(x) === '[object Object]';
+    };
+    CwStorage.prototype.isValue = function (x) {
+        return !this.isObject(x) && !this.isArray(x);
+    };
     CwStorage.prototype.pushActual = function (callback) {
         var _this = this;
         var data = this.patchData;
@@ -557,8 +628,7 @@ var CwStorage = /** @class */ (function () {
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(data),
             success: function (response) {
-                _this.updateData(JSON.parse(response.data));
-                callback(response);
+                _this.updateData(JSON.parse(response.data), callback);
             },
             error: function () {
                 console.error("error: merging data back into patch data");
@@ -582,9 +652,11 @@ var CwStorage = /** @class */ (function () {
             dataType: "json"
         });
     };
-    CwStorage.prototype.updateData = function (data) {
+    CwStorage.prototype.updateData = function (data, callback) {
         this.refreshed = new Date();
         if (data.code) {
+            var diff = this.diff(this.data, data);
+            callback(diff === undefined ? {} : diff);
             this.data = data;
         }
         else {
@@ -696,7 +768,7 @@ var CwApp = /** @class */ (function () {
         this.board.registerNoteListener(this.storageNoteUpdate.bind(this));
         this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
         $("#title").text(this.board.crossword.title);
-        this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+        this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 1000);
         this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
         window.setInterval(this.ageRefresh.bind(this), 1000);
         document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
@@ -707,9 +779,9 @@ var CwApp = /** @class */ (function () {
             _this.board.update(_this.uuid, data);
         });
     };
-    CwApp.prototype.storageNoteUpdate = function (clueId, note) {
+    CwApp.prototype.storageNoteUpdate = function (clueId, note, lock) {
         var _this = this;
-        this.storage.pushNotes(clueId, note, function (data) {
+        this.storage.pushNotes(clueId, note, lock ? this.uuid : null, function (data) {
             _this.board.update(_this.uuid, data);
         });
     };
@@ -723,7 +795,7 @@ var CwApp = /** @class */ (function () {
         window.clearInterval(this.intervalId);
         window.clearInterval(this.focusId);
         if (document.visibilityState === 'visible') {
-            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 1000);
             this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
             this.locationRefresh();
         }

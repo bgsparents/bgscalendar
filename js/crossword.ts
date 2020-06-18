@@ -10,6 +10,7 @@ interface CwClue {
     clue: string;
     firstCell?: CwCell;
     note?: any;
+    noteLocked?: boolean;
 }
 
 class CwCell {
@@ -237,7 +238,7 @@ class CwBoard {
     gridTable: JQuery;
     answerListeners: Array<(CwCell, string) => void> = [];
     locationListeners: Array<(CwCell) => void> = [];
-    noteListeners: Array<(number, any) => void> = [];
+    noteListeners: Array<(number, any, boolean) => void> = [];
     lettersTotal: number = 0;
     lettersFilled: number = 0;
 
@@ -430,15 +431,21 @@ class CwBoard {
     }
 
     private hookupNotes() {
+        $("#notes-input").blur((e) => {
+            let note = $("#notes-input").val();
+            this.crossword.clue(this.focused.id).note = note;
+            this.fireNoteListeners(this.focused.id, note, false);
+        });
+
         $("#notes-input").keyup((e) => {
             let note = $("#notes-input").val();
             this.crossword.clue(this.focused.id).note = note;
-            this.fireNoteListeners(this.focused.id, note);
+            this.fireNoteListeners(this.focused.id, note, true);
         });
     }
 
-    private fireNoteListeners(clueId: number, note: any) {
-        this.noteListeners.forEach(l => { l(clueId, note); });
+    private fireNoteListeners(clueId: number, note: any, lock: boolean) {
+        this.noteListeners.forEach(l => { l(clueId, note, lock); });
     }
 
     private moveFocus(cell: CwCell) {
@@ -491,10 +498,18 @@ class CwBoard {
 
         if (data.notes) {
             for (let clueId in data.notes) {
-                let note = data.notes[clueId].note;
                 let clue = this.crossword.clue(parseInt(clueId));
-                clue.note = note;
-                clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+                let note = data.notes[clueId].note;
+                if (note !== undefined) {
+                    clue.note = note;
+                    clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
+                }
+
+                let lockid = data.notes[clueId].lock;
+                if (lockid !== undefined) {
+                    clue.noteLocked = lockid != null && lockid != uuid;
+                    clue.firstCell.cell.toggleClass('note-locked', clue.noteLocked);
+                }
             }
         }
 
@@ -516,12 +531,18 @@ class CwBoard {
     private updateNote() {
         let el = $("#notes-input");
         if(!el.get(0).matches(":focus")) {
-            let note = this.crossword.clue(this.focused.id).note;
+            let clue = this.crossword.clue(this.focused.id);
+            let note = clue.note;
+            if (clue.noteLocked) {
+                el.attr('readonly','readonly');
+            } else {
+                el.removeAttr('readonly');
+            }
             el.val(note ? note : '');
         }
     }
 
-    registerNoteListener(listener: (clueId: number, note: any) => void) {
+    registerNoteListener(listener: (clueId: number, note: any, lock: boolean) => void) {
         this.noteListeners.push(listener);
     }
 
@@ -567,9 +588,7 @@ class CwStorage {
             this.pushActual(callback);
         } else {
             $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), (data) => {
-                this.updateData(JSON.parse(data));
-                this.refreshed = new Date();
-                callback(this.data);
+                this.updateData(JSON.parse(data), callback);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (error) {
                     error(errorThrown);
@@ -593,13 +612,14 @@ class CwStorage {
         this.push(data, callback);
     }
 
-    pushNotes(key, value, callback: (data : CwData) => void) {
+    pushNotes(key, value, lockuuid: string, callback: (data : CwData) => void) {
         let data = {
              notes: {}
         };
 
         data.notes[key] = {
-            note: value
+            note: value,
+            lock: lockuuid,
         };
 
         this.push(data, callback);
@@ -642,6 +662,77 @@ class CwStorage {
         return (<any>Object).assign(target || {}, source);
     }
 
+    diff(obj1, obj2) {
+        if (this.isValue(obj1) || this.isValue(obj2)) {
+            return this.compareValues(obj1, obj2);
+        }
+
+        let diff = {};
+
+        for (let key in obj1) {
+            let value2 = undefined;
+
+            if (obj2[key] !== undefined) {
+                value2 = obj2[key];
+            }
+
+            let diffValue = this.diff(obj1[key], value2);
+            if (diffValue !== undefined) {
+                diff[key] = diffValue;
+            }
+        }
+
+        for (var key in obj2) {
+            if (obj1[key] !== undefined) {
+                continue;
+            }
+
+            diff[key] = this.diff(undefined, obj2[key]);
+        }
+
+        return (<any>Object).keys(diff).length == 0 ? undefined : diff;
+    }
+
+    compareValues(value1, value2) {
+        if (value1 === value2) {
+            return undefined;
+        }
+
+        if (this.isDate(value1) && this.isDate(value2) && value1.getTime() === value2.getTime()) {
+            return undefined;
+        }
+
+        if (value1 === undefined) {
+            return value2;
+        }
+
+        if (value2 === undefined) {
+            return null;
+        }
+
+        return value2;
+    }
+
+    isFunction(x) {
+        return Object.prototype.toString.call(x) === '[object Function]';
+    }
+
+    isArray(x) {
+        return Object.prototype.toString.call(x) === '[object Array]';
+    }
+
+    isDate(x) {
+        return Object.prototype.toString.call(x) === '[object Date]';
+    }
+
+    isObject(x) {
+        return Object.prototype.toString.call(x) === '[object Object]';
+    }
+
+    isValue(x) {
+        return !this.isObject(x) && !this.isArray(x);
+    }
+
     private pushActual(callback: (data : CwData) => void) {
         let data = this.patchData;
         data['code'] = this.data.code;
@@ -652,8 +743,7 @@ class CwStorage {
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(data),
             success: (response) => {
-                this.updateData(JSON.parse(response.data));
-                callback(response);
+                this.updateData(JSON.parse(response.data), callback);
             },
             error: () => {
                 console.error("error: merging data back into patch data");
@@ -679,9 +769,11 @@ class CwStorage {
         });
     }
 
-    private updateData(data) {
+    private updateData(data, callback: (data : CwData) => void) {
         this.refreshed = new Date();
         if (data.code) {
+            const diff = this.diff(this.data, data);
+            callback(diff === undefined ? {} : diff);
             this.data = data;
         } else {
             if (this.data.code) {
@@ -805,7 +897,7 @@ class CwApp {
         this.board.registerNoteListener(this.storageNoteUpdate.bind(this));
         this.board.registerLocationListener(this.storageLocationUpdate.bind(this));
         $("#title").text(this.board.crossword.title);
-        this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+        this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 1000);
         this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
         window.setInterval(this.ageRefresh.bind(this), 1000);
         document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
@@ -817,8 +909,8 @@ class CwApp {
         });
     }
 
-    private storageNoteUpdate(clueId: number, note: string) {
-        this.storage.pushNotes(clueId, note, (data: CwData) => {
+    private storageNoteUpdate(clueId: number, note: string, lock: boolean) {
+        this.storage.pushNotes(clueId, note, lock ? this.uuid : null, (data: CwData) => {
             this.board.update(this.uuid, data);
         });
     }
@@ -833,7 +925,7 @@ class CwApp {
         window.clearInterval(this.intervalId);
         window.clearInterval(this.focusId);
         if (document.visibilityState === 'visible') {
-            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 2000);
+            this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 1000);
             this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
             this.locationRefresh();
         } else {
