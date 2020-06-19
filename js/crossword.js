@@ -661,10 +661,10 @@ var CwStorage = /** @class */ (function () {
         }
         else {
             if (this.data.code) {
-                console.log("merging patch data into data");
-                this.data = this.merge(this.data, this.patchData);
-                console.log("saving");
-                this.save();
+                // console.log("merging patch data into data");
+                // this.data = this.merge(this.data, this.patchData);
+                // console.log("saving");
+                // this.save();
             }
         }
     };
