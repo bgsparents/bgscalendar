@@ -495,7 +495,11 @@ var CwStorage = /** @class */ (function () {
     function CwStorage(id) {
         this.patchData = {};
         this.id = id;
-        this.data = {};
+        this.data = {
+            grid: {},
+            solvers: {},
+            notes: {}
+        };
     }
     CwStorage.prototype.age = function () {
         return Math.floor((new Date().getTime() - this.refreshed.getTime()) / 1000);
@@ -657,7 +661,7 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.updateData = function (data, callback) {
         this.refreshed = new Date();
-        if (data.code) {
+        if (data.code && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
             var diff = this.diff(this.data, data);
             if (diff !== undefined) {
                 diff.solvers = data.solvers;
@@ -667,10 +671,10 @@ var CwStorage = /** @class */ (function () {
         }
         else {
             if (this.data.code) {
-                // console.log("merging patch data into data");
-                // this.data = this.merge(this.data, this.patchData);
-                // console.log("saving");
-                // this.save();
+                console.log("merging patch data into data");
+                this.data = this.merge(this.data, this.patchData);
+                console.log("saving");
+                this.save();
             }
         }
     };

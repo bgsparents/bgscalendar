@@ -579,7 +579,11 @@ class CwStorage {
 
     constructor(id: string) {
         this.id = id;
-        this.data = {};
+        this.data = {
+            grid: {},
+            solvers: {},
+            notes: {}
+        };
     }
 
     age() {
@@ -774,7 +778,7 @@ class CwStorage {
 
     private updateData(data, callback: (data : CwData) => void) {
         this.refreshed = new Date();
-        if (data.code) {
+        if (data.code && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
             const diff = this.diff(this.data, data);
             if (diff !== undefined) {
                 diff.solvers = data.solvers;
@@ -783,10 +787,10 @@ class CwStorage {
             }
         } else {
             if (this.data.code) {
-                // console.log("merging patch data into data");
-                // this.data = this.merge(this.data, this.patchData);
-                // console.log("saving");
-                // this.save();
+                console.log("merging patch data into data");
+                this.data = this.merge(this.data, this.patchData);
+                console.log("saving");
+                this.save();
             }
         }
     }
