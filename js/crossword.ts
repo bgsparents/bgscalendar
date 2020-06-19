@@ -778,7 +778,7 @@ class CwStorage {
 
     private updateData(data, callback: (data : CwData) => void) {
         this.refreshed = new Date();
-        if (data.code && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
+        if (data.code && data.grid && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
             const diff = this.diff(this.data, data);
             if (diff !== undefined) {
                 diff.solvers = data.solvers;

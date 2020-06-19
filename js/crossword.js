@@ -661,7 +661,7 @@ var CwStorage = /** @class */ (function () {
     };
     CwStorage.prototype.updateData = function (data, callback) {
         this.refreshed = new Date();
-        if (data.code && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
+        if (data.code && data.grid && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
             var diff = this.diff(this.data, data);
             if (diff !== undefined) {
                 diff.solvers = data.solvers;
