@@ -431,8 +431,11 @@ var CwBoard = /** @class */ (function () {
         this.fireLocationListeners(cell);
     };
     CwBoard.prototype.update = function (uuid, data) {
+        console.log(data);
         for (var cellId in data.grid) {
-            this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
+            if (data.grid[cellId] && data.grid[cellId] !== null) {
+                this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
+            }
         }
         if (data.notes) {
             for (var clueId in data.notes) {
@@ -656,8 +659,10 @@ var CwStorage = /** @class */ (function () {
         this.refreshed = new Date();
         if (data.code) {
             var diff = this.diff(this.data, data);
-            callback(diff === undefined ? {} : diff);
-            this.data = data;
+            if (diff !== undefined) {
+                callback(diff === undefined ? {} : diff);
+                this.data = data;
+            }
         }
         else {
             if (this.data.code) {

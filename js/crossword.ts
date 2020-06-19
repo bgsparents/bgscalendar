@@ -492,8 +492,11 @@ class CwBoard {
     }
 
     update(uuid: string, data: CwData) {
+        console.log(data);
         for (let cellId in data.grid) {
-            this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
+            if (data.grid[cellId] && data.grid[cellId] !== null) {
+                this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
+            }
         }
 
         if (data.notes) {
@@ -773,8 +776,10 @@ class CwStorage {
         this.refreshed = new Date();
         if (data.code) {
             const diff = this.diff(this.data, data);
-            callback(diff === undefined ? {} : diff);
-            this.data = data;
+            if (diff !== undefined) {
+                callback(diff === undefined ? {} : diff);
+                this.data = data;
+            }
         } else {
             if (this.data.code) {
                 // console.log("merging patch data into data");
