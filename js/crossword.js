@@ -660,7 +660,8 @@ var CwStorage = /** @class */ (function () {
         if (data.code) {
             var diff = this.diff(this.data, data);
             if (diff !== undefined) {
-                callback(diff === undefined ? {} : diff);
+                diff.solvers = data.solvers;
+                callback(diff);
                 this.data = data;
             }
         }
