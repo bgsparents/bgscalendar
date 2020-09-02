@@ -1,0 +1,634 @@
+---
+layout: default
+title: Y3 Calendar
+---
+
+<style>
+    .day {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .card {
+        margin: 0.5rem 0;
+    }
+
+    .card-header {
+        text-align: center;
+        padding: 0.5rem 0.25rem;
+    }
+
+    .card-body {
+        padding: 0.25rem;
+    }
+
+    .dow {
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+
+    .key span {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+
+
+    .key .holiday,
+    .is-holiday .card-header,
+    .is-holiday .card-body {
+        background: rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .key .today,
+    .today .card-header {
+        background: #C9FFBF !important;
+    }
+
+    .key .tomorrow,
+    .tomorrow .card-header {
+        background: #e0d8ff !important;
+    }
+
+    .class-pick a {
+        font-size: 1.2em;
+        font-weight: 700;
+    }
+
+    .class-pick .active {
+        background: #007bff !important;
+        color: white !important;
+    }
+
+    .holiday {
+        display: none;
+    }
+
+    .is-holiday .info {
+        display: none !important;
+    }
+
+    .is-holiday .holiday {
+        display: block;
+    }
+
+    .info dt {
+        background: #fff2fe;
+    }
+
+    .info ul {
+        padding-left: 0;
+        list-style-position: inside;
+    }
+
+    .highlight {
+        background: yellow;
+    }
+
+    .special {
+        background: #caff87;
+    }
+
+    @media (max-width: 768px) {
+        .day {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .card-body {
+            padding: 0.25rem 2rem;
+        }
+    }
+
+</style>
+
+<div id="calendar-container">
+    <div class="row">
+        <div class="col-12 col-md-1"></div>
+        <div class="col-12 col-md-10">
+
+            <ul class="nav nav-tabs class-pick">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" data-class="3M">3M</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-class="3C">3C</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-12 col-md-1"></div>
+    </div>
+
+    <div class="row pt-2">
+        <div class="col-12 col-md-1"></div>
+        <div class="col-12 col-md-5 key py-1">
+            <span class="today">Today</span>
+            <span class="tomorrow">Tomorrow</span>
+            <span class="holiday">Holiday</span>
+        </div>
+        <div class="col-12 col-md-5 text-right py-1">
+            <div class="btn-group" role="group" aria-label="Navigate Weeks">
+                <button type="button" class="btn btn-secondary prev-week">&ltri;</button>
+                <button type="button" class="btn btn-secondary this-week">This Week</button>
+                <button type="button" class="btn btn-secondary next-week">&rtri;</button>
+            </div>
+        </div>
+        <div class="col-12 col-md-1"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-1"></div>
+
+        <div class="col-12 col-md-2 day day-0 monday">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Mon</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 day day-1 tuesday">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Tue</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 day day-2 wednesday">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Wed</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 day day-3 thursday">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Thur</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 day day-4 friday">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Fri</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-1"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-1"></div>
+        <div class="col-12 col-md-10 text-right">
+            <div class="btn-group" role="group" aria-label="Navigate Weeks">
+                <button type="button" class="btn btn-secondary prev-week">&ltri;</button>
+                <button type="button" class="btn btn-secondary this-week">This Week</button>
+                <button type="button" class="btn btn-secondary next-week">&rtri;</button>
+            </div>
+        </div>
+        <div class="col-12 col-md-1"></div>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
+        crossorigin="anonymous"></script>
+
+<script>
+    var data = {
+        rota: {
+            "3M": {
+                weekA: {
+                    monday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Netball",
+                        kit: ["A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    tuesday: {
+                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+                        games: "Hockey",
+                        kit: [
+                            "*Hockey Stick",
+                            "*Gum shield",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    wednesday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    thursday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    friday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Swimming",
+                        kit: [
+                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    }
+                },
+
+                weekB: {
+                    monday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    tuesday: {
+                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+                        games: "Hockey",
+                        kit: [
+                            "*Hockey Stick",
+                            "*Gum shield",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    wednesday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    thursday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    friday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Swimming",
+                        kit: [
+                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    }
+                },
+            },
+
+            "3C": {
+                weekA: {
+                    monday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Netball",
+                        kit: ["A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    tuesday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Swimming",
+                        kit: [
+                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    wednesday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    thursday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    friday: {
+                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+                        games: "Hockey",
+                        kit: [
+                            "*Hockey Stick",
+                            "*Gum shield",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    }
+                },
+
+                weekB: {
+                    monday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    tuesday: {
+                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+                        games: "Swimming",
+                        kit: [
+                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    wednesday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    thursday: {
+                        uniform: "School uniform with blazer",
+                        kit: [
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    },
+                    friday: {
+                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+                        games: "Hockey",
+                        kit: [
+                            "*Hockey Stick",
+                            "*Gum shield",
+                            "A full pencil case",
+                            "A filled water bottle",
+                            "Two healthy snacks",
+                            "An optional face covering in a named plastic bag",
+                            "Hand Gel",
+                            "Packet of tissues"]
+                    }
+                }
+            }
+
+        },
+
+        extras: {
+            '2020-09-03': {
+                kit: ["An art overall, pair of black leggings, t-shirt and hoody in a named plastic bag (in case the games kit becomes very wet), which will stay on their pegs at school"]
+            }
+        },
+
+        termTimes: [
+            {start: moment('2020-09-03'), end: moment('2020-10-16')},
+            {start: moment('2020-11-02'), end: moment('2020-12-11')},
+            {start: moment('2021-01-05'), end: moment('2020-02-12')},
+            {start: moment('2021-02-22'), end: moment('2020-03-26')},
+            {start: moment('2021-04-20'), end: moment('2020-05-28')},
+            {start: moment('2021-06-07'), end: moment('2020-07-09')}
+        ]
+
+    };
+
+    var currentDate;
+
+    function render(when) {
+        currentDate = when.startOf('isoWeek');
+        var today = moment();
+        var tomorrow = moment(today).add(1, 'day');
+
+        for (var i = 0; i < 7; ++i) {
+            var date = moment(currentDate).add(i, 'days');
+            $('.day-' + i + ' .date').text(date.format("MMM Do"));
+            $('.day-' + i).data('date', date);
+            $('.day-' + i).toggleClass('today', date.isSame(today, 'day'));
+            $('.day-' + i).toggleClass('tomorrow', date.isSame(tomorrow, 'day'));
+            $('.day-' + i).toggleClass('is-holiday', holiday(date));
+        }
+        pickClass(getPickedClass());
+    }
+
+    function holiday(date) {
+        for (var i = 0; i < data.termTimes.length; ++i) {
+            if (date.isBetween(data.termTimes[i].start, data.termTimes[i].end, 'day', '[]')) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function getPickedClass() {
+        var cls = localStorage.getItem("pick-class");
+        return !cls ? $('.class-pick a.active').data('class') : cls;
+    }
+
+    function pickClass(cls) {
+        $('.class-pick a').removeClass('active');
+        $('.class-pick a[data-class=' + cls + ']').addClass('active');
+        var epoch = moment('2020-08-31');
+        var weeks = currentDate.diff(epoch, "week");
+
+        var weekRota = data.rota[cls][weeks % 2 === 0 ? 'weekA' : 'weekB'];
+        for (var key in weekRota) {
+            var dayInfo = weekRota[key];
+            if (dayInfo === undefined) {
+                continue;
+            }
+
+            var date = $('.day.' + key).data('date');
+            var extras = data.extras[date.format('YYYY-MM-DD')];
+            var el = $('.day.' + key + ' .info').html('');
+            var dl = $('<dl></dl>')
+                .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(dayInfo.uniform));
+
+            if (dayInfo.games) {
+                dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(dayInfo.games));
+            }
+
+            var kitUl = $('<ul></ul>');
+            dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
+
+
+            if (extras && extras.kit) {
+                for (var i = 0; i < extras.kit.length; ++i) {
+                    var item = '<span class="special">' + extras.kit[i] + '</span>';
+                    kitUl.append($('<li></li>').html(item));
+                }
+            }
+
+            for (var i = 0; i < dayInfo.kit.length; ++i) {
+                var item = dayInfo.kit[i];
+                if (item.startsWith('*')) {
+                    item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
+                }
+                kitUl.append($('<li></li>').html(item));
+            }
+
+            el.append(dl);
+        }
+
+        localStorage.setItem("pick-class", cls);
+
+
+    }
+
+    function scrollWeek(weeks) {
+        render(moment(currentDate).add(weeks, 'week'));
+        scrollBest();
+    }
+
+    function scrollBest() {
+        if ($(window).width() < 768) {
+            if ($('.day.today').length) {
+                gotoToday();
+            } else if ($('.day.tomorrow').length) {
+                gotoTomorrow();
+            } else {
+                scrollTo('#calendar-container');
+            }
+        } else {
+            scrollTo('#calendar-container');
+        }
+    }
+
+    function gotoToday() {
+        scrollTo('.day.today');
+    }
+
+    function gotoTomorrow() {
+        scrollTo('.day.tomorrow');
+    }
+
+    function scrollTo(selector) {
+        var tag = $(selector);
+        if (tag.offset() !== undefined) {
+            $('html,body').animate({scrollTop: tag.offset().top}, 'slow');
+        }
+    }
+
+    $('.class-pick a').click(function (e) {
+        e.preventDefault();
+        pickClass($(e.target).data('class'));
+    });
+
+    $('.prev-week').click(function (e) {
+        e.preventDefault();
+        scrollWeek(-1);
+    });
+
+    $('.this-week').click(function (e) {
+        e.preventDefault();
+        render(moment());
+        scrollBest();
+    });
+
+    $('.next-week').click(function (e) {
+        e.preventDefault();
+        scrollWeek(1);
+    });
+
+    $('.key .today').click(gotoToday);
+    $('.key .tomorrow').click(gotoTomorrow);
+
+    render(moment());
+
+    if ($(window).width() < 768) {
+        if ($('.day.today').length) {
+            gotoToday();
+        } else if ($('.day.tomorrow').length) {
+            gotoTomorrow();
+        }
+    }
+
+</script>
+

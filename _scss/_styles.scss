@@ -27,7 +27,7 @@ body {
   padding: 1rem;
 }
 
-.card {
+.card.tile {
   margin: 0.5rem 0;
 
   .link-banner {
@@ -42,7 +42,7 @@ body {
 }
 
 @media (max-width: 576px) {
-  .card {
+  .card.tile {
     position: relative;
     overflow: hidden;
 
