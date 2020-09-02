@@ -508,8 +508,12 @@ title: Y3 Calendar
     }
 
     function getPickedClass() {
-        var cls = localStorage.getItem("pick-class");
-        return !cls ? $('.class-pick a.active').data('class') : cls;
+        try {
+            var cls = localStorage.getItem("pick-class");
+            return !cls ? $('.class-pick a.active').data('class') : cls;
+        } catch (e) {
+            return $('.class-pick a.active').data('class');
+        }
     }
 
     function pickClass(cls) {
@@ -557,9 +561,11 @@ title: Y3 Calendar
             el.append(dl);
         }
 
-        localStorage.setItem("pick-class", cls);
+        try {
+            localStorage.setItem("pick-class", cls);
+        } catch (err) {
 
-
+        }
     }
 
     function scrollWeek(weeks) {
