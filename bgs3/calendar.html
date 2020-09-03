@@ -7,244 +7,79 @@ css: calendar.css?cb=1
 ---
 
 <script>
+
+    var commonKit = [
+        "A full pencil case",
+        "A filled water bottle",
+        "Two healthy snacks",
+        "An optional face covering in a named plastic bag",
+        "Hand Gel",
+        "Packet of tissues"
+    ];
+
+    var commonDayData = {
+        regular: {
+            uniform: "School uniform with blazer",
+            kit: commonKit
+        },
+        netball: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+            games: "Netball",
+            kit: commonKit
+        },
+        hockey: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+            games: "Hockey",
+            kit: [
+                "*Hockey Stick",
+                "*Gum shield"
+            ].concat(commonKit)
+        },
+        swimming: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+            games: "Swimming",
+            kit: [
+                "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit)
+        }
+
+    };
     var data = {
         rota: {
             "3M": {
                 weekA: {
-                    monday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Netball",
-                        kit: ["A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    tuesday: {
-                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
-                        games: "Hockey",
-                        kit: [
-                            "*Hockey Stick",
-                            "*Gum shield",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    wednesday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    thursday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    friday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Swimming",
-                        kit: [
-                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    }
+                    monday: commonDayData.netball,
+                    tuesday: commonDayData.hockey,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.swimming
                 },
 
                 weekB: {
-                    monday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    tuesday: {
-                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
-                        games: "Hockey",
-                        kit: [
-                            "*Hockey Stick",
-                            "*Gum shield",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    wednesday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    thursday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    friday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Swimming",
-                        kit: [
-                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    }
-                },
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.hockey,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.swimming
+                }
             },
 
             "3C": {
                 weekA: {
-                    monday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Netball",
-                        kit: ["A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    tuesday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Swimming",
-                        kit: [
-                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    wednesday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    thursday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    friday: {
-                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
-                        games: "Hockey",
-                        kit: [
-                            "*Hockey Stick",
-                            "*Gum shield",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    }
+                    monday: commonDayData.netball,
+                    tuesday: commonDayData.swimming,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.hockey
                 },
-
                 weekB: {
-                    monday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    tuesday: {
-                        uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
-                        games: "Swimming",
-                        kit: [
-                            "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice.",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    wednesday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    thursday: {
-                        uniform: "School uniform with blazer",
-                        kit: [
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    },
-                    friday: {
-                        uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
-                        games: "Hockey",
-                        kit: [
-                            "*Hockey Stick",
-                            "*Gum shield",
-                            "A full pencil case",
-                            "A filled water bottle",
-                            "Two healthy snacks",
-                            "An optional face covering in a named plastic bag",
-                            "Hand Gel",
-                            "Packet of tissues"]
-                    }
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.swimming,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.hockey
                 }
             }
-
         },
 
         extras: {
