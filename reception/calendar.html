@@ -1,0 +1,100 @@
+---
+layout: calendar
+title: Reception Calendar
+homeLink: /reception/calendar
+manifest: manifest-reception
+css: calendar.css?cb=1
+---
+
+<script>
+
+    var commonKit = [
+        "Book bag",
+        "Sun hat"
+    ];
+
+    var swimmingKit = [
+        "*Swimming costume",
+        "*Swimming hat",
+        "*Towel",
+        "*Sliders",
+        "*Tummy band"
+    ];
+
+    var timings = [
+        { title: "Drop Off:", time: "8:45am" },
+        { title: "Pick Up:", time: "3:30pm" }
+    ];
+
+    var commonDayData = {
+        regular: {
+            uniform: "School uniform with blazer",
+            kit: commonKit,
+            timings: timings
+        },
+        pe: {
+            uniform: "PE Shorts, jogging top and bottoms, polo shorts and trainers",
+            games: "PE",
+            kit: commonKit,
+            timings: timings
+        },
+        swimming: {
+            uniform: "School uniform with blazer",
+            games: "Swimming",
+            kit: swimmingKit.concat(commonKit),
+            timings: timings
+        }
+    };
+
+    var data = {
+        rota: {
+            "RFC": {
+                week: {
+                    start: moment('2020-08-31'),
+                    frequency: 1,
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.swimming,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.swimming,
+                    friday: commonDayData.pe
+                }
+            },
+            "RRB": {
+                week: {
+                    start: moment('2020-08-31'),
+                    frequency: 1,
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.swimming,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.swimming,
+                    friday: commonDayData.pe
+                }
+            },
+            "RJR": {
+                week: {
+                    start: moment('2020-08-31'),
+                    frequency: 1,
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.swimming,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.swimming,
+                    friday: commonDayData.pe
+                }
+            }
+        },
+
+        extras: {
+        },
+
+        termTimes: [
+            {start: moment('2020-09-03'), end: moment('2020-10-16')},
+            {start: moment('2020-11-02'), end: moment('2020-12-11')},
+            {start: moment('2021-01-05'), end: moment('2020-02-12')},
+            {start: moment('2021-02-22'), end: moment('2020-03-26')},
+            {start: moment('2021-04-20'), end: moment('2020-05-28')},
+            {start: moment('2021-06-07'), end: moment('2020-07-09')}
+        ]
+    };
+
+    new Calendar(data, "psr");
+</script>
