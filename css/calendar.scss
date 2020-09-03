@@ -1,0 +1,108 @@
+---
+---
+
+* {
+  font-family: 'Pragati Narrow', sans-serif;
+}
+
+.sticky-top {
+  background: white;
+  z-index: 10;
+}
+
+.day {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.card {
+  margin: 0.5rem 0;
+}
+
+.card-header {
+  text-align: center;
+  padding: 0.5rem 0.25rem;
+}
+
+.card-body {
+  padding: 0.25rem;
+}
+
+.dow {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.key span {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+}
+
+
+.key .holiday,
+.is-holiday .card-header,
+.is-holiday .card-body {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.key .today,
+.today .card-header {
+  background: #C9FFBF !important;
+}
+
+.key .tomorrow,
+.tomorrow .card-header {
+  background: #e0d8ff !important;
+}
+
+.class-pick a {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.class-pick .active {
+  background: #007bff !important;
+  color: white !important;
+}
+
+.holiday {
+  display: none;
+}
+
+.is-holiday .info {
+  display: none !important;
+}
+
+.is-holiday .holiday {
+  display: block;
+}
+
+.info dt {
+  background: #fff2fe;
+}
+
+.info ul {
+  padding-left: 20px;
+  list-style-position: outside;
+}
+
+.highlight {
+  background: yellow;
+}
+
+.special {
+  background: #caff87;
+}
+
+@media (max-width: 768px) {
+  .day {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .card-body {
+    padding: 0.25rem 2rem;
+  }
+}
