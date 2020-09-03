@@ -39,41 +39,58 @@ var Calendar = /** @class */ (function () {
             return $($('.class-pick a')[0]).data('class');
         }
     };
+    Calendar.prototype.pickRota = function (cls) {
+        var weekRota = this.data.rota[cls];
+        for (var _i = 0, _a = Object.keys(weekRota); _i < _a.length; _i++) {
+            var key = _a[_i];
+            var rota = weekRota[key];
+            if (this.isRotaForWeek(rota)) {
+                return rota;
+            }
+        }
+        return undefined;
+    };
+    Calendar.prototype.isRotaForWeek = function (rota) {
+        var weeks = this.currentDate.diff(rota.start, "week");
+        return weeks >= 0 && weeks % rota.frequency === 0;
+    };
     Calendar.prototype.pickClass = function (cls) {
         $('.class-pick a').removeClass('active');
         $('.class-pick .class-' + cls).addClass('active');
-        var epoch = moment('2020-08-31');
-        var weeks = this.currentDate.diff(epoch, "week");
-        var weekRota = this.data.rota[cls][weeks % 2 === 0 ? 'weekA' : 'weekB'];
-        for (var key in weekRota) {
-            var dayInfo = weekRota[key];
-            if (dayInfo === undefined) {
-                continue;
-            }
-            var date = $('.day.' + key).data('date');
-            var extras = this.data.extras[date.format('YYYY-MM-DD')];
-            var el = $('.day.' + key + ' .info').html('');
-            var dl = $('<dl></dl>')
-                .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(dayInfo.uniform));
-            if (dayInfo.games) {
-                dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(dayInfo.games));
-            }
-            var kitUl = $('<ul></ul>');
-            dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
-            if (extras && extras.kit) {
-                for (var i = 0; i < extras.kit.length; ++i) {
-                    var item = '<span class="special">' + extras.kit[i] + '</span>';
+        $('.day .info').html('');
+        var weekRota = this.pickRota(cls);
+        if (weekRota !== undefined) {
+            for (var _i = 0, _a = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']; _i < _a.length; _i++) {
+                var key = _a[_i];
+                var dayInfo = weekRota[key];
+                if (dayInfo === undefined) {
+                    continue;
+                }
+                var date = $('.day.' + key).data('date');
+                var extras = this.data.extras[date.format('YYYY-MM-DD')];
+                var el = $('.day.' + key + ' .info');
+                var dl = $('<dl></dl>')
+                    .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(dayInfo.uniform));
+                if (dayInfo.games) {
+                    dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(dayInfo.games));
+                }
+                var kitUl = $('<ul></ul>');
+                dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
+                if (extras && extras.kit) {
+                    for (var i = 0; i < extras.kit.length; ++i) {
+                        var item = '<span class="special">' + extras.kit[i] + '</span>';
+                        kitUl.append($('<li></li>').html(item));
+                    }
+                }
+                for (var i = 0; i < dayInfo.kit.length; ++i) {
+                    var item = dayInfo.kit[i];
+                    if (item.startsWith('*')) {
+                        item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
+                    }
                     kitUl.append($('<li></li>').html(item));
                 }
+                el.append(dl);
             }
-            for (var i = 0; i < dayInfo.kit.length; ++i) {
-                var item = dayInfo.kit[i];
-                if (item.startsWith('*')) {
-                    item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
-                }
-                kitUl.append($('<li></li>').html(item));
-            }
-            el.append(dl);
         }
         try {
             localStorage.setItem("pick-class", cls);

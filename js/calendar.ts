@@ -14,6 +14,8 @@ interface DateRange {
 }
 
 interface WeekRota {
+    start?: moment.Moment;
+    frequency?: number;
     monday?: DayData;
     tuesday?: DayData;
     wednesday?: DayData;
@@ -77,49 +79,67 @@ class Calendar {
         }
     }
 
+    pickRota(cls): WeekRota {
+        var weekRota = this.data.rota[cls];
+        for (let key of Object.keys(weekRota)) {
+            const rota = weekRota[key];
+            if (this.isRotaForWeek(rota)) {
+                return rota;
+            }
+        }
+        return undefined;
+    }
+
+    isRotaForWeek(rota: WeekRota): boolean {
+        var weeks = this.currentDate.diff(rota.start, "week");
+        return weeks >= 0 && weeks % rota.frequency === 0;
+    }
+
     pickClass(cls): void {
         $('.class-pick a').removeClass('active');
         $('.class-pick .class-' + cls).addClass('active');
-        var epoch = moment('2020-08-31');
-        var weeks = this.currentDate.diff(epoch, "week");
+        $('.day .info').html('');
 
-        var weekRota = this.data.rota[cls][weeks % 2 === 0 ? 'weekA' : 'weekB'];
-        for (var key in weekRota) {
-            var dayInfo = weekRota[key];
-            if (dayInfo === undefined) {
-                continue;
-            }
+        var weekRota = this.pickRota(cls);
+        if (weekRota !== undefined) {
+            for (const key of ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']) {
 
-            var date = $('.day.' + key).data('date');
-            var extras = this.data.extras[date.format('YYYY-MM-DD')];
-            var el = $('.day.' + key + ' .info').html('');
-            var dl = $('<dl></dl>')
-                .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(dayInfo.uniform));
+                var dayInfo = weekRota[key];
+                if (dayInfo === undefined) {
+                    continue;
+                }
 
-            if (dayInfo.games) {
-                dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(dayInfo.games));
-            }
+                var date = $('.day.' + key).data('date');
+                var extras = this.data.extras[date.format('YYYY-MM-DD')];
+                var el = $('.day.' + key + ' .info');
+                var dl = $('<dl></dl>')
+                    .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(dayInfo.uniform));
 
-            var kitUl = $('<ul></ul>');
-            dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
+                if (dayInfo.games) {
+                    dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(dayInfo.games));
+                }
+
+                var kitUl = $('<ul></ul>');
+                dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
 
 
-            if (extras && extras.kit) {
-                for (var i = 0; i < extras.kit.length; ++i) {
-                    var item = '<span class="special">' + extras.kit[i] + '</span>';
+                if (extras && extras.kit) {
+                    for (var i = 0; i < extras.kit.length; ++i) {
+                        var item = '<span class="special">' + extras.kit[i] + '</span>';
+                        kitUl.append($('<li></li>').html(item));
+                    }
+                }
+
+                for (var i = 0; i < dayInfo.kit.length; ++i) {
+                    var item = dayInfo.kit[i];
+                    if (item.startsWith('*')) {
+                        item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
+                    }
                     kitUl.append($('<li></li>').html(item));
                 }
-            }
 
-            for (var i = 0; i < dayInfo.kit.length; ++i) {
-                var item = dayInfo.kit[i];
-                if (item.startsWith('*')) {
-                    item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
-                }
-                kitUl.append($('<li></li>').html(item));
+                el.append(dl);
             }
-
-            el.append(dl);
         }
 
         try {
