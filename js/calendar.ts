@@ -1,9 +1,12 @@
 // import moment = require('moment');
 
+interface StringMap { [key: string]: string; }
+
 interface DayData {
     uniform?: string;
     games?: string;
     kit?: string[];
+    timings?: StringMap;
 }
 
 interface DayDataMap { [key: string]: DayData; }

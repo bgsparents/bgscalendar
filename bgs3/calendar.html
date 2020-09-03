@@ -17,26 +17,30 @@ css: calendar.css?cb=1
         "Packet of tissues"
     ];
 
+    var astrosKit = [
+        "*Astroturf boots in a bag"
+    ];
+
     var commonDayData = {
         regular: {
             uniform: "School uniform with blazer",
             kit: commonKit
         },
         netball: {
-            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Netball",
-            kit: commonKit
+            kit: astrosKit.concat(commonKit)
         },
         hockey: {
-            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and astros/trainers",
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Hockey",
             kit: [
                 "*Hockey Stick",
                 "*Gum shield"
-            ].concat(commonKit)
+            ].concat(astrosKit).concat(commonKit)
         },
         swimming: {
-            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers/astros",
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Swimming",
             kit: [
                 "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
