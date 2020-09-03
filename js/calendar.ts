@@ -4,6 +4,20 @@ interface StringMap {
     [key: string]: string;
 }
 
+interface Deadline {
+    date: moment.Moment;
+    title: string;
+    expired: boolean;
+}
+
+interface DeadlineMap {
+    [key: string]: string[];
+}
+
+interface DeadlineContextMap {
+    [key: string]: DeadlineMap;
+}
+
 interface Timing {
     title: string;
     time: string;
@@ -43,9 +57,11 @@ interface ClassRotaMap {
     [key: string]: WeekRotaMap;
 }
 
+
 interface Data {
     rota: ClassRotaMap;
     extras: DayDataMap;
+    deadlines?: DeadlineContextMap;
     termTimes: DateRange[];
 }
 
@@ -100,6 +116,60 @@ class CalendarModel {
         return !this.isTermTime(date);
     }
 
+    deadlines(): Deadline[] {
+        const recent = this.deadlineForList(this._data.deadlines['global'])
+            .concat(this.deadlineForList(this._data.deadlines[this.currentClass]));
+        return recent.sort((l, r) => {
+            return l.date.diff(r.date, 'day');
+        });
+    }
+
+    deadlinesForDate(date: moment.Moment): Deadline[] {
+        return this.deadlineForDate(this._data.deadlines['global'], date)
+            .concat(this.deadlineForDate(this._data.deadlines[this.currentClass], date))
+    }
+
+    private deadlineForList(deadlines: DeadlineMap): Deadline[] {
+        if (deadlines === undefined) {
+            return [];
+        }
+
+        let list = [];
+        const today = moment();
+        const after = moment().subtract(1, 'week');
+        for (let key of Object.keys(deadlines)) {
+            let date = moment(key);
+            if (date.isBefore(after)) {
+                continue;
+            }
+            let values = deadlines[key];
+            list = list.concat(values.map((t) => { return {
+                date: date,
+                title: t,
+                expired: date.isBefore(today)
+            }}));
+        }
+
+        return list;
+    }
+
+    private deadlineForDate(deadlines: DeadlineMap, date: moment.Moment): Deadline[] {
+        if (deadlines === undefined) {
+            return [];
+        }
+
+        const values = deadlines[date.format('YYYY-MM-DD')];
+        if (values === undefined) {
+            return [];
+        }
+
+        return values.map((t) => { return {
+            date: date,
+            title: t,
+            expired: date.isBefore(moment())
+        }});
+    }
+
     private static containsDate(range: DateRange, date: moment.Moment): boolean {
         return date.isBetween(range.start, range.end, 'day', '[]');
     }
@@ -108,7 +178,6 @@ class CalendarModel {
         const weeks = this.currentDate.diff(rota.start, "week");
         return weeks >= 0 && weeks % rota.frequency === 0;
     }
-
 }
 
 class Calendar {
@@ -155,6 +224,7 @@ class Calendar {
         this.repaintClassPicker();
         this.repaintHeaders();
         this.repaintCalendar();
+        this.repaintDeadlines();
     }
 
     private repaintHeaders() {
@@ -186,6 +256,14 @@ class Calendar {
         this.classPicker.find('.class-' + this.model.currentClass).addClass('active');
     }
 
+    private repaintDeadlines(): void {
+        const el = $('.deadlines .list').html('');
+        const deadlines = this.model.deadlines();
+        for (let i = 0; i < deadlines.length; ++i) {
+            el.append($('<dt></dt>').text(deadlines[i].date.format('ddd, Do MMM')));
+            el.append($('<dd></dd>').text(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
+        }
+    }
 
     private repaintCalendar(): void {
         $('.day .info').html('');
@@ -205,16 +283,26 @@ class Calendar {
     private repaintCalendarDay(day: string, info: DayData): void {
         const date = $('.day.' + day).data('date');
         const extras = this.model.extras(date);
-        const el = $('.day.' + day + ' .info');
-        const dl = $('<dl></dl>')
-            .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(info.uniform));
+        const dl = $('<dl></dl>');
+
+        const deadlines = this.model.deadlinesForDate(date);
+        if (deadlines && deadlines.length) {
+            const deadlinesUl = $('<ul></ul>');
+            Calendar.createSection('Deadlines', dl).append(deadlinesUl);
+            for (let i = 0; i < deadlines.length; ++i) {
+                const item = '<span class="warn">' + deadlines[i].title + '</span>';
+                deadlinesUl.append($('<li></li>').html(item));
+            }
+        }
+
+        Calendar.createSection('Uniform', dl).text(info.uniform);
 
         if (info.games) {
-            dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(info.games));
+            Calendar.createSection('Games', dl).text(info.games);
         }
 
         const kitUl = $('<ul></ul>');
-        dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
+        Calendar.createSection('Kit', dl).append(kitUl);
 
         if (extras && extras.kit) {
             for (let i = 0; i < extras.kit.length; ++i) {
@@ -232,9 +320,7 @@ class Calendar {
         }
 
         if (info.timings && info.timings.length) {
-            const dd = $('<dd></dd>');
-            dl.append($('<dt>Timings</dt>')).append(dd);
-
+            const dd = Calendar.createSection('Timings', dl);
             for (let i = 0; i < info.timings.length; ++i) {
                 dd.append($('<div></div>')
                     .append($('<span></span>').text(info.timings[i].title))
@@ -242,7 +328,14 @@ class Calendar {
             }
         }
 
-        el.append(dl);
+        $('.day.' + day + ' .info').append(dl);
+    }
+
+    private static createSection(title: string, dl: JQuery<HTMLElement>): JQuery<HTMLElement> {
+        const dd = $('<dd></dd>');
+        dl.append($('<dt></dt>').text(title))
+            .append(dd);
+        return dd;
     }
 
     private static weekdays() {
@@ -307,6 +400,7 @@ class Calendar {
         $('.next-week').click(() => this.scrollWeek(1));
         $('.key .today').click(() => Calendar.gotoToday());
         $('.key .tomorrow').click(() => Calendar.gotoTomorrow());
+        $('.key .deadlines').click(() => Calendar.scrollTo('.col-12.deadlines'));
     }
 
     init(): void {

@@ -40,7 +40,6 @@
   border-radius: .25rem;
 }
 
-
 .key .holiday,
 .is-holiday .card-header,
 .is-holiday .card-body {
@@ -55,6 +54,12 @@
 .key .tomorrow,
 .tomorrow .card-header {
   background: #e0d8ff !important;
+}
+
+.warn,
+.key .deadlines,
+.deadlines .card-header {
+  background: #ffcacd !important;
 }
 
 .class-pick a {
@@ -81,11 +86,21 @@
 
 .info dt {
   background: #fff2fe;
+  margin-bottom: 0.5rem;
 }
 
 .info ul {
   padding-left: 20px;
   list-style-position: outside;
+  list-style-type: square;
+
+  li span {
+    padding: 0 0.25rem;
+  }
+}
+
+.expired {
+  text-decoration: line-through;
 }
 
 .highlight {

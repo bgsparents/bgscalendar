@@ -4,41 +4,29 @@ layout: default
 
 <div id="calendar-container">
     <div class="row sticky-top">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-10">
-
+        <div class="col-12 col-md-12">
             <ul class="nav nav-tabs class-pick">
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link active" href="#" data-class="3M">3M</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#" data-class="3C">3C</a>-->
-<!--                </li>-->
             </ul>
         </div>
-        <div class="col-12 col-md-1"></div>
     </div>
 
     <div class="row pt-2">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-5 key py-1">
+        <div class="col-12 col-md-6 key py-1">
             <span class="today">Today</span>
             <span class="tomorrow">Tomorrow</span>
             <span class="holiday">Holiday</span>
+            <span class="deadlines">Deadlines</span>
         </div>
-        <div class="col-12 col-md-5 text-right py-1">
+        <div class="col-12 col-md-6 text-right py-1">
             <div class="btn-group" role="group" aria-label="Navigate Weeks">
                 <button type="button" class="btn btn-secondary prev-week">&ltri;</button>
                 <button type="button" class="btn btn-secondary this-week">Go to this week</button>
                 <button type="button" class="btn btn-secondary next-week">&rtri;</button>
             </div>
         </div>
-        <div class="col-12 col-md-1"></div>
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-1"></div>
-
         <div class="col-12 col-md-2 day day-0 monday">
             <div class="card">
                 <div class="card-header">
@@ -99,19 +87,27 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-1"></div>
+        <div class="col-12 col-md-2 deadlines">
+            <div class="card">
+                <div class="card-header">
+                    <div class="dow">Deadlines</div>
+                    <div class="date">&nbsp;</div>
+                </div>
+                <div class="card-body">
+                    <dl class="list"></dl>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-1"></div>
-        <div class="col-12 col-md-10 text-right">
+        <div class="col-12 col-md-12 text-right">
             <div class="btn-group" role="group" aria-label="Navigate Weeks">
                 <button type="button" class="btn btn-secondary prev-week">&ltri;</button>
                 <button type="button" class="btn btn-secondary this-week">Go to this week</button>
                 <button type="button" class="btn btn-secondary next-week">&rtri;</button>
             </div>
         </div>
-        <div class="col-12 col-md-1"></div>
     </div>
 </div>
 
@@ -120,6 +116,6 @@ layout: default
         integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
         crossorigin="anonymous"></script>
 
-<script src="/js/calendar.js?cb=3"></script>
+<script src="/js/calendar.js?cb=4"></script>
 
 {{ content }}

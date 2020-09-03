@@ -3,7 +3,7 @@ layout: calendar
 title: Reception Calendar
 homeLink: /reception/calendar
 manifest: manifest-reception
-css: calendar.css?cb=1
+css: calendar.css?cb=2
 ---
 
 <script>
@@ -93,7 +93,17 @@ css: calendar.css?cb=1
             {start: moment('2021-02-22'), end: moment('2020-03-26')},
             {start: moment('2021-04-20'), end: moment('2020-05-28')},
             {start: moment('2021-06-07'), end: moment('2020-07-09')}
-        ]
+        ],
+
+        deadlines: {
+            global: {
+                '2020-09-04': ['Email in "All About Me" photos'],
+                '2020-09-07': ['Add cover to writing book']
+            },
+
+            RFC: {
+            }
+        }
     };
 
     new Calendar(data, "psr");

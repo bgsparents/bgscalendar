@@ -49,6 +49,60 @@ var CalendarModel = /** @class */ (function () {
     CalendarModel.prototype.isHoliday = function (date) {
         return !this.isTermTime(date);
     };
+    CalendarModel.prototype.deadlines = function () {
+        var recent = this.deadlineForList(this._data.deadlines['global'])
+            .concat(this.deadlineForList(this._data.deadlines[this.currentClass]));
+        return recent.sort(function (l, r) {
+            return l.date.diff(r.date, 'day');
+        });
+    };
+    CalendarModel.prototype.deadlinesForDate = function (date) {
+        return this.deadlineForDate(this._data.deadlines['global'], date)
+            .concat(this.deadlineForDate(this._data.deadlines[this.currentClass], date));
+    };
+    CalendarModel.prototype.deadlineForList = function (deadlines) {
+        if (deadlines === undefined) {
+            return [];
+        }
+        var list = [];
+        var today = moment();
+        var after = moment().subtract(1, 'week');
+        var _loop_1 = function (key) {
+            var date = moment(key);
+            if (date.isBefore(after)) {
+                return "continue";
+            }
+            var values = deadlines[key];
+            list = list.concat(values.map(function (t) {
+                return {
+                    date: date,
+                    title: t,
+                    expired: date.isBefore(today)
+                };
+            }));
+        };
+        for (var _i = 0, _a = Object.keys(deadlines); _i < _a.length; _i++) {
+            var key = _a[_i];
+            _loop_1(key);
+        }
+        return list;
+    };
+    CalendarModel.prototype.deadlineForDate = function (deadlines, date) {
+        if (deadlines === undefined) {
+            return [];
+        }
+        var values = deadlines[date.format('YYYY-MM-DD')];
+        if (values === undefined) {
+            return [];
+        }
+        return values.map(function (t) {
+            return {
+                date: date,
+                title: t,
+                expired: date.isBefore(moment())
+            };
+        });
+    };
     CalendarModel.containsDate = function (range, date) {
         return date.isBetween(range.start, range.end, 'day', '[]');
     };
@@ -104,6 +158,7 @@ var Calendar = /** @class */ (function () {
         this.repaintClassPicker();
         this.repaintHeaders();
         this.repaintCalendar();
+        this.repaintDeadlines();
     };
     Calendar.prototype.repaintHeaders = function () {
         var today = moment();
@@ -132,6 +187,14 @@ var Calendar = /** @class */ (function () {
         this.classPicker.find('a').removeClass('active');
         this.classPicker.find('.class-' + this.model.currentClass).addClass('active');
     };
+    Calendar.prototype.repaintDeadlines = function () {
+        var el = $('.deadlines .list').html('');
+        var deadlines = this.model.deadlines();
+        for (var i = 0; i < deadlines.length; ++i) {
+            el.append($('<dt></dt>').text(deadlines[i].date.format('ddd, Do MMM')));
+            el.append($('<dd></dd>').text(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
+        }
+    };
     Calendar.prototype.repaintCalendar = function () {
         $('.day .info').html('');
         var weekRota = this.model.currentRota();
@@ -149,14 +212,22 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.repaintCalendarDay = function (day, info) {
         var date = $('.day.' + day).data('date');
         var extras = this.model.extras(date);
-        var el = $('.day.' + day + ' .info');
-        var dl = $('<dl></dl>')
-            .append($('<dt>Uniform</dt>')).append($('<dd></dd>').text(info.uniform));
+        var dl = $('<dl></dl>');
+        var deadlines = this.model.deadlinesForDate(date);
+        if (deadlines && deadlines.length) {
+            var deadlinesUl = $('<ul></ul>');
+            Calendar.createSection('Deadlines', dl).append(deadlinesUl);
+            for (var i = 0; i < deadlines.length; ++i) {
+                var item = '<span class="warn">' + deadlines[i].title + '</span>';
+                deadlinesUl.append($('<li></li>').html(item));
+            }
+        }
+        Calendar.createSection('Uniform', dl).text(info.uniform);
         if (info.games) {
-            dl.append($('<dt>Games</dt>')).append($('<dd></dd>').text(info.games));
+            Calendar.createSection('Games', dl).text(info.games);
         }
         var kitUl = $('<ul></ul>');
-        dl.append($('<dt>Kit</dt>')).append($('<dd></dd>').append(kitUl));
+        Calendar.createSection('Kit', dl).append(kitUl);
         if (extras && extras.kit) {
             for (var i = 0; i < extras.kit.length; ++i) {
                 var item = '<span class="special">' + extras.kit[i] + '</span>';
@@ -171,15 +242,20 @@ var Calendar = /** @class */ (function () {
             kitUl.append($('<li></li>').html(item));
         }
         if (info.timings && info.timings.length) {
-            var dd = $('<dd></dd>');
-            dl.append($('<dt>Timings</dt>')).append(dd);
+            var dd = Calendar.createSection('Timings', dl);
             for (var i = 0; i < info.timings.length; ++i) {
                 dd.append($('<div></div>')
                     .append($('<span></span>').text(info.timings[i].title))
                     .append($('<span class="float-right"></span>').text(info.timings[i].time)));
             }
         }
-        el.append(dl);
+        $('.day.' + day + ' .info').append(dl);
+    };
+    Calendar.createSection = function (title, dl) {
+        var dd = $('<dd></dd>');
+        dl.append($('<dt></dt>').text(title))
+            .append(dd);
+        return dd;
     };
     Calendar.weekdays = function () {
         return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
@@ -235,6 +311,7 @@ var Calendar = /** @class */ (function () {
         $('.next-week').click(function () { return _this.scrollWeek(1); });
         $('.key .today').click(function () { return Calendar.gotoToday(); });
         $('.key .tomorrow').click(function () { return Calendar.gotoTomorrow(); });
+        $('.key .deadlines').click(function () { return Calendar.scrollTo('.col-12.deadlines'); });
     };
     Calendar.prototype.init = function () {
         this.paint();
