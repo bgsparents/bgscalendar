@@ -57,18 +57,29 @@ class Calendar {
         this.pickClass(this.getPickedClass());
     }
 
+    renderClassPick() {
+        const parent = $('.class-pick');
+        for(let key of Object.keys(this.data.rota)) {
+            parent.append($('<li class="nav-item"></li>')
+                .append($('<a class="nav-link" href="#"></a>')
+                    .data('class', key)
+                    .text(key)
+                    .addClass('class-' + key)));
+        }
+    }
+
     getPickedClass(): string {
         try {
             var cls = localStorage.getItem("pick-class");
-            return !cls ? $('.class-pick a.active').data('class') : cls;
+            return !cls ? $($('.class-pick a')[0]).data('class') : cls;
         } catch (e) {
-            return $('.class-pick a.active').data('class');
+            return $($('.class-pick a')[0]).data('class');
         }
     }
 
     pickClass(cls): void {
         $('.class-pick a').removeClass('active');
-        $('.class-pick a[data-class=' + cls + ']').addClass('active');
+        $('.class-pick .class-' + cls).addClass('active');
         var epoch = moment('2020-08-31');
         var weeks = this.currentDate.diff(epoch, "week");
 
@@ -166,6 +177,8 @@ class Calendar {
 
 
     init(): void {
+        this.renderClassPick();
+
         $('.class-pick a').click(function (e) {
             e.preventDefault();
             this.pickClass($(e.target).data('class'));
