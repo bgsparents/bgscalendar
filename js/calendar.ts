@@ -135,8 +135,8 @@ class CalendarModel {
         }
 
         let list = [];
-        const today = moment();
-        const after = moment().subtract(1, 'week');
+        const today = moment().startOf('day');
+        const after = moment(today).subtract(1, 'week');
         for (let key of Object.keys(deadlines)) {
             let date = moment(key);
             if (date.isBefore(after)) {

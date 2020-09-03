@@ -65,8 +65,8 @@ var CalendarModel = /** @class */ (function () {
             return [];
         }
         var list = [];
-        var today = moment();
-        var after = moment().subtract(1, 'week');
+        var today = moment().startOf('day');
+        var after = moment(today).subtract(1, 'week');
         var _loop_1 = function (key) {
             var date = moment(key);
             if (date.isBefore(after)) {
