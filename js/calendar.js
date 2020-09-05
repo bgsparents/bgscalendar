@@ -1,4 +1,3 @@
-// import moment = require('moment');
 var CalendarModel = /** @class */ (function () {
     function CalendarModel(data, context) {
         this.currentDate = moment();
@@ -7,7 +6,7 @@ var CalendarModel = /** @class */ (function () {
     }
     Object.defineProperty(CalendarModel.prototype, "classNames", {
         get: function () {
-            return Object.keys(this._data.rota);
+            return Object.keys(this._data.classes);
         },
         enumerable: true,
         configurable: true
@@ -29,11 +28,31 @@ var CalendarModel = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    CalendarModel.prototype.optional = function (stack, def) {
+        var cursor = this._data;
+        for (var i = 0; i < stack.length; ++i) {
+            cursor = cursor[stack[i]];
+            if (cursor === undefined) {
+                return def;
+            }
+        }
+        return cursor;
+    };
     CalendarModel.prototype.currentRota = function () {
-        var weekRota = this._data.rota[this.currentClass];
-        for (var _i = 0, _a = Object.keys(weekRota); _i < _a.length; _i++) {
+        var yearRota = this.getRotaForWeek(this.optional(['yeargroup', 'rota'], {})) || {};
+        var classRota = this.getRotaForWeek(this.optional(['classes', this.currentClass, 'rota'], {})) || {};
+        return {
+            monday: CalendarModel.merge(classRota['monday'], yearRota['monday']),
+            tuesday: CalendarModel.merge(classRota['tuesday'], yearRota['tuesday']),
+            wednesday: CalendarModel.merge(classRota['wednesday'], yearRota['wednesday']),
+            thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
+            friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
+        };
+    };
+    CalendarModel.prototype.getRotaForWeek = function (rotas) {
+        for (var _i = 0, _a = Object.keys(rotas); _i < _a.length; _i++) {
             var key = _a[_i];
-            var rota = weekRota[key];
+            var rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
                 return rota;
             }
@@ -41,10 +60,16 @@ var CalendarModel = /** @class */ (function () {
         return undefined;
     };
     CalendarModel.prototype.extras = function (date) {
-        return (this._data.extras && this._data.extras[date.format('YYYY-MM-DD')]) || {};
+        return this.mergeForKey(date, 'extras');
     };
     CalendarModel.prototype.overrides = function (date) {
-        return (this._data.overrides && this._data.overrides[date.format('YYYY-MM-DD')]) || {};
+        return this.mergeForKey(date, 'overrides');
+    };
+    CalendarModel.prototype.mergeForKey = function (date, key) {
+        var dkey = date.format('YYYY-MM-DD');
+        var year = this.optional(['yeargroup', key, dkey], {});
+        var clas = this.optional(['classes', this.currentClass, key, dkey], {});
+        return CalendarModel.merge(clas, year);
     };
     CalendarModel.prototype.isTermTime = function (date) {
         return this._data.termTimes.find(function (o) { return CalendarModel.containsDate(o, date); }) !== undefined;
@@ -60,6 +85,34 @@ var CalendarModel = /** @class */ (function () {
     };
     CalendarModel.prototype.games = function (date) {
         return this.arrayJoin(date, 'games');
+    };
+    CalendarModel.prototype.timings = function (date) {
+        var overrides = CalendarModel.value(this.overrides(date), 'timings', [])
+            .map(function (o) { return { title: '*' + o.title, time: o.time }; });
+        var extra = CalendarModel.value(this.extras(date), 'timings', [])
+            .map(function (o) { return { title: '+' + o.title, time: o.time }; });
+        var rota = CalendarModel.dayValue(this.currentRota(), date, 'timings', []);
+        return (overrides.length ? overrides : extra.concat(rota))
+            .sort(CalendarModel.sortTime);
+    };
+    CalendarModel.sortTime = function (l, r) {
+        if (l.time.endsWith('am') && r.time.endsWith('pm')) {
+            return -1;
+        }
+        if (l.time.endsWith('pm') && r.time.endsWith('am')) {
+            return 1;
+        }
+        var lt = l.time.split(':');
+        var rt = r.time.split(':');
+        var hour = (parseInt(lt[0]) || 0) - (parseInt(rt[0]) || 0);
+        if (hour != 0) {
+            return hour;
+        }
+        var min = (lt.length > 1 ? parseInt(lt[1]) : 0) - (rt.length > 0 ? parseInt(rt[1]) : 0);
+        if (min != 0) {
+            return min;
+        }
+        return l.title.localeCompare(r.title);
     };
     CalendarModel.prototype.arrayJoin = function (date, key) {
         var overrides = CalendarModel.value(this.overrides(date), key, [])
@@ -88,17 +141,31 @@ var CalendarModel = /** @class */ (function () {
     CalendarModel.flat = function (arr) {
         return arr.reduce(function (acc, val) { return acc.concat(val); }, []);
     };
+    CalendarModel.merge = function (primary, secondary) {
+        return {
+            uniform: CalendarModel.concatKey(primary, secondary, 'uniform'),
+            games: CalendarModel.concatKey(primary, secondary, 'games'),
+            kit: CalendarModel.concatKey(primary, secondary, 'kit'),
+            timings: CalendarModel.concatKey(primary, secondary, 'timings')
+        };
+    };
+    CalendarModel.concatKey = function (first, second, key) {
+        var a = first && first[key] ? CalendarModel.flat([first[key]]) : [];
+        var b = second && second[key] ? CalendarModel.flat([second[key]]) : [];
+        return a.concat(b);
+    };
     CalendarModel.prototype.recentOrFutureDeadlines = function () {
-        var recent = this.deadlineForList(this._data.deadlines['global'])
-            .concat(this.deadlineForList(this._data.deadlines[this.currentClass]));
+        var recent = this.deadlineForList(this.optional(['yeargroup', 'deadlines'], undefined))
+            .concat(this.deadlineForList(this.optional(['classes', this.currentClass, 'deadlines'], undefined)));
         return recent.sort(function (l, r) {
             return l.date.diff(r.date, 'day');
         });
     };
     CalendarModel.prototype.deadlines = function (date) {
-        return this.deadlineForDate(this._data.deadlines['global'], date)
-            .concat(this.deadlineForDate(this._data.deadlines[this.currentClass], date))
-            .map(function (o) { return '!' + o.title; });
+        var dkey = date.format('YYYY-MM-DD');
+        return this.optional(['yeargroup', 'deadlines', dkey], [])
+            .concat(this.optional(['classes', this.currentClass, 'deadlines', dkey], []))
+            .map(function (o) { return '!' + o; });
     };
     CalendarModel.prototype.deadlineForList = function (deadlines) {
         if (deadlines === undefined) {
@@ -126,22 +193,6 @@ var CalendarModel = /** @class */ (function () {
             _loop_1(key);
         }
         return list;
-    };
-    CalendarModel.prototype.deadlineForDate = function (deadlines, date) {
-        if (deadlines === undefined) {
-            return [];
-        }
-        var values = deadlines[date.format('YYYY-MM-DD')];
-        if (values === undefined) {
-            return [];
-        }
-        return values.map(function (t) {
-            return {
-                date: date,
-                title: t,
-                expired: date.isBefore(moment())
-            };
-        });
     };
     CalendarModel.containsDate = function (range, date) {
         return date.isBetween(range.start, range.end, 'day', '[]');
@@ -253,15 +304,16 @@ var Calendar = /** @class */ (function () {
         var date = $('.day.' + day).data('date');
         var dl = $('<dl></dl>');
         Calendar.createSectionList('Deadlines', this.model.deadlines(date), dl);
-        Calendar.createSectionText('Uniform', this.model.uniform(date), dl);
+        Calendar.createSectionText('Uniform', this.model.uniform(date).reverse(), dl);
         Calendar.createSectionText('Activities', this.model.games(date), dl);
         Calendar.createSectionList('Kit', this.model.kit(date), dl);
-        if (info.timings && info.timings.length) {
+        var timings = this.model.timings(date);
+        if (timings && timings.length) {
             var dd = Calendar.createSection('Timings', dl);
-            for (var i = 0; i < info.timings.length; ++i) {
+            for (var i = 0; i < timings.length; ++i) {
                 dd.append($('<div></div>')
-                    .append($('<span></span>').text(info.timings[i].title))
-                    .append($('<span class="float-right"></span>').text(info.timings[i].time)));
+                    .html(Calendar.markup(timings[i].title))
+                    .append($('<span class="float-right"></span>').html(timings[i].time)));
             }
         }
         $('.day.' + day + ' .info').append(dl);

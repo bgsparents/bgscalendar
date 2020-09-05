@@ -57,56 +57,116 @@ css: calendar.css?cb=3
         }
 
     };
-    var data = {
-        rota: {
-            "3M": {
-                weekA: {
-                    start: moment('2020-08-31'),
-                    frequency: 2,
-                    monday: commonDayData.netball,
-                    tuesday: commonDayData.hockey,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.regular,
-                    friday: commonDayData.swimming
-                },
 
-                weekB: {
-                    start: moment('2020-09-07'),
-                    frequency: 2,
-                    monday: commonDayData.regular,
-                    tuesday: commonDayData.hockey,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.regular,
-                    friday: commonDayData.swimming
+
+    var data = {
+        yeargroup: {
+            extras: {
+                '2020-09-03': {
+                    kit: ["An art overall, pair of black leggings, t-shirt and hoody in a named plastic bag (in case the games kit becomes very wet), which will stay on their pegs at school"]
                 }
             },
-
-            "3C": {
-                weekA: {
-                    start: moment('2020-08-31'),
-                    frequency: 2,
-                    monday: commonDayData.netball,
-                    tuesday: commonDayData.swimming,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.regular,
-                    friday: commonDayData.hockey
-                },
-                weekB: {
-                    start: moment('2020-09-07'),
-                    frequency: 2,
-                    monday: commonDayData.regular,
-                    tuesday: commonDayData.swimming,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.regular,
-                    friday: commonDayData.hockey
-                }
+            overrides: {},
+            deadlines: {
+                '2020-09-10': ['Tennis Academy Registration']
             }
         },
 
-        extras: {
-            '2020-09-03': {
-                kit: ["An art overall, pair of black leggings, t-shirt and hoody in a named plastic bag (in case the games kit becomes very wet), which will stay on their pegs at school"]
-            }
+        classes: {
+            "3M": {
+                rota: {
+                    weekA: {
+                        start: moment('2020-08-31'),
+                        frequency: 2,
+                        monday: commonDayData.netball,
+                        tuesday: commonDayData.hockey,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.swimming
+                    },
+
+                    weekB: {
+                        start: moment('2020-09-07'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.hockey,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.swimming
+                    }
+                },
+                extras: {
+                    "2020-09-18": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-09-25": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-10-02": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-10-09": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-10-16": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    }
+                },
+                overrides: {},
+                deadlines: {}
+            },
+
+            "3C": {
+                rota: {
+                    weekA: {
+                        start: moment('2020-08-31'),
+                        frequency: 2,
+                        monday: commonDayData.netball,
+                        tuesday: commonDayData.swimming,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.hockey
+                    },
+                    weekB: {
+                        start: moment('2020-09-07'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.swimming,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.hockey
+                    }
+                },
+                extras: {
+                    "2020-09-15": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-09-22": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-09-29": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-10-06": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    },
+                    "2020-10-13": {
+                        kit: ['Tennis racket for those in Tennis Academy'],
+                        timings: [ {title: "Tennis Academy", time: "7:20am" } ]
+                    }
+                },
+                overrides: {},
+                deadlines: {}
+            },
         },
 
         termTimes: [
@@ -116,14 +176,7 @@ css: calendar.css?cb=3
             {start: moment('2021-02-22'), end: moment('2020-03-26')},
             {start: moment('2021-04-20'), end: moment('2020-05-28')},
             {start: moment('2021-06-07'), end: moment('2020-07-09')}
-        ],
-
-        deadlines: {
-            global: {
-                '2020-09-10': ['Tennis Academy Registration'],
-            }
-        }
-
+        ]
     };
 
     new Calendar(data);

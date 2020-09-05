@@ -52,8 +52,8 @@ css: calendar.css?cb=3
     };
 
     var data = {
-        rota: {
-            "RFC": {
+        yeargroup: {
+            rota: {
                 week: {
                     start: moment('2020-08-31'),
                     frequency: 1,
@@ -64,42 +64,34 @@ css: calendar.css?cb=3
                     friday: commonDayData.pe
                 }
             },
-            "RRB": {
-                week: {
-                    start: moment('2020-08-31'),
-                    frequency: 1,
-                    monday: commonDayData.monday,
-                    tuesday: commonDayData.swimming,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.swimming,
-                    friday: commonDayData.pe
-                }
-            },
-            "RJR": {
-                week: {
-                    start: moment('2020-08-31'),
-                    frequency: 1,
-                    monday: commonDayData.monday,
-                    tuesday: commonDayData.swimming,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.swimming,
-                    friday: commonDayData.pe
-                }
+            extras: {},
+            overrides: {},
+            deadlines: {
+                '2020-09-04': ['Email in "All About Me" photos'],
+                '2020-09-07': ['Add cover to writing book'],
+                '2020-09-09': ['Return Nursery Grant Funding form']
             }
         },
 
-        extras: {
-            // '2020-09-03': {
-            //     uniform: ['Pianox', 'Pianoy'],
-            //     games: ['Email']
-            // },
-        },
-
-        overrides: {
-            // '2020-09-04': {
-            //     uniform: ['Pianox', 'Pianoz'],
-            //     kit: ['Email in "All About Me" photos']
-            // },
+        classes: {
+            RFC: {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            },
+            RRB: {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            },
+            RJR: {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            }
         },
 
         termTimes: [
@@ -109,18 +101,7 @@ css: calendar.css?cb=3
             {start: moment('2021-02-22'), end: moment('2020-03-26')},
             {start: moment('2021-04-20'), end: moment('2020-05-28')},
             {start: moment('2021-06-07'), end: moment('2020-07-09')}
-        ],
-
-        deadlines: {
-            global: {
-                '2020-09-04': ['Email in "All About Me" photos'],
-                '2020-09-07': ['Add cover to writing book'],
-                '2020-09-09': ['Return Nursery Grant Funding form']
-            },
-
-            RFC: {
-            }
-        }
+        ]
     };
 
     new Calendar(data, "psr");
