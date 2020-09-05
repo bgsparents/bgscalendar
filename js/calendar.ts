@@ -60,7 +60,8 @@ interface ClassRotaMap {
 
 interface Data {
     rota: ClassRotaMap;
-    extras: DayDataMap;
+    extras?: DayDataMap;
+    overrides?: DayDataMap;
     deadlines?: DeadlineContextMap;
     termTimes: DateRange[];
 }
@@ -105,7 +106,11 @@ class CalendarModel {
     }
 
     extras(date: moment.Moment): DayData {
-        return this._data.extras[date.format('YYYY-MM-DD')];
+        return (this._data.extras && this._data.extras[date.format('YYYY-MM-DD')]) || {};
+    }
+
+    overrides(date: moment.Moment): DayData {
+        return (this._data.overrides && this._data.overrides[date.format('YYYY-MM-DD')]) || {};
     }
 
     isTermTime(date: moment.Moment): boolean {
@@ -116,7 +121,51 @@ class CalendarModel {
         return !this.isTermTime(date);
     }
 
-    deadlines(): Deadline[] {
+    kit(date: moment.Moment): string[] {
+        return this.arrayJoin(date, 'kit');
+    }
+
+    uniform(date: moment.Moment): string[] {
+        return this.arrayJoin(date, 'uniform');
+    }
+
+    games(date: moment.Moment): string[] {
+        return this.arrayJoin(date, 'games');
+    }
+
+    private arrayJoin(date: moment.Moment, key: string) {
+        const overrides: string[] = CalendarModel.value(this.overrides(date), key, [])
+            .map(o => '*' + o);
+        const extra: string[] = CalendarModel.value(this.extras(date), key, [])
+            .map(o => '+' + o);
+        const rota: string[] = CalendarModel.dayValue(this.currentRota(), date, key, []);
+        return overrides.length ? overrides : extra.concat(rota);
+    }
+
+    // private stringJoin(date: moment.Moment, key: string) {
+    //     const overrides: string = CalendarModel.value(this.overrides(date), key, '');
+    //     const extra: string = CalendarModel.value(this.extras(date), key, null);
+    //     const rota: string = CalendarModel.dayValue(this.currentRota(), date, key, null);
+    //     return overrides && overrides.length
+    //         ? '*' + CalendarModel.flat([overrides]).join(", ")
+    //         : CalendarModel.flat([extra, rota].filter(o => o && o.length)).join(", ");
+    // }
+
+    private static dayValue(info: WeekRota, date: moment.Moment, key: string, def: any): any {
+        return info
+            ? CalendarModel.value(info[date.format('dddd').toLowerCase()], key, [])
+            : def;
+    }
+
+    private static value(info: DayData, key: string, def: any): any {
+        return info && info[key] ? info[key] : def;
+    }
+
+    static flat(arr :any[]): any[] {
+        return arr.reduce((acc, val) => acc.concat(val), []);
+    }
+
+    recentOrFutureDeadlines(): Deadline[] {
         const recent = this.deadlineForList(this._data.deadlines['global'])
             .concat(this.deadlineForList(this._data.deadlines[this.currentClass]));
         return recent.sort((l, r) => {
@@ -124,9 +173,10 @@ class CalendarModel {
         });
     }
 
-    deadlinesForDate(date: moment.Moment): Deadline[] {
+    deadlines(date: moment.Moment): string[] {
         return this.deadlineForDate(this._data.deadlines['global'], date)
             .concat(this.deadlineForDate(this._data.deadlines[this.currentClass], date))
+            .map(o => '!' + o.title);
     }
 
     private deadlineForList(deadlines: DeadlineMap): Deadline[] {
@@ -258,7 +308,7 @@ class Calendar {
 
     private repaintDeadlines(): void {
         const el = $('.deadlines .list').html('');
-        const deadlines = this.model.deadlines();
+        const deadlines = this.model.recentOrFutureDeadlines();
         for (let i = 0; i < deadlines.length; ++i) {
             el.append($('<dt></dt>').text(deadlines[i].date.format('ddd, Do MMM')));
             el.append($('<dd></dd>').text(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
@@ -282,42 +332,12 @@ class Calendar {
 
     private repaintCalendarDay(day: string, info: DayData): void {
         const date = $('.day.' + day).data('date');
-        const extras = this.model.extras(date);
         const dl = $('<dl></dl>');
 
-        const deadlines = this.model.deadlinesForDate(date);
-        if (deadlines && deadlines.length) {
-            const deadlinesUl = $('<ul></ul>');
-            Calendar.createSection('Deadlines', dl).append(deadlinesUl);
-            for (let i = 0; i < deadlines.length; ++i) {
-                const item = '<span class="warn">' + deadlines[i].title + '</span>';
-                deadlinesUl.append($('<li></li>').html(item));
-            }
-        }
-
-        Calendar.createSection('Uniform', dl).text(info.uniform);
-
-        if (info.games) {
-            Calendar.createSection('Games', dl).text(info.games);
-        }
-
-        const kitUl = $('<ul></ul>');
-        Calendar.createSection('Kit', dl).append(kitUl);
-
-        if (extras && extras.kit) {
-            for (let i = 0; i < extras.kit.length; ++i) {
-                const item = '<span class="special">' + extras.kit[i] + '</span>';
-                kitUl.append($('<li></li>').html(item));
-            }
-        }
-
-        for (let i = 0; i < info.kit.length; ++i) {
-            let item = info.kit[i];
-            if (item.startsWith('*')) {
-                item = '<span class="highlight">' + item.substring(1, item.length) + '</span>';
-            }
-            kitUl.append($('<li></li>').html(item));
-        }
+        Calendar.createSectionList('Deadlines', this.model.deadlines(date), dl);
+        Calendar.createSectionText('Uniform', this.model.uniform(date), dl);
+        Calendar.createSectionText('Activities', this.model.games(date), dl);
+        Calendar.createSectionList('Kit', this.model.kit(date), dl);
 
         if (info.timings && info.timings.length) {
             const dd = Calendar.createSection('Timings', dl);
@@ -336,6 +356,42 @@ class Calendar {
         dl.append($('<dt></dt>').text(title))
             .append(dd);
         return dd;
+    }
+
+    private static createSectionText(title: string, text: any, dl: JQuery<HTMLElement>): JQuery<HTMLElement> {
+        if (!text || text.length === 0 || text === '') {
+            return null;
+        }
+
+        const markup = CalendarModel.flat([text]).map(o => Calendar.markup(o)).join(', ');
+        return Calendar.createSection(title, dl).html(markup);
+    }
+
+    private static createSectionList(title: string, list: string[], dl: JQuery<HTMLElement>): JQuery<HTMLElement> {
+        if (!list || list.length === 0) {
+            return null;
+        }
+
+        const ul = $('<ul></ul>');
+        for (let i = 0; i < list.length; ++i) {
+            ul.append($('<li></li>').html(Calendar.markup(list[i])));
+        }
+        return Calendar.createSection(title, dl).append(ul);
+    }
+
+    private static markup(value: string): string {
+        let css = 'normal';
+        if (value.startsWith('*')) {
+            css = 'highlight';
+            value = value.substring(1, value.length);
+        } else if (value.startsWith('+')) {
+            css = 'special';
+            value = value.substring(1, value.length);
+        } else if (value.startsWith('!')) {
+            css = 'warn';
+            value = value.substring(1, value.length);
+        }
+        return $('<div></div>').append($('<span></span>').addClass(css).text(value)).html();
     }
 
     private static weekdays() {
