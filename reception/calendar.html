@@ -27,6 +27,11 @@ css: calendar.css?cb=3
     ];
 
     var commonDayData = {
+        monday: {
+            uniform: "School uniform with blazer",
+            kit: ['*Reading book'].concat(commonKit),
+            timings: timings
+        },
         regular: {
             uniform: "School uniform with blazer",
             kit: commonKit,
@@ -52,7 +57,7 @@ css: calendar.css?cb=3
                 week: {
                     start: moment('2020-08-31'),
                     frequency: 1,
-                    monday: commonDayData.regular,
+                    monday: commonDayData.monday,
                     tuesday: commonDayData.swimming,
                     wednesday: commonDayData.regular,
                     thursday: commonDayData.swimming,
@@ -63,7 +68,7 @@ css: calendar.css?cb=3
                 week: {
                     start: moment('2020-08-31'),
                     frequency: 1,
-                    monday: commonDayData.regular,
+                    monday: commonDayData.monday,
                     tuesday: commonDayData.swimming,
                     wednesday: commonDayData.regular,
                     thursday: commonDayData.swimming,
@@ -74,7 +79,7 @@ css: calendar.css?cb=3
                 week: {
                     start: moment('2020-08-31'),
                     frequency: 1,
-                    monday: commonDayData.regular,
+                    monday: commonDayData.monday,
                     tuesday: commonDayData.swimming,
                     wednesday: commonDayData.regular,
                     thursday: commonDayData.swimming,
