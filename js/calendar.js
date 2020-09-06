@@ -235,7 +235,7 @@ var Calendar = /** @class */ (function () {
         set: function (date) {
             this.model.currentDate = date;
             this.repaint();
-            Calendar.scrollBest();
+            this.scrollBest();
         },
         enumerable: true,
         configurable: true
@@ -366,27 +366,35 @@ var Calendar = /** @class */ (function () {
     Calendar.isMobileView = function () {
         return $(window).width() < 768;
     };
-    Calendar.scrollBest = function () {
-        if (!Calendar.isMobileView() || !Calendar.gotoToTodayOrTomorrow()) {
+    Calendar.prototype.scrollBest = function () {
+        if (!Calendar.isMobileView() || !this.gotoToTodayOrTomorrow()) {
             Calendar.gotoTop();
         }
     };
     Calendar.gotoTop = function () {
         Calendar.scrollTo('#calendar-container');
     };
-    Calendar.gotoToday = function () {
+    Calendar.prototype.gotoToday = function () {
+        if ($('.day.today').length === 0) {
+            this.currentDate = moment();
+            this.repaint();
+        }
         Calendar.scrollTo('.day.today');
     };
-    Calendar.gotoTomorrow = function () {
+    Calendar.prototype.gotoTomorrow = function () {
+        if ($('.day.tomorrow').length === 0) {
+            this.currentDate = moment().add(1, 'day');
+            this.repaint();
+        }
         Calendar.scrollTo('.day.tomorrow');
     };
-    Calendar.gotoToTodayOrTomorrow = function () {
+    Calendar.prototype.gotoToTodayOrTomorrow = function () {
         if ($('.day.today').length) {
-            Calendar.gotoToday();
+            this.gotoToday();
             return true;
         }
         else if ($('.day.tomorrow').length) {
-            Calendar.gotoTomorrow();
+            this.gotoTomorrow();
             return true;
         }
         return false;
@@ -409,15 +417,15 @@ var Calendar = /** @class */ (function () {
         $('.prev-week').click(function () { return _this.scrollWeek(-1); });
         $('.this-week').click(function () { return _this.currentDate = moment(); });
         $('.next-week').click(function () { return _this.scrollWeek(1); });
-        $('.key .today').click(function () { return Calendar.gotoToday(); });
-        $('.key .tomorrow').click(function () { return Calendar.gotoTomorrow(); });
+        $('.key .today').click(function () { return _this.gotoToday(); });
+        $('.key .tomorrow').click(function () { return _this.gotoTomorrow(); });
         $('.key .deadlines').click(function () { return Calendar.scrollTo('.col-12.deadlines'); });
     };
     Calendar.prototype.init = function () {
         this.paint();
         this.listeners();
         if (Calendar.isMobileView()) {
-            Calendar.gotoToTodayOrTomorrow();
+            this.gotoToTodayOrTomorrow();
         }
     };
     return Calendar;

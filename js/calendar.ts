@@ -321,7 +321,7 @@ class Calendar {
     set currentDate(date: moment.Moment) {
         this.model.currentDate = date;
         this.repaint();
-        Calendar.scrollBest();
+        this.scrollBest();
     }
 
     paint(): void {
@@ -467,8 +467,8 @@ class Calendar {
         return $(window).width() < 768;
     }
 
-    private static scrollBest(): void {
-        if (!Calendar.isMobileView() || !Calendar.gotoToTodayOrTomorrow()) {
+    private scrollBest(): void {
+        if (!Calendar.isMobileView() || !this.gotoToTodayOrTomorrow()) {
             Calendar.gotoTop();
         }
     }
@@ -477,20 +477,28 @@ class Calendar {
         Calendar.scrollTo('#calendar-container');
     }
 
-    private static gotoToday(): void {
+    private gotoToday(): void {
+        if ($('.day.today').length === 0) {
+            this.currentDate = moment();
+            this.repaint();
+        }
         Calendar.scrollTo('.day.today');
     }
 
-    private static gotoTomorrow(): void {
+    private gotoTomorrow(): void {
+        if ($('.day.tomorrow').length === 0) {
+            this.currentDate = moment().add(1, 'day');
+            this.repaint();
+        }
         Calendar.scrollTo('.day.tomorrow');
     }
 
-    private static gotoToTodayOrTomorrow(): boolean {
+    private gotoToTodayOrTomorrow(): boolean {
         if ($('.day.today').length) {
-            Calendar.gotoToday();
+            this.gotoToday();
             return true;
         } else if ($('.day.tomorrow').length) {
-            Calendar.gotoTomorrow();
+            this.gotoTomorrow();
             return true;
         }
         return false;
@@ -515,8 +523,8 @@ class Calendar {
         $('.prev-week').click(() => this.scrollWeek(-1));
         $('.this-week').click(() => this.currentDate = moment());
         $('.next-week').click(() => this.scrollWeek(1));
-        $('.key .today').click(() => Calendar.gotoToday());
-        $('.key .tomorrow').click(() => Calendar.gotoTomorrow());
+        $('.key .today').click(() => this.gotoToday());
+        $('.key .tomorrow').click(() => this.gotoTomorrow());
         $('.key .deadlines').click(() => Calendar.scrollTo('.col-12.deadlines'));
     }
 
@@ -524,7 +532,7 @@ class Calendar {
         this.paint();
         this.listeners();
         if (Calendar.isMobileView()) {
-            Calendar.gotoToTodayOrTomorrow();
+            this.gotoToTodayOrTomorrow();
         }
     }
 }
