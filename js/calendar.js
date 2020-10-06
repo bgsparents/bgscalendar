@@ -47,6 +47,8 @@ var CalendarModel = /** @class */ (function () {
             wednesday: CalendarModel.merge(classRota['wednesday'], yearRota['wednesday']),
             thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
             friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
+            saturday: {},
+            sunday: {}
         };
     };
     CalendarModel.prototype.getRotaForWeek = function (rotas) {
@@ -88,12 +90,18 @@ var CalendarModel = /** @class */ (function () {
     };
     CalendarModel.prototype.timings = function (date) {
         var overrides = CalendarModel.value(this.overrides(date), 'timings', [])
-            .map(function (o) { return { title: '*' + o.title, time: o.time }; });
+            .map(function (o) { return { title: CalendarModel.markup(o.title, '*'), time: o.time }; });
         var extra = CalendarModel.value(this.extras(date), 'timings', [])
-            .map(function (o) { return { title: '+' + o.title, time: o.time }; });
+            .map(function (o) { return { title: CalendarModel.markup(o.title, '+'), time: o.time }; });
         var rota = CalendarModel.dayValue(this.currentRota(), date, 'timings', []);
         return (overrides.length ? overrides : extra.concat(rota))
             .sort(CalendarModel.sortTime);
+    };
+    CalendarModel.markup = function (value, symbol) {
+        if (value !== undefined && (value.startsWith("*") || value.startsWith("+"))) {
+            value = value.substring(1, value.length);
+        }
+        return symbol + value;
     };
     CalendarModel.sortTime = function (l, r) {
         if (l.time.endsWith('am') && r.time.endsWith('pm')) {
@@ -116,9 +124,9 @@ var CalendarModel = /** @class */ (function () {
     };
     CalendarModel.prototype.arrayJoin = function (date, key) {
         var overrides = CalendarModel.value(this.overrides(date), key, [])
-            .map(function (o) { return '*' + o; });
+            .map(function (o) { return CalendarModel.markup(o, '*'); });
         var extra = CalendarModel.value(this.extras(date), key, [])
-            .map(function (o) { return '+' + o; });
+            .map(function (o) { return CalendarModel.markup(o, '+'); });
         var rota = CalendarModel.dayValue(this.currentRota(), date, key, []);
         return overrides.length ? overrides : extra.concat(rota);
     };
@@ -166,6 +174,12 @@ var CalendarModel = /** @class */ (function () {
         return this.optional(['yeargroup', 'deadlines', dkey], [])
             .concat(this.optional(['classes', this.currentClass, 'deadlines', dkey], []))
             .map(function (o) { return '!' + o; });
+    };
+    CalendarModel.prototype.hasData = function (date) {
+        return this.uniform(date).length > 0
+            || this.games(date).length > 0
+            || this.kit(date).length > 0
+            || this.timings(date).length > 0;
     };
     CalendarModel.prototype.deadlineForList = function (deadlines) {
         if (deadlines === undefined) {
@@ -261,6 +275,7 @@ var Calendar = /** @class */ (function () {
                 .toggleClass('today', date.isSame(today, 'day'))
                 .toggleClass('tomorrow', date.isSame(tomorrow, 'day'))
                 .toggleClass('is-holiday', this.model.isHoliday(date))
+                .toggleClass('d-none', this.shouldHide(date))
                 .find('.date').text(date.format("MMM Do"));
         }
     };
@@ -293,6 +308,7 @@ var Calendar = /** @class */ (function () {
             for (var _i = 0, _a = Calendar.weekdays(); _i < _a.length; _i++) {
                 var key = _a[_i];
                 var dayInfo = weekRota[key];
+                console.log(key);
                 if (dayInfo === undefined) {
                     continue;
                 }
@@ -358,7 +374,7 @@ var Calendar = /** @class */ (function () {
         return $('<div></div>').append($('<span></span>').addClass(css).text(value)).html();
     };
     Calendar.weekdays = function () {
-        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     };
     Calendar.prototype.scrollWeek = function (weeks) {
         this.currentDate = moment(this.model.currentDate).add(weeks, 'week');
@@ -427,6 +443,9 @@ var Calendar = /** @class */ (function () {
         if (Calendar.isMobileView()) {
             this.gotoToTodayOrTomorrow();
         }
+    };
+    Calendar.prototype.shouldHide = function (date) {
+        return date.isoWeekday() > 5 && !this.model.hasData(date);
     };
     return Calendar;
 }());

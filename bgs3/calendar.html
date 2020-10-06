@@ -3,7 +3,7 @@ layout: calendar
 title: Y3 Calendar
 homeLink: /bgs3/calendar
 manifest: manifest-bgsy3
-css: calendar.css?cb=3
+css: calendar.css?cb=4
 ---
 
 <script>
@@ -74,7 +74,6 @@ css: calendar.css?cb=3
 
     };
 
-
     var data = {
         yeargroup: {
             extras: {
@@ -91,7 +90,29 @@ css: calendar.css?cb=3
             overrides: {
                 '2020-10-09': {
                     uniform: 'Non-uniform casual - wear something yellow'
-                }
+                },
+                '2020-11-07': {
+                    uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+                    games: "Netball",
+                    kit: astrosKit,
+                    timings: [
+                        { title: "Drop Off:", time: "10:30am" },
+                        { title: "Pick Up:", time: "11:45am" }
+                    ]
+                },
+                '2020-11-14': {
+                    uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+                    games: "Hockey",
+                    kit: [
+                        "*Hockey stick",
+                        "*Shin pads",
+                        "*Gum shield"
+                    ].concat(astrosKit),
+                    timings: [
+                            { title: "Drop Off:", time: "9:00am" },
+                            { title: "Pick Up:", time: "10:15am" }
+                        ]
+                    }
             },
             deadlines: {
                 '2020-09-10': ['Tennis Academy Registration'], 

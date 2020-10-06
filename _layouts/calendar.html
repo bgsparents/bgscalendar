@@ -15,7 +15,7 @@ layout: default
             <span class="today">Today</span>
             <span class="tomorrow">Tomorrow</span>
             <span class="holiday">Holiday</span>
-            <span class="deadlines">Deadlines</span>
+            <span class="deadlines"><a href="#deadlines">Deadlines</a></span>
         </div>
         <div class="col-12 col-md-6 text-right py-1">
             <div class="btn-group" role="group" aria-label="Navigate Weeks">
@@ -27,8 +27,8 @@ layout: default
     </div>
 
     <div class="row">
-        <div class="col-12 col-md-2 day day-0 monday">
-            <div class="card">
+        <div class="col-12 col-md-2">
+            <div class="card day day-0 monday">
                 <div class="card-header">
                     <div class="dow">Mon</div>
                     <div class="date"></div>
@@ -39,8 +39,8 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 day day-1 tuesday">
-            <div class="card">
+        <div class="col-12 col-md-2">
+            <div class="card day day-1 tuesday">
                 <div class="card-header">
                     <div class="dow">Tue</div>
                     <div class="date"></div>
@@ -51,8 +51,8 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 day day-2 wednesday">
-            <div class="card">
+        <div class="col-12 col-md-2">
+            <div class="card day day-2 wednesday">
                 <div class="card-header">
                     <div class="dow">Wed</div>
                     <div class="date"></div>
@@ -63,8 +63,8 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 day day-3 thursday">
-            <div class="card">
+        <div class="col-12 col-md-2">
+            <div class="card day day-3 thursday">
                 <div class="card-header">
                     <div class="dow">Thur</div>
                     <div class="date"></div>
@@ -75,8 +75,8 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 day day-4 friday">
-            <div class="card">
+        <div class="col-12 col-md-2">
+            <div class="card day day-4 friday">
                 <div class="card-header">
                     <div class="dow">Fri</div>
                     <div class="date"></div>
@@ -87,8 +87,19 @@ layout: default
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-2 deadlines">
-            <div class="card">
+        <div class="col-12 col-md-2 ">
+            <div class="card day day-5 saturday mb-3">
+                <div class="card-header">
+                    <div class="dow">Sat</div>
+                    <div class="date"></div>
+                </div>
+                <div class="card-body">
+                    <div class="holiday">Holiday</div>
+                    <div class="info"></div>
+                </div>
+            </div>
+
+            <div class="card deadlines" id="deadlines">
                 <div class="card-header">
                     <div class="dow">Deadlines</div>
                     <div class="date">&nbsp;</div>
@@ -120,6 +131,6 @@ layout: default
         integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg=="
         crossorigin="anonymous"></script>
 
-<script src="/js/calendar.js?cb=8"></script>
+<script src="/js/calendar.js?cb=9"></script>
 
 {{ content }}

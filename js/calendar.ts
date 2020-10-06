@@ -37,6 +37,8 @@ interface WeekRota {
     wednesday?: DayData;
     thursday?: DayData;
     friday?: DayData;
+    saturday?: DayData;
+    sunday?: DayData;
 }
 
 interface WeekRotaMap {
@@ -111,6 +113,8 @@ class CalendarModel {
             wednesday: CalendarModel.merge(classRota['wednesday'], yearRota['wednesday']),
             thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
             friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
+            saturday: {},
+            sunday: {}
         };
     }
 
@@ -162,12 +166,20 @@ class CalendarModel {
 
     timings(date: moment.Moment): Timing[] {
         const overrides: Timing[] = CalendarModel.value(this.overrides(date), 'timings', [])
-            .map(o => { return  { title: '*' + o.title, time: o.time} });
+            .map(o => { return  { title: CalendarModel.markup(o.title, '*'), time: o.time} });
         const extra: Timing[] = CalendarModel.value(this.extras(date), 'timings', [])
-            .map(o => { return  { title: '+' + o.title, time: o.time} });
+            .map(o => { return  { title: CalendarModel.markup(o.title, '+'), time: o.time} });
         const rota: Timing[] = CalendarModel.dayValue(this.currentRota(), date, 'timings', []);
         return (overrides.length ? overrides : extra.concat(rota))
             .sort(CalendarModel.sortTime);
+    }
+
+    private static markup(value: string, symbol: string) {
+        if (value !== undefined && (value.startsWith("*") || value.startsWith("+"))) {
+            value = value.substring(1, value.length);
+        }
+
+        return symbol + value;
     }
 
     private static sortTime(l:Timing, r:Timing) {
@@ -196,9 +208,9 @@ class CalendarModel {
 
     private arrayJoin(date: moment.Moment, key: string) {
         const overrides: string[] = CalendarModel.value(this.overrides(date), key, [])
-            .map(o => '*' + o);
+            .map(o => CalendarModel.markup(o, '*'));
         const extra: string[] = CalendarModel.value(this.extras(date), key, [])
-            .map(o => '+' + o);
+            .map(o => CalendarModel.markup(o, '+'));
         const rota: string[] = CalendarModel.dayValue(this.currentRota(), date, key, []);
         return overrides.length ? overrides : extra.concat(rota);
     }
@@ -254,6 +266,13 @@ class CalendarModel {
         return this.optional(['yeargroup', 'deadlines', dkey], [])
             .concat(this.optional(['classes', this.currentClass, 'deadlines', dkey], []))
             .map(o => '!' + o);
+    }
+
+    hasData(date: moment.Moment) {
+        return this.uniform(date).length > 0
+            || this.games(date).length > 0
+            || this.kit(date).length > 0
+            || this.timings(date).length > 0;
     }
 
     private deadlineForList(deadlines: DeadlineMap): Deadline[] {
@@ -347,6 +366,7 @@ class Calendar {
                 .toggleClass('today', date.isSame(today, 'day'))
                 .toggleClass('tomorrow', date.isSame(tomorrow, 'day'))
                 .toggleClass('is-holiday', this.model.isHoliday(date))
+                .toggleClass('d-none', this.shouldHide(date))
                 .find('.date').text(date.format("MMM Do"));
         }
     }
@@ -382,6 +402,7 @@ class Calendar {
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];
+                console.log(key);
                 if (dayInfo === undefined) {
                     continue;
                 }
@@ -456,7 +477,7 @@ class Calendar {
     }
 
     private static weekdays() {
-        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     }
 
     private scrollWeek(weeks: number): void {
@@ -534,5 +555,9 @@ class Calendar {
         if (Calendar.isMobileView()) {
             this.gotoToTodayOrTomorrow();
         }
+    }
+
+    private shouldHide(date: moment.Moment) {
+        return date.isoWeekday() > 5 && !this.model.hasData(date);
     }
 }

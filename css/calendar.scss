@@ -40,6 +40,10 @@
   border-radius: .25rem;
 }
 
+.key span a {
+  color: #212529;
+}
+
 .key .holiday,
 .is-holiday .card-header,
 .is-holiday .card-body {
@@ -49,11 +53,18 @@
 .key .today,
 .today .card-header {
   background: #C9FFBF !important;
+  cursor: pointer;
 }
 
 .key .tomorrow,
 .tomorrow .card-header {
   background: #e0d8ff !important;
+  cursor: pointer;
+}
+
+.key .today:hover,
+.key .tomorrow:hover {
+  text-decoration: underline;
 }
 
 .warn,
