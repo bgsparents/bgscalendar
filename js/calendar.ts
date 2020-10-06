@@ -435,7 +435,7 @@ class Calendar {
 
     private static createSection(title: string, dl: JQuery<HTMLElement>): JQuery<HTMLElement> {
         const dd = $('<dd></dd>');
-        dl.append($('<dt></dt>').text(title))
+        dl.append($('<dt></dt>').html(title))
             .append(dd);
         return dd;
     }
@@ -473,7 +473,7 @@ class Calendar {
             css = 'warn';
             value = value.substring(1, value.length);
         }
-        return $('<div></div>').append($('<span></span>').addClass(css).text(value)).html();
+        return $('<div></div>').append($('<span></span>').addClass(css).html(value)).html();
     }
 
     private static weekdays() {

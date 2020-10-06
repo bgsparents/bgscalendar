@@ -336,7 +336,7 @@ var Calendar = /** @class */ (function () {
     };
     Calendar.createSection = function (title, dl) {
         var dd = $('<dd></dd>');
-        dl.append($('<dt></dt>').text(title))
+        dl.append($('<dt></dt>').html(title))
             .append(dd);
         return dd;
     };
@@ -371,7 +371,7 @@ var Calendar = /** @class */ (function () {
             css = 'warn';
             value = value.substring(1, value.length);
         }
-        return $('<div></div>').append($('<span></span>').addClass(css).text(value)).html();
+        return $('<div></div>').append($('<span></span>').addClass(css).html(value)).html();
     };
     Calendar.weekdays = function () {
         return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
