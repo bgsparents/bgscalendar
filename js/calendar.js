@@ -298,7 +298,7 @@ var Calendar = /** @class */ (function () {
         var deadlines = this.model.recentOrFutureDeadlines();
         for (var i = 0; i < deadlines.length; ++i) {
             el.append($('<dt></dt>').text(deadlines[i].date.format('ddd, Do MMM')));
-            el.append($('<dd></dd>').text(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
+            el.append($('<dd></dd>').html(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
         }
     };
     Calendar.prototype.repaintCalendar = function () {
