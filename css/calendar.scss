@@ -11,8 +11,8 @@
 }
 
 .day {
-  padding-left: 3px;
-  padding-right: 3px;
+  //padding-left: 3px;
+  //padding-right: 3px;
 }
 
 .card {
@@ -25,7 +25,15 @@
 }
 
 .card-body {
-  padding: 0.25rem;
+  padding: 0;
+
+  dt {
+    padding: 0.5rem;
+  }
+
+  dd {
+    padding: 0 0.5rem;
+  }
 }
 
 .dow {
@@ -131,11 +139,11 @@ footer {
 
 @media (max-width: 768px) {
   .day {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    //padding-left: 1rem;
+    //padding-right: 1rem;
   }
 
-  .card-body {
-    padding: 0.25rem 2rem;
-  }
+  //.card-body {
+  //  padding: 0.25rem 2rem;
+  //}
 }
