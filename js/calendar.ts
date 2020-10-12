@@ -13,10 +13,17 @@ interface Timing {
     time: string;
 }
 
+interface Menu {
+    mains: string[];
+    sides: string[];
+    desserts: string[];
+}
+
 interface DayData {
     uniform?: string[];
     games?: string[];
     kit?: string[];
+    menu?: Menu[];
     timings?: Timing[];
 }
 
@@ -243,7 +250,8 @@ class CalendarModel {
             uniform: CalendarModel.concatKey(primary, secondary, 'uniform'),
             games: CalendarModel.concatKey(primary, secondary, 'games'),
             kit: CalendarModel.concatKey(primary, secondary, 'kit'),
-            timings: CalendarModel.concatKey(primary, secondary, 'timings')
+            timings: CalendarModel.concatKey(primary, secondary, 'timings'),
+            menu: CalendarModel.concatKey(primary, secondary, 'menu')
         }
     }
 
@@ -399,6 +407,7 @@ class Calendar {
         $('.day .info').html('');
 
         const weekRota = this.model.currentRota();
+        console.log(weekRota);
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];
@@ -427,6 +436,21 @@ class Calendar {
                 dd.append($('<div></div>')
                     .html(Calendar.markup(timings[i].title))
                     .append($('<span class="float-right"></span>').html(timings[i].time)));
+            }
+        }
+
+        if (info['menu'] !== undefined && info['menu'].length > 0) {
+            const menu = info.menu[0];
+            const dd = Calendar.createSection('Menu', dl);
+            const ul = dd;
+            if (menu['mains']) {
+                ul.append($('<div></div>').html('<b>Mains: </b>' + menu.mains.join(", ")));
+            }
+            if (menu['sides']) {
+                ul.append($('<div></div>').html('<b>Sides: </b>' + menu.sides.join(", ")));
+            }
+            if (menu['desserts']) {
+                ul.append($('<div></div>').html('<b>Desserts: </b>' + menu.desserts.join(", ")));
             }
         }
 

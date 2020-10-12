@@ -154,7 +154,8 @@ var CalendarModel = /** @class */ (function () {
             uniform: CalendarModel.concatKey(primary, secondary, 'uniform'),
             games: CalendarModel.concatKey(primary, secondary, 'games'),
             kit: CalendarModel.concatKey(primary, secondary, 'kit'),
-            timings: CalendarModel.concatKey(primary, secondary, 'timings')
+            timings: CalendarModel.concatKey(primary, secondary, 'timings'),
+            menu: CalendarModel.concatKey(primary, secondary, 'menu')
         };
     };
     CalendarModel.concatKey = function (first, second, key) {
@@ -304,6 +305,7 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.repaintCalendar = function () {
         $('.day .info').html('');
         var weekRota = this.model.currentRota();
+        console.log(weekRota);
         if (weekRota !== undefined) {
             for (var _i = 0, _a = Calendar.weekdays(); _i < _a.length; _i++) {
                 var key = _a[_i];
@@ -330,6 +332,20 @@ var Calendar = /** @class */ (function () {
                 dd.append($('<div></div>')
                     .html(Calendar.markup(timings[i].title))
                     .append($('<span class="float-right"></span>').html(timings[i].time)));
+            }
+        }
+        if (info['menu'] !== undefined && info['menu'].length > 0) {
+            var menu = info.menu[0];
+            var dd = Calendar.createSection('Menu', dl);
+            var ul = dd;
+            if (menu['mains']) {
+                ul.append($('<div></div>').html('<b>Mains: </b>' + menu.mains.join(", ")));
+            }
+            if (menu['sides']) {
+                ul.append($('<div></div>').html('<b>Sides: </b>' + menu.sides.join(", ")));
+            }
+            if (menu['desserts']) {
+                ul.append($('<div></div>').html('<b>Desserts: </b>' + menu.desserts.join(", ")));
             }
         }
         $('.day.' + day + ' .info').append(dl);

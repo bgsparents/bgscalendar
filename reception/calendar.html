@@ -50,17 +50,99 @@ css: calendar.css?cb=4
         }
     };
 
+    var yearGroupRota = {
+        week: {
+            start: moment('2020-08-31'),
+            frequency: 1,
+            monday: commonDayData.monday,
+            tuesday: commonDayData.swimming,
+            wednesday: commonDayData.regular,
+            thursday: commonDayData.swimming,
+            friday: commonDayData.pe
+        }
+    };
+
+
     var data = {
         yeargroup: {
             rota: {
-                week: {
+                weekA: {
                     start: moment('2020-08-31'),
-                    frequency: 1,
-                    monday: commonDayData.monday,
-                    tuesday: commonDayData.swimming,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.swimming,
-                    friday: commonDayData.pe
+                    frequency: 2,
+                    monday: {
+                        menu: {
+                            mains: ["Turkey Chilli Con Carne & Taco", "Vegetable Ratatouille"],
+                            sides: ["Steamed Rice", "Green Beans"],
+                            desserts: ["Lemon & Poppy Seeds Cake", "Fresh Fruit"]
+                        }
+                    },
+                    tuesday: {
+                        menu: {
+                            mains: ["Tomato and Veg Sauce Pasta", "Roasted Vegetable Quiche"],
+                            sides: ["Garlic Bread", "Sweetcorn"],
+                            desserts: ["Warm Courgette Brownie", "Fruit Fruit"]
+                        }
+                    },
+                    wednesday: {
+                        menu: {
+                            mains: ["Mild Chicken Curry", "Butternut and Lentil Curry"],
+                            sides: ["Steamed Rice", "Naan Bread", "Cauliflower Florets"],
+                            desserts: ["Vanilla Ice Cream and Biscuit Curl", "Fresh Fruit"]
+                        }
+                    },
+                    thursday: {
+                        menu: {
+                            mains: ["Roast Gammon and Gravy", "Macaroni Cheese Bake"],
+                            sides: ["Roast Potatoes", "Diced Carrots and Swede"],
+                            desserts: ["Jam Shortbread and Custard", "Fresh Fruit"]
+                        }
+                    },
+                    friday: {
+                        menu: {
+                            mains: ["Chicken Fillet Bites Garlic & Mayo", "Gnocci Pepper Bake"],
+                            sides: ["Skin on Fries", "Garden Peas", "Baked Beans"],
+                            desserts: ["Iced Sponge with Sprinkles", "Fresh Fruit"]
+                        }
+                    }
+                },
+                weekB: {
+                    start: moment('2020-09-07'),
+                    frequency: 2,
+                    monday: {
+                        menu: {
+                            mains: ["Barbequed Pork", "Mushroom Enchilada"],
+                            sides: ["Noodles", "Broccoli Florets"],
+                            desserts: ["Chocolate & Pear Crumble", "Fresh Fruit"]
+                        }
+                    },
+                    tuesday: {
+                        menu: {
+                            mains: ["Spanish Suasages", "Spinach & Ricotta Tortellini"],
+                            sides: ["Steamed Rice", "Green Beans"],
+                            desserts: ["Apple Flapjack Squares", "Fresh Fruit"]
+                        }
+                    },
+                    wednesday: {
+                        menu: {
+                            mains: ["Beef Bolognese", "Aubergine, Tomato & Potato Layer"],
+                            sides: ["Penne Pasta", "Diced Carrots"],
+                            desserts: ["Shortbread Biscuit", "Fresh Fruit"]
+                        }
+                    },
+                    thursday: {
+                        menu: {
+                            mains: ["Moroccan Chicken", "Vegetable and Bean Shepherd's Pie"],
+                            sides: ["Herbed Dice Potatoes", "Sweetcorn"],
+                            desserts: ["Marbled Sponge Cake and Custard", "Fresh Fruit"]
+                        }
+                    },
+                    friday: {
+                        menu: {
+                            mains: ["Cod Fillet Fish Fingers", "Cheese & Onion Turnovers"],
+                            sides: ["Skin on Fries", "Garden Peas", "Baked Beans"],
+                            desserts: ["Chocolate Crunch Squares", "French Fruit"]
+                        }
+                    }
                 }
             },
             extras: {
@@ -89,19 +171,19 @@ css: calendar.css?cb=4
 
         classes: {
             RFC: {
-                rota: {},
+                rota: yearGroupRota,
                 extras: {},
                 overrides: {},
                 deadlines: {}
             },
             RRB: {
-                rota: {},
+                rota: yearGroupRota,
                 extras: {},
                 overrides: {},
                 deadlines: {}
             },
             RJR: {
-                rota: {},
+                rota: yearGroupRota,
                 extras: {},
                 overrides: {},
                 deadlines: {}
