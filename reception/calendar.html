@@ -29,7 +29,11 @@ css: calendar.css?cb=5
         monday: {
             uniform: "School uniform with blazer",
             kit: ['*Reading book', '*Water bottle', '*Full PE kit in yellow PE bag'].concat(commonKit),
-            timings: timings
+            timings: timings.concat(
+                [
+                    { title: "Multi-Activity Club Pick Up:", time: "4:30pm" }
+                ]
+            )
         },
         regular: {
             uniform: "School uniform with blazer",
