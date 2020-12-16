@@ -198,107 +198,9 @@ css: calendar.css?cb=5
             extras: {
                 '2020-09-03': {
                     kit: ["An art overall, pair of black leggings, t-shirt and hoody in a named plastic bag (in case the games kit becomes very wet), which will stay on their pegs at school"]
-                },
-                '2020-09-09': {
-                    games: ["School photo"]
-                },
-                '2020-10-09': {
-                    kit: ['£1 donation']
-                },
-                '2020-11-05': {
-                    kit: ['£1 for poppy appeal']
-                },
-                '2020-11-09': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-10': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-11': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-12': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-13': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-14': {
-                    games: ['TT Rock Stars Online Mathematics Competition']
-                },
-                '2020-11-30': {
-                    kit: ['Shopping bag for Christmas Gift Sale presents', '£1 for Name the Teddy entry']
-                },
-                '2020-12-01': {
-                    kit: ['£1 for Name the Teddy entry']
-                },
-                '2020-12-02': {
-                    kit: ['Black leotard', '£1 for Name the Teddy entry']
-                },
-                '2020-12-03': {
-                    kit: ['£1 for Name the Teddy entry']
-                },
-                '2020-12-04': {
-                    kit: ['£1 for Name the Teddy entry']
-                },
-                '2020-12-05': {
-                    games: ['Second Hand Uniform Pick-up']
-                },
-                '2020-12-07': {
-                    kit: ['£1 for Name the Teddy entry']
-                },
-                '2020-12-08': {
-                    kit: ['£1 for Name the Teddy entry']
-                },
-                '2020-12-10': {
-                    events: 'Christmas Dinner'
                 }
             },
             overrides: {
-                '2020-10-10': {
-                    uniform: ["Damson games shirt, skort, tracksuit bottoms and hooded top/new midlayer top, other warm/waterproof clothes (hats and gloves)"],
-                    games: "Hockey Training - <a href='https://goo.gl/maps/fPy2ovb5zLU7FrgW9' target='gordonfields'>Gordon Fields (Bedford School Astro)</a>",
-                    kit: [
-                        "Astros/trainers",
-                        "Base layers (top and bottom)",
-                        "Water bottle",
-                        "Shin pads",
-                        "Mouth-guard",
-                        "Hockey stick"
-                    ],
-                    timings: [
-                        {title: "Drop Off:", time: "10:30am"},
-                        {title: "Pick Up:", time: "11:45am"}
-                    ]
-                },
-                '2020-11-07': {
-                    uniform: "Tracksuit bottoms, top, mid-layer, jacket, skort, shirt, base-layers",
-                    games: "Netball",
-                    kit: astrosKit.concat(["Water bottle"]),
-                    timings: [
-                        {title: "Drop Off:", time: "10:30am"},
-                        {title: "Pick Up:", time: "11:45am"}
-                    ]
-                },
-                '2020-11-14': {
-                    uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
-                    games: "Hockey",
-                    kit: [
-                        "*Hockey stick",
-                        "*Shin pads",
-                        "*Gum shield"
-                    ].concat(astrosKit),
-                    timings: [
-                        {title: "Drop Off:", time: "9:00am"},
-                        {title: "Pick Up:", time: "10:15am"}
-                    ]
-                },
-                '2020-12-09': {
-                    uniform: "Dress-up Day"
-                },
-                '2020-12-10': {
-                    uniform: 'Christmas Jumper and Mufti'
-                },
                 '2020-12-11': {
                     uniform: "School uniform with blazer",
                     games: ['End of Term'],
@@ -310,18 +212,7 @@ css: calendar.css?cb=5
                 }
             },
             deadlines: {
-                '2020-09-10': ['Tennis Academy Registration'],
-                '2020-09-22': ['House T-shirt Order Deadline'],
-                '2020-10-08': ['Saturday Hockey Training Enrollment Deadline'],
-                '2020-10-16': ['Tennis Academy Registration'],
-                '2020-11-02': ['<a target="_blank" href="https://jhodgkin.wufoo.com/forms/q91c401votthl/">Christmas Card Order Deadline</a>'],
-                '2020-11-05': ['<a href=\'https://bedfordgirlsschool.parentseveningsystem.co.uk\' target=\'_blank\'>Parents Consultation Booking Opens from 7pm</a>'],
-                '2020-11-11': ['<a href=\'tbf-browse-order-form.pdf\' target=\'flu\'>Travelling Book Fair Order Deadline</a>',
-                    '<a href=\'https://bedfordgirlsschool.parentseveningsystem.co.uk\' target=\'_blank\'>Parents Consultation Booking Closes at 2:30pm</a>'],
-                '2020-11-22': ['Second Hand Uniform Orders'],
-                '2020-11-25': ['Christmas Gift Sale Money - Max £20 in named envelope'],
-                '2020-11-26': ['Christmas Bauble Competition Entry'],
-                '2020-12-05': ['<a href=\'https://immsconsent.eput.nhs.uk/FluConsent/Form1/#!/Page1\' target=\'flu\'>Flu Immunisation Consent Form - URN 109727</a>']
+                '2020-09-10': ['Tennis Academy Registration']
             }
         },
 
@@ -331,8 +222,8 @@ css: calendar.css?cb=5
                     weekA: {
                         start: moment('2020-08-31'),
                         frequency: 2,
-                        monday: commonDayData.netball,
-                        tuesday: commonDayData.hockey,
+                        monday: commonDayData.hockey,
+                        tuesday: commonDayData.netball,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
                         friday: commonDayData.swimming
@@ -342,23 +233,16 @@ css: calendar.css?cb=5
                         start: moment('2020-09-07'),
                         frequency: 2,
                         monday: commonDayData.regular,
-                        tuesday: commonDayData.hockey,
+                        tuesday: commonDayData.netball,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
                         friday: commonDayData.swimming
                     }
                 },
                 extras: {
-                    "2020-09-18": tennis,
-                    "2020-09-25": tennis,
-                    "2020-10-02": tennis,
-                    "2020-10-09": tennis,
-                    "2020-10-16": tennis,
-                    "2020-11-06": tennis,
-                    "2020-11-13": tennis,
-                    "2020-11-20": tennis,
-                    "2020-11-27": tennis,
-                    "2020-12-04": tennis
+                    "2021-01-29": tennis,
+                    "2021-02-05": tennis,
+                    "2021-02-12": tennis
                 },
                 overrides: {
                     '2020-12-05': {
@@ -381,11 +265,11 @@ css: calendar.css?cb=5
                     weekA: {
                         start: moment('2020-08-31'),
                         frequency: 2,
-                        monday: commonDayData.netball,
+                        monday: commonDayData.hockey,
                         tuesday: commonDayData.swimming,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.hockey
+                        friday: commonDayData.netball
                     },
                     weekB: {
                         start: moment('2020-09-07'),
@@ -394,20 +278,13 @@ css: calendar.css?cb=5
                         tuesday: commonDayData.swimming,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.hockey
+                        friday: commonDayData.netball
                     }
                 },
                 extras: {
-                    "2020-09-15": tennis,
-                    "2020-09-22": tennis,
-                    "2020-09-29": tennis,
-                    "2020-10-06": tennis,
-                    "2020-10-13": tennis,
-                    "2020-11-06": tennis,
-                    "2020-11-13": tennis,
-                    "2020-11-20": tennis,
-                    "2020-11-27": tennis,
-                    "2020-12-04": tennis
+                    "2021-01-26": tennis,
+                    "2021-02-02": tennis,
+                    "2021-02-09": tennis
                 },
                 overrides: {
                     '2020-12-05': {
