@@ -249,6 +249,9 @@ var Calendar = /** @class */ (function () {
     Object.defineProperty(Calendar.prototype, "currentDate", {
         set: function (date) {
             this.model.currentDate = date;
+            window.location.hash = this.model.currentDate.format('YYYY-WW') == moment().format('YYYY-WW')
+                ? ''
+                : this.model.currentDate.format('YYYY-WW');
             this.repaint();
             this.scrollBest();
         },
@@ -305,12 +308,10 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.repaintCalendar = function () {
         $('.day .info').html('');
         var weekRota = this.model.currentRota();
-        console.log(weekRota);
         if (weekRota !== undefined) {
             for (var _i = 0, _a = Calendar.weekdays(); _i < _a.length; _i++) {
                 var key = _a[_i];
                 var dayInfo = weekRota[key];
-                console.log(key);
                 if (dayInfo === undefined) {
                     continue;
                 }
@@ -454,6 +455,11 @@ var Calendar = /** @class */ (function () {
         $('.key .deadlines').click(function () { return Calendar.scrollTo('.col-12.deadlines'); });
     };
     Calendar.prototype.init = function () {
+        var date = window.location.hash;
+        if (date && date.match(/\d{4}-\d{1,2}/)) {
+            this.currentDate = moment(date.substring(1), 'YYYY-WW');
+            this.model.currentDate = moment(date.substring(1), 'YYYY-WW');
+        }
         this.paint();
         this.listeners();
         if (Calendar.isMobileView()) {
