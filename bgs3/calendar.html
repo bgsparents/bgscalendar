@@ -30,7 +30,6 @@ css: calendar.css?cb=5
         timings: [{title: "Tennis Academy", time: "7:25am"}]
     };
 
-
     var timings = [
         {title: "Drop Off:", time: "8:00am"},
         {title: "Pick Up:", time: "4:00pm"}
@@ -40,6 +39,11 @@ css: calendar.css?cb=5
         regular: {
             uniform: "School uniform with blazer",
             kit: commonKit,
+            timings: timings
+        },
+        regularAndUkulele: {
+            uniform: "School uniform with blazer",
+            kit: ['+Ukulele'].concat(commonKit),
             timings: timings
         },
         wednesday: {
@@ -82,13 +86,29 @@ css: calendar.css?cb=5
                 "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
             ].concat(commonKit),
             timings: timings
+        },
+        swimmingAndUkulele: {
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Swimming",
+            kit: [
+                "+Ukulele", "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit),
+            timings: timings
         }
-
     };
 
     var data = {
         yeargroup: {
             rota: {
+                always: {
+                    start: moment('2021-03-01'),
+                    frequency: 1,
+                    friday: {
+                        timings: [
+                            {title: "Rounders Practice Pickup:", time: "5:30pm"}
+                        ]
+                    }
+                }
             //     weekA: {
             //         start: moment('2020-08-31'),
             //         frequency: 3,
@@ -223,8 +243,14 @@ css: calendar.css?cb=5
             //     }
             },
             extras: {
-                '2020-09-03': {
-                    kit: ["An art overall, pair of black leggings, t-shirt and hoody in a named plastic bag (in case the games kit becomes very wet), which will stay on their pegs at school"]
+                '2021-05-22': {
+                    uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+                    games: ['Saturday Morning Tennis'],
+                    kit: ['Tennis Racket', 'Water Bottle'],
+                    timings: [
+                        {title: "Drop Off:", time: "8:50am"},
+                        {title: "Pick Up:", time: "10:15am"}],
+                    menu: {}
                 }
             },
             overrides: {
@@ -252,7 +278,7 @@ css: calendar.css?cb=5
                         monday: commonDayData.rounders,
                         tuesday: commonDayData.tennis,
                         wednesday: commonDayData.wednesday,
-                        thursday: commonDayData.regular,
+                        thursday: commonDayData.regularAndUkulele,
                         friday: commonDayData.swimming
                     },
 
@@ -262,7 +288,7 @@ css: calendar.css?cb=5
                         monday: commonDayData.regular,
                         tuesday: commonDayData.tennis,
                         wednesday: commonDayData.wednesday,
-                        thursday: commonDayData.regular,
+                        thursday: commonDayData.regularAndUkulele,
                         friday: commonDayData.swimming
                     }
                 },
@@ -299,7 +325,7 @@ css: calendar.css?cb=5
                         start: moment('2021-04-19'),
                         frequency: 2,
                         monday: commonDayData.rounders,
-                        tuesday: commonDayData.swimming,
+                        tuesday: commonDayData.swimmingAndUkulele,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
                         friday: commonDayData.tennis
@@ -308,7 +334,7 @@ css: calendar.css?cb=5
                         start: moment('2021-04-26'),
                         frequency: 2,
                         monday: commonDayData.regular,
-                        tuesday: commonDayData.swimming,
+                        tuesday: commonDayData.swimmingAndUkulele,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
                         friday: commonDayData.tennis
