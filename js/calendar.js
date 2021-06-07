@@ -8,7 +8,7 @@ var CalendarModel = /** @class */ (function () {
         get: function () {
             return Object.keys(this._data.classes);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CalendarModel.prototype, "currentDate", {
@@ -18,14 +18,14 @@ var CalendarModel = /** @class */ (function () {
         set: function (date) {
             this._currentDate = date.startOf('isoWeek');
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CalendarModel.prototype, "classPickKey", {
         get: function () {
             return this._context ? 'pick-class-' + this._context : 'pick-class';
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     CalendarModel.prototype.optional = function (stack, def) {
@@ -48,7 +48,8 @@ var CalendarModel = /** @class */ (function () {
             thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
             friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
             saturday: {},
-            sunday: {}
+            sunday: {},
+            title: classRota.title
         };
     };
     CalendarModel.prototype.getRotaForWeek = function (rotas) {
@@ -243,7 +244,7 @@ var Calendar = /** @class */ (function () {
             }
             this.repaint();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Calendar.prototype, "currentDate", {
@@ -255,7 +256,7 @@ var Calendar = /** @class */ (function () {
             this.repaint();
             this.scrollBest();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Calendar.prototype.paint = function () {
@@ -308,6 +309,7 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.repaintCalendar = function () {
         $('.day .info').html('');
         var weekRota = this.model.currentRota();
+        var title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined);
         if (weekRota !== undefined) {
             for (var _i = 0, _a = Calendar.weekdays(); _i < _a.length; _i++) {
                 var key = _a[_i];

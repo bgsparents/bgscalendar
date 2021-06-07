@@ -37,6 +37,7 @@ interface DateRange {
 }
 
 interface WeekRota {
+    title?: string;
     start?: moment.Moment;
     frequency?: number;
     monday?: DayData;
@@ -121,7 +122,8 @@ class CalendarModel {
             thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
             friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
             saturday: {},
-            sunday: {}
+            sunday: {},
+            title: classRota.title
         };
     }
 
@@ -411,6 +413,7 @@ class Calendar {
         $('.day .info').html('');
 
         const weekRota = this.model.currentRota();
+        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined);
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];

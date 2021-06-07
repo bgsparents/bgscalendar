@@ -67,9 +67,9 @@ css: calendar.css?cb=5
             ].concat(astrosKit).concat(commonKit),
             timings: timings
         },
-        rounders: {
+        cricket: {
             uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
-            games: "Rounders",
+            games: "Cricket",
             kit: commonKit,
             timings: timings
         },
@@ -105,7 +105,7 @@ css: calendar.css?cb=5
                     frequency: 1,
                     friday: {
                         timings: [
-                            {title: "Rounders Practice Pickup:", time: "5:30pm"}
+                            {title: "Cricket Practice Pickup:", time: "5:30pm"}
                         ]
                     }
                 }
@@ -148,7 +148,7 @@ css: calendar.css?cb=5
             //             },
             //             timings:
             //                 [
-            //                     { title: "Rounders Practice Pick Up:", time: "5:30pm" }
+            //                     { title: "Cricket Practice Pick Up:", time: "5:30pm" }
             //                 ]
             //
             //         }
@@ -192,7 +192,7 @@ css: calendar.css?cb=5
             //             },
             //             timings:
             //                 [
-            //                 { title: "Rounders Practice Pick Up:", time: "5:30pm" }
+            //                 { title: "Cricket Practice Pick Up:", time: "5:30pm" }
             //                 ]
             //
             //         }
@@ -277,9 +277,10 @@ css: calendar.css?cb=5
             "3M": {
                 rota: {
                     weekA: {
-                        start: moment('2021-04-19'),
+                        title: "Week A",
+                        start: moment('2021-06-07'),
                         frequency: 2,
-                        monday: commonDayData.rounders,
+                        monday: commonDayData.cricket,
                         tuesday: commonDayData.tennis,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regularAndUkulele,
@@ -287,7 +288,8 @@ css: calendar.css?cb=5
                     },
 
                     weekB: {
-                        start: moment('2021-04-26'),
+                        title: "Week B",
+                        start: moment('2021-06-14'),
                         frequency: 2,
                         monday: commonDayData.regular,
                         tuesday: commonDayData.tennis,
@@ -326,16 +328,18 @@ css: calendar.css?cb=5
             "3C": {
                 rota: {
                     weekA: {
-                        start: moment('2021-04-19'),
+                        title: "Week A",
+                        start: moment('2021-06-07'),
                         frequency: 2,
-                        monday: commonDayData.rounders,
+                        monday: commonDayData.cricket,
                         tuesday: commonDayData.swimmingAndUkulele,
                         wednesday: commonDayData.wednesday,
                         thursday: commonDayData.regular,
                         friday: commonDayData.tennis
                     },
                     weekB: {
-                        start: moment('2021-04-26'),
+                        title: "Week B",
+                        start: moment('2021-06-14'),
                         frequency: 2,
                         monday: commonDayData.regular,
                         tuesday: commonDayData.swimmingAndUkulele,
