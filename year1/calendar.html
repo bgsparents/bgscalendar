@@ -1,0 +1,147 @@
+---
+layout: calendar
+title: Year 1 Calendar
+homeLink: /year1/calendar
+manifest: manifest-year1
+css: calendar.css?cb=5
+---
+
+<script>
+
+    var commonKit = [
+        "Book bag",
+        "Water bottle"
+    ];
+
+    var swimmingKit = [
+        "*Swimming costume",
+        "*Swimming hat",
+        "*Towel",
+        "*Sliders",
+        "*Tummy band"
+    ];
+
+    var timings = [
+        { title: "Larks:", time: "8:00am" },
+        { title: "Drop Off:", time: "8:35am" },
+        { title: "Pick Up:", time: "3:30pm" },
+        { title: "Owls:", time: "6:00pm" }
+    ];
+
+    var commonDayData = {
+        monday: {
+            uniform: "School uniform with blazer",
+            kit: ['*Reading book', '*Water bottle', '*Full PE kit in yellow PE bag'].concat(commonKit),
+            timings: timings.concat(
+                [
+                    { title: "Multi-Activity Club Pick Up:", time: "4:30pm" }
+                ]
+            )
+        },
+        regular: {
+            uniform: "School uniform with blazer",
+            kit: commonKit,
+            timings: timings
+        },
+        pe: {
+            uniform: "PE Shorts, jogging top and bottoms, polo shorts and trainers",
+            games: "PE",
+            kit: commonKit,
+            timings: timings
+        },
+        swimming: {
+            uniform: "School uniform with blazer",
+            games: "Swimming",
+            kit: swimmingKit.concat(commonKit),
+            timings: timings
+        }
+    };
+
+    var yearGroupRota = {
+        week: {
+            start: moment('2021-09-06'),
+            frequency: 1,
+            monday: commonDayData.regular,
+            tuesday: commonDayData.regular,
+            wednesday: commonDayData.regular,
+            thursday: commonDayData.regular,
+            friday: commonDayData.regular
+        }
+    };
+
+
+    var data = {
+        yeargroup: {
+            rota: {
+            },
+            extras: {
+                '2021-09-06': {
+                    kit: swimmingKit.concat(['PE Kit', 'Zip pencil case', 'Little Jar of Me'])
+                },
+                '2021-09-07': {
+                    timings: [
+                        {title: "Parent Tea:", time: "6:30pm"}]
+                },
+            },
+            overrides: {
+                '2021-12-10': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+                '2022-03-25': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+                '2022-07-15': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+            },
+            deadlines: {
+            }
+        },
+
+        classes: {
+            '1FR': {
+                rota: yearGroupRota,
+                extras: {},
+                deadlines: {}
+            },
+            '1GO': {
+                rota: yearGroupRota,
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            },
+            '1JC': {
+                rota: yearGroupRota,
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            }
+        },
+
+        termTimes: [
+            {start: moment('2021-09-06'), end: moment('2021-10-15')},
+            {start: moment('2021-11-01'), end: moment('2021-12-10')},
+            {start: moment('2022-01-05'), end: moment('2022-02-11')},
+            {start: moment('2022-02-21'), end: moment('2022-03-25')},
+            {start: moment('2022-04-20'), end: moment('2022-05-27')},
+            {start: moment('2022-06-06'), end: moment('2022-07-15')}
+        ]
+    };
+
+    new Calendar(data, "pps1");
+</script>
