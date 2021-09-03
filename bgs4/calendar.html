@@ -1,0 +1,264 @@
+---
+layout: calendar
+title: Y4 Calendar
+homeLink: /bgs4/calendar
+manifest: manifest-bgsy4
+css: calendar.css?cb=5
+---
+
+<script>
+
+    var commonKit = [
+        "A filled water bottle",
+        "Two healthy snacks",
+        "Packet of tissues"
+    ];
+
+    var astrosKit = [
+        "*Astroturf boots in a bag"
+    ];
+
+    var danceKit = [
+        '*Black t-shirt, leggings and dance socks/shoes'
+    ];
+
+    var tennis = {
+        //kit: ['Tennis racket for those in Tennis Academy'],
+        timings: [{title: "Tennis Academy", time: "7:25am"}]
+    };
+
+    var timings = [
+        {title: "Drop Off:", time: "8:00am"},
+        {title: "Pick Up:", time: "4:00pm"}
+    ];
+
+    var commonDayData = {
+        regular: {
+            uniform: "School uniform with blazer",
+            kit: commonKit,
+            timings: timings
+        },
+        wednesday: {
+            uniform: "School uniform with blazer",
+            kit: ['*Return library books'].concat(danceKit).concat(commonKit),
+            timings: timings
+        },
+        netball: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Netball",
+            kit: astrosKit.concat(commonKit),
+            timings: timings
+        },
+        hockey: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Hockey",
+            kit: [
+                "*Hockey stick",
+                "*Shin pads",
+                "*Gum shield"
+            ].concat(astrosKit).concat(commonKit),
+            timings: timings
+        },
+        cricket: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Cricket",
+            kit: ['*Hat', '*Sun Cream'].concat(commonKit),
+            timings: timings
+        },
+        tennis: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Tennis",
+            kit: ['*Tennis Racket', '*Hat', '*Sun Cream'].concat(commonKit),
+            timings: timings
+        },
+        swimming: {
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Swimming",
+            kit: [
+                "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit),
+            timings: timings
+        },
+        swimmingAndUkulele: {
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Swimming",
+            kit: [
+                "+Ukulele", "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit),
+            timings: timings
+        }
+    };
+
+    var data = {
+        yeargroup: {
+            rota: {
+                always: {
+                    start: moment('2021-09-06'),
+                    frequency: 1,
+                    friday: {
+                        // timings: [
+                        //     {title: "Cricket Practice Pickup:", time: "5:30pm"}
+                        // ]
+                    }
+                }
+            },
+            extras: {
+            },
+            overrides: {
+                '2021-12-10': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+                '2022-03-25': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+                '2022-07-15': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                },
+                '2021-09-12': {
+                    uniform: "Mufti",
+                    games: ['Games on the Lawn'],
+                    kit: ['Lawn chairs and picnic blankets'],
+                    timings: [
+                        {title: "Start:", time: "2:00pm"},
+                        {title: "Ends:", time: "4:00pm"}],
+                },
+            },
+            deadlines: {
+            }
+        },
+
+        classes: {
+            "4AB": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-09-06'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    },
+
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-09-13'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    }
+                },
+                extras: {
+                    // "2021-04-27": tennis,
+                },
+                overrides: {
+                    // '2020-12-05': {
+                    //     uniform: ["BGS Tracksuit"],
+                    //     games: "Swimming",
+                    //     kit: [
+                    //         "Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+                    //     ],
+                    //     timings: [
+                    //         {title: "Drop Off:", time: "10:15am"},
+                    //         {title: "Pick Up:", time: "11:45am"}
+                    //     ]
+                    // }
+                },
+                deadlines: {}
+            },
+
+            "4C": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-09-06'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    },
+
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-09-13'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    }
+                },
+                extras: {
+                },
+                overrides: {
+                },
+                deadlines: {
+                }
+            },
+
+            "4S": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-09-06'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    },
+
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-09-13'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.regular,
+                        wednesday: commonDayData.regular,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    }
+                },
+                extras: {
+                },
+                overrides: {
+                },
+                deadlines: {}
+            }
+        },
+
+        termTimes: [
+            {start: moment('2021-09-06'), end: moment('2021-10-15')},
+            {start: moment('2021-11-01'), end: moment('2021-12-10')},
+            {start: moment('2022-01-05'), end: moment('2022-02-11')},
+            {start: moment('2022-02-21'), end: moment('2022-03-25')},
+            {start: moment('2022-04-20'), end: moment('2022-05-27')},
+            {start: moment('2022-06-06'), end: moment('2022-07-15')}
+        ]
+    };
+
+    new Calendar(data);
+</script>

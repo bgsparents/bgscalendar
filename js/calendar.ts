@@ -506,7 +506,7 @@ class Calendar {
     }
 
     private static weekdays() {
-        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     }
 
     private scrollWeek(weeks: number): void {

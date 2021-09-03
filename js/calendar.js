@@ -393,7 +393,7 @@ var Calendar = /** @class */ (function () {
         return $('<div></div>').append($('<span></span>').addClass(css).html(value)).html();
     };
     Calendar.weekdays = function () {
-        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     };
     Calendar.prototype.scrollWeek = function (weeks) {
         this.currentDate = moment(this.model.currentDate).add(weeks, 'week');
