@@ -39,9 +39,25 @@ css: calendar.css?cb=5
             kit: commonKit,
             timings: timings
         },
+        friday: {
+            uniform: "School uniform with blazer",
+            kit: ['*Return library books'].concat(commonKit),
+            timings: timings
+        },
+        monday: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            kit: danceKit.concat(commonKit),
+            timings: timings
+        },
         wednesday: {
             uniform: "School uniform with blazer",
             kit: ['*Return library books'].concat(danceKit).concat(commonKit),
+            timings: timings
+        },
+        games: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Netball",
+            kit: astrosKit.concat(commonKit),
             timings: timings
         },
         netball: {
@@ -154,22 +170,22 @@ css: calendar.css?cb=5
                         title: "Week A",
                         start: moment('2021-09-06'),
                         frequency: 2,
-                        monday: commonDayData.regular,
+                        monday: commonDayData.monday,
                         tuesday: commonDayData.hockey,
-                        wednesday: commonDayData.regular,
+                        wednesday: commonDayData.games,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.regular
+                        friday: commonDayData.friday
                     },
 
                     weekB: {
                         title: "Week B",
                         start: moment('2021-09-13'),
                         frequency: 2,
-                        monday: commonDayData.regular,
+                        monday: commonDayData.monday,
                         tuesday: commonDayData.regular,
-                        wednesday: commonDayData.regular,
+                        wednesday: commonDayData.games,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.regular
+                        friday: commonDayData.friday
                     }
                 },
                 extras: {
