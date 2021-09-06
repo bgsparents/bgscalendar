@@ -43,5 +43,5 @@
  "background_color": "#ffffff",
  "theme_color": "#ffffff",
  "orientation": "any",
- "display": "browser"
+ "display": "fullscreen"
 }
