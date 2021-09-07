@@ -46,7 +46,7 @@ css: calendar.css?cb=5
         },
         monday: {
             uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
-            kit: danceKit.concat(commonKit),
+            kit: danceKit.concat(["*Black costume, towel, flipflops, goggles and swim hat"]).concat(commonKit),
             timings: timings
         },
         wednesday: {
@@ -172,7 +172,7 @@ css: calendar.css?cb=5
                         frequency: 2,
                         monday: commonDayData.monday,
                         tuesday: commonDayData.hockey,
-                        wednesday: commonDayData.games,
+                        wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
                         friday: commonDayData.friday
                     },
@@ -183,26 +183,24 @@ css: calendar.css?cb=5
                         frequency: 2,
                         monday: commonDayData.monday,
                         tuesday: commonDayData.regular,
-                        wednesday: commonDayData.games,
+                        wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
                         friday: commonDayData.friday
                     }
                 },
                 extras: {
-                    // "2021-04-27": tennis,
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                        games: ["School Photo"],
+                        kit: [
+                            "Damson sports top, Damson games socks and skort in games bag"
+                        ]
+                    }
                 },
                 overrides: {
-                    // '2020-12-05': {
-                    //     uniform: ["BGS Tracksuit"],
-                    //     games: "Swimming",
-                    //     kit: [
-                    //         "Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
-                    //     ],
-                    //     timings: [
-                    //         {title: "Drop Off:", time: "10:15am"},
-                    //         {title: "Pick Up:", time: "11:45am"}
-                    //     ]
-                    // }
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                    }
                 },
                 deadlines: {}
             },
