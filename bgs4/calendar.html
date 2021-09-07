@@ -39,18 +39,33 @@ css: calendar.css?cb=5
             kit: commonKit,
             timings: timings
         },
-        friday: {
+        friday4as: {
             uniform: "School uniform with blazer",
+            games: "Library",
             kit: ['*Return library books'].concat(commonKit),
             timings: timings
         },
         monday: {
             uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Dance, Swimming",
             kit: danceKit.concat(["*Black costume, towel, flipflops, goggles and swim hat"]).concat(commonKit),
+            timings: timings
+        },
+        monday4c: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Dance, Swimming, Library",
+            kit: danceKit.concat(["*Black costume, towel, flipflops, goggles and swim hat", '*Return library books']).concat(commonKit),
             timings: timings
         },
         wednesday: {
             uniform: "School uniform with blazer",
+            games: "Dance",
+            kit: danceKit.concat(commonKit),
+            timings: timings
+        },
+        wednesdayWithLibrary: {
+            uniform: "School uniform with blazer",
+            games: "Dance, Library",
             kit: ['*Return library books'].concat(danceKit).concat(commonKit),
             timings: timings
         },
@@ -58,6 +73,12 @@ css: calendar.css?cb=5
             uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Netball",
             kit: astrosKit.concat(commonKit),
+            timings: timings
+        },
+        dance: {
+            uniform: "School uniform with blazer",
+            games: "Dance",
+            kit: danceKit.concat(commonKit),
             timings: timings
         },
         netball: {
@@ -70,10 +91,32 @@ css: calendar.css?cb=5
             uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Hockey",
             kit: [
+                '*Return library books',
                 "*Hockey stick",
                 "*Shin pads",
                 "*Gum shield"
             ].concat(astrosKit).concat(commonKit),
+            timings: timings
+        },
+        hockeyWithLibrary: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: ["Hockey", "Library"],
+            kit: [
+                '*Return library books',
+                "*Hockey stick",
+                "*Shin pads",
+                "*Gum shield"
+            ].concat(astrosKit).concat(commonKit),
+            timings: timings
+        },
+        hockeyWithDance: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: ["Hockey", "Dance"],
+            kit: [
+                "*Hockey stick",
+                "*Shin pads",
+                "*Gum shield"
+            ].concat(astrosKit).concat(danceKit).concat(commonKit),
             timings: timings
         },
         cricket: {
@@ -92,15 +135,7 @@ css: calendar.css?cb=5
             uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
             games: "Swimming",
             kit: [
-                "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
-            ].concat(commonKit),
-            timings: timings
-        },
-        swimmingAndUkulele: {
-            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
-            games: "Swimming",
-            kit: [
-                "+Ukulele", "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+                "*Black costume, towel, flipflops, goggles and swim hat"
             ].concat(commonKit),
             timings: timings
         }
@@ -174,7 +209,7 @@ css: calendar.css?cb=5
                         tuesday: commonDayData.hockey,
                         wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.friday
+                        friday: commonDayData.friday4as
                     },
 
                     weekB: {
@@ -185,7 +220,47 @@ css: calendar.css?cb=5
                         tuesday: commonDayData.regular,
                         wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
-                        friday: commonDayData.friday
+                        friday: commonDayData.friday4as
+                    }
+                },
+                extras: {
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                        games: ["School Photo"],
+                        kit: [
+                            "Damson sports top, Damson games socks and skort in games bag"
+                        ]
+                    }
+                },
+                overrides: {
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                    }
+                },
+                deadlines: {}
+            },
+            "4C": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-09-06'),
+                        frequency: 2,
+                        monday: commonDayData.swimming,
+                        tuesday: commonDayData.hockeyWithDance,
+                        wednesday: commonDayData.hockeyWithLibrary,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
+                    },
+
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-09-13'),
+                        frequency: 2,
+                        monday: commonDayData.swimming,
+                        tuesday: commonDayData.dance,
+                        wednesday: commonDayData.hockeyWithLibrary,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.regular
                     }
                 },
                 extras: {
@@ -205,47 +280,15 @@ css: calendar.css?cb=5
                 deadlines: {}
             },
 
-            "4C": {
-                rota: {
-                    weekA: {
-                        title: "Week A",
-                        start: moment('2021-09-06'),
-                        frequency: 2,
-                        monday: commonDayData.regular,
-                        tuesday: commonDayData.regular,
-                        wednesday: commonDayData.regular,
-                        thursday: commonDayData.regular,
-                        friday: commonDayData.regular
-                    },
-
-                    weekB: {
-                        title: "Week B",
-                        start: moment('2021-09-13'),
-                        frequency: 2,
-                        monday: commonDayData.regular,
-                        tuesday: commonDayData.regular,
-                        wednesday: commonDayData.regular,
-                        thursday: commonDayData.regular,
-                        friday: commonDayData.regular
-                    }
-                },
-                extras: {
-                },
-                overrides: {
-                },
-                deadlines: {
-                }
-            },
-
             "4S": {
                 rota: {
                     weekA: {
                         title: "Week A",
                         start: moment('2021-09-06'),
                         frequency: 2,
-                        monday: commonDayData.regular,
-                        tuesday: commonDayData.regular,
-                        wednesday: commonDayData.regular,
+                        monday: commonDayData.monday4c,
+                        tuesday: commonDayData.hockey,
+                        wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
                         friday: commonDayData.regular
                     },
@@ -254,19 +297,31 @@ css: calendar.css?cb=5
                         title: "Week B",
                         start: moment('2021-09-13'),
                         frequency: 2,
-                        monday: commonDayData.regular,
+                        monday: commonDayData.monday4c,
                         tuesday: commonDayData.regular,
-                        wednesday: commonDayData.regular,
+                        wednesday: commonDayData.hockey,
                         thursday: commonDayData.regular,
                         friday: commonDayData.regular
                     }
                 },
                 extras: {
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                        games: ["School Photo"],
+                        kit: [
+                            "Damson sports top, Damson games socks and skort in games bag"
+                        ]
+                    }
                 },
                 overrides: {
+                    '2021-09-08': {
+                        uniform: "School uniform with blazer",
+                    }
                 },
-                deadlines: {}
-            }
+                deadlines: {
+                }
+            },
+
         },
 
         termTimes: [
