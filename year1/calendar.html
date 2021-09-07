@@ -18,7 +18,8 @@ css: calendar.css?cb=5
         "*Swimming hat",
         "*Towel",
         "*Sliders",
-        "*Tummy band"
+        "*Tummy band",
+        "*Swimming goggles"
     ];
 
     var timings = [
@@ -45,7 +46,7 @@ css: calendar.css?cb=5
         },
         pe: {
             uniform: "PE Shorts, jogging top and bottoms, polo shorts and trainers",
-            games: "PE",
+            games: "Games",
             kit: commonKit,
             timings: timings
         },
@@ -63,7 +64,7 @@ css: calendar.css?cb=5
             frequency: 1,
             monday: commonDayData.swimming,
             tuesday: commonDayData.regular,
-            wednesday: commonDayData.regular,
+            wednesday: commonDayData.pe,
             thursday: commonDayData.regular,
             friday: commonDayData.regular
         }
@@ -115,7 +116,42 @@ css: calendar.css?cb=5
 
         classes: {
             '1FR': {
-                rota: yearGroupRota,
+                rota: {
+                    week: {
+                        start: moment('2021-09-06'),
+                        frequency: 1,
+                        monday: {
+                            uniform: "School uniform",
+                            games: ["Swimming", "French"],
+                            kit: ['*Spelling Test Book','*PE Kit'].concat(swimmingKit).concat(commonKit),
+                            timings: timings.concat([{title: "Yoga:", time: "4:30pm"}])
+                        },
+                        tuesday: {
+                            uniform: "School uniform",
+                            games: "PE",
+                            kit: swimmingKit.concat(['+PE Kit']).concat(commonKit),
+                            timings: timings.concat([{title: "Tennis:", time: "4:30pm"}, {title: "Gymnastics:", time: "5:00pm"}])
+                        },
+                        wednesday: {
+                            uniform: "PE Kit",
+                            games: "Games",
+                            kit: commonKit,
+                            timings: timings.concat([{title: "Musical Theatre:", time: "4:30pm"}])
+                        },
+                        thursday: {
+                            uniform: "School uniform",
+                            games: "ICT, Music",
+                            kit: commonKit,
+                            timings: timings.concat([{title: "Cookery Fun:", time: "4:30pm"}, {title: "Choir:", time: "4:30pm"}])
+                        },
+                        friday: {
+                            uniform: "School uniform",
+                            games: "Library, Spelling Test",
+                            kit: ['*Library Book'].concat(commonKit),
+                            timings: timings.concat([{title: "Multi Skills:", time: "4:30pm"}])
+                        }
+                    }
+                },
                 extras: {},
                 deadlines: {}
             },
