@@ -65,7 +65,7 @@ css: calendar.css?cb=7
                 week: {
                     start: moment('2021-09-06'),
                     frequency: 1,
-                    monday: [commonDayData.regular, commonDayData.spellingTestBook, {
+                    monday: [commonDayData.regular, commonDayData.swimming, commonDayData.spellingTestBook, {
                         timings: [{title: "Yoga:", time: "4:30pm"}]
                     }],
                     tuesday: [commonDayData.regular, {
@@ -127,17 +127,13 @@ css: calendar.css?cb=7
                     week: {
                         start: moment('2021-09-06'),
                         frequency: 1,
-                        monday: [commonDayData.swimming, {
+                        monday: [{
                             games: ["French"],
                             kit: ['PE Kit']
                         }],
                         tuesday: {
                             games: "PE"
                         },
-                        wednesday: [{
-                            uniform: "PE Kit",
-                            games: "Games"
-                        }],
                         thursday: {
                             games: "ICT, Music"
                         },
@@ -157,7 +153,16 @@ css: calendar.css?cb=7
                 deadlines: {}
             },
             '1JC': {
-                rota: {},
+                rota: {
+                    week: {
+                        start: moment('2021-09-06'),
+                        frequency: 1,
+                        thursday: {
+                            games: "PE",
+                            kit: ['PE Kit']
+                        },
+                    }
+                },
                 extras: {},
                 overrides: {},
                 deadlines: {}
