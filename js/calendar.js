@@ -167,7 +167,12 @@ var CalendarModel = /** @class */ (function () {
         var extra = CalendarModel.value(this.extras(date), key, [])
             .map(function (o) { return CalendarModel.markup(o, '+'); });
         var rota = CalendarModel.dayValue(week, date, key, []);
-        return overrides.length ? overrides : extra.concat(rota);
+        return this.dedup(overrides.length ? overrides : extra.concat(rota));
+    };
+    CalendarModel.prototype.dedup = function (arr) {
+        return arr.filter(function (value, index, array) {
+            return array.indexOf(value) === index;
+        });
     };
     // private stringJoin(date: moment.Moment, key: string) {
     //     const overrides: string = CalendarModel.value(this.overrides(date), key, '');
@@ -280,6 +285,9 @@ var CalendarModel = /** @class */ (function () {
         return date.isBetween(range.start, range.end, 'day', '[]');
     };
     CalendarModel.prototype.isRotaForWeek = function (rota) {
+        if (!rota.start) {
+            return true;
+        }
         var weeks = this.currentDate.diff(rota.start, "week");
         return weeks >= 0 && weeks % rota.frequency === 0;
     };
@@ -404,13 +412,14 @@ var Calendar = /** @class */ (function () {
         var options = this.pickedOptions;
         for (var _i = 0, _a = this.model.optionGroups; _i < _a.length; _i++) {
             var group = _a[_i];
-            var optionGroup = $('<div class="option-group"></div>')
+            var optionGroup = $('<div class="option-group my-2"></div>')
                 .append($('<div class="option-group-title"></div>').text(group.title));
             for (var _b = 0, _c = group.values; _b < _c.length; _b++) {
                 var option = _c[_b];
                 var input = $('<input type="radio" class="custom-control-input option-input">')
                     .attr('id', 'option-' + option.key)
                     .attr('name', group.title)
+                    .attr('type', group.multiselect ? 'checkbox' : 'radio')
                     .data('key', option.key);
                 if (options.includes(option.key)) {
                     input[0].checked = true;
@@ -418,7 +427,8 @@ var Calendar = /** @class */ (function () {
                 var label = $('<label class="custom-control-label"></label>')
                     .text(option.value)
                     .attr('for', 'option-' + option.key);
-                optionGroup.append($('<div class="custom-control custom-radio custom-control-inline"></div>')
+                optionGroup.append($('<div class="custom-control custom-control-inline"></div>')
+                    .addClass(group.multiselect ? 'custom-checkbox' : 'custom-radio')
                     .append(input)
                     .append(label));
             }

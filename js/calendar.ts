@@ -282,7 +282,14 @@ class CalendarModel {
         const extra: string[] = CalendarModel.value(this.extras(date), key, [])
             .map(o => CalendarModel.markup(o, '+'));
         const rota: string[] = CalendarModel.dayValue(week, date, key, []);
-        return overrides.length ? overrides : extra.concat(rota);
+
+        return this.dedup(overrides.length ? overrides : extra.concat(rota));
+    }
+
+    private dedup(arr: string[]) {
+        return arr.filter(function (value, index, array) {
+            return array.indexOf(value) === index;
+        });
     }
 
     // private stringJoin(date: moment.Moment, key: string) {
@@ -406,6 +413,9 @@ class CalendarModel {
     }
 
     private isRotaForWeek(rota: WeekRota): boolean {
+        if(!rota.start) {
+            return true;
+        }
         const weeks = this.currentDate.diff(rota.start, "week");
         return weeks >= 0 && weeks % rota.frequency === 0;
     }
@@ -528,13 +538,14 @@ class Calendar {
     private paintOptions(): void {
         const options = this.pickedOptions;
         for (let group of this.model.optionGroups) {
-            const optionGroup = $('<div class="option-group"></div>')
+            const optionGroup = $('<div class="option-group my-2"></div>')
                     .append($('<div class="option-group-title"></div>').text(group.title));
 
             for (let option of group.values) {
                 const input = $('<input type="radio" class="custom-control-input option-input">')
                     .attr('id', 'option-' + option.key)
                     .attr('name', group.title)
+                    .attr('type', group.multiselect ? 'checkbox' : 'radio')
                     .data('key', option.key)
 
                 if (options.includes(option.key)) {
@@ -544,7 +555,8 @@ class Calendar {
                 const label = $('<label class="custom-control-label"></label>')
                     .text(option.value)
                     .attr('for', 'option-' + option.key)
-                optionGroup.append($('<div class="custom-control custom-radio custom-control-inline"></div>')
+                optionGroup.append($('<div class="custom-control custom-control-inline"></div>')
+                    .addClass(group.multiselect ? 'custom-checkbox' : 'custom-radio')
                     .append(input)
                     .append(label));
             }
@@ -653,6 +665,7 @@ class Calendar {
 
     private static markup(value: string): string {
         let css = 'normal';
+
         if (value.startsWith('*')) {
             css = 'highlight';
             value = value.substring(1, value.length);
