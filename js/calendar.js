@@ -11,6 +11,22 @@ var CalendarModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(CalendarModel.prototype, "hasOptionGroups", {
+        get: function () {
+            return this._data.additional && this._data.additional.meta && this._data.additional.meta.length > 0;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CalendarModel.prototype, "optionGroups", {
+        get: function () {
+            return this.hasOptionGroups
+                ? this._data.additional.meta
+                : [];
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(CalendarModel.prototype, "currentDate", {
         get: function () {
             return this._currentDate;
@@ -28,6 +44,13 @@ var CalendarModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(CalendarModel.prototype, "optionPickKey", {
+        get: function () {
+            return this._context ? 'pick-option-' + this._context : 'pick-option';
+        },
+        enumerable: false,
+        configurable: true
+    });
     CalendarModel.prototype.optional = function (stack, def) {
         var cursor = this._data;
         for (var i = 0; i < stack.length; ++i) {
@@ -39,25 +62,40 @@ var CalendarModel = /** @class */ (function () {
         return cursor;
     };
     CalendarModel.prototype.currentRota = function () {
-        var yearRota = this.getRotaForWeek(this.optional(['yeargroup', 'rota'], {})) || {};
-        var classRota = this.getRotaForWeek(this.optional(['classes', this.currentClass, 'rota'], {})) || {};
-        return {
-            monday: CalendarModel.merge(classRota['monday'], yearRota['monday']),
-            tuesday: CalendarModel.merge(classRota['tuesday'], yearRota['tuesday']),
-            wednesday: CalendarModel.merge(classRota['wednesday'], yearRota['wednesday']),
-            thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
-            friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
-            saturday: {},
-            sunday: {},
-            title: classRota.title
-        };
+        var stack = [
+            this.getRotaForWeek(this.optional(['yeargroup', 'rota'], {})) || {},
+            this.getRotaForWeek(this.optional(['classes', this.currentClass, 'rota'], {})) || {}
+        ];
+        if (this.currentOptions) {
+            for (var _i = 0, _a = this.currentOptions; _i < _a.length; _i++) {
+                var currentOption = _a[_i];
+                var optionRota = this.getRotaForWeek(this.optional(['additional', 'data', currentOption, 'rota'], null));
+                if (optionRota) {
+                    stack.push(optionRota);
+                }
+            }
+        }
+        var result = stack[0];
+        for (var i = 1; i < stack.length; ++i) {
+            result = {
+                monday: CalendarModel.merge(stack[i]['monday'], result['monday']),
+                tuesday: CalendarModel.merge(stack[i]['tuesday'], result['tuesday']),
+                wednesday: CalendarModel.merge(stack[i]['wednesday'], result['wednesday']),
+                thursday: CalendarModel.merge(stack[i]['thursday'], result['thursday']),
+                friday: CalendarModel.merge(stack[i]['friday'], result['friday']),
+                saturday: {},
+                sunday: {},
+                title: CalendarModel.firstNonEmpty(stack[i], result, 'title').toString(),
+            };
+        }
+        return result;
     };
     CalendarModel.prototype.getRotaForWeek = function (rotas) {
         for (var _i = 0, _a = Object.keys(rotas); _i < _a.length; _i++) {
             var key = _a[_i];
             var rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
-                return rota;
+                return CalendarModel.toWeekSchedule(rota);
             }
         }
         return undefined;
@@ -80,21 +118,21 @@ var CalendarModel = /** @class */ (function () {
     CalendarModel.prototype.isHoliday = function (date) {
         return !this.isTermTime(date);
     };
-    CalendarModel.prototype.kit = function (date) {
-        return this.arrayJoin(date, 'kit');
+    CalendarModel.prototype.kit = function (date, week) {
+        return this.arrayJoin(date, 'kit', week);
     };
-    CalendarModel.prototype.uniform = function (date) {
-        return this.arrayJoin(date, 'uniform');
+    CalendarModel.prototype.uniform = function (date, week) {
+        return this.arrayJoin(date, 'uniform', week);
     };
-    CalendarModel.prototype.games = function (date) {
-        return this.arrayJoin(date, 'games');
+    CalendarModel.prototype.games = function (date, week) {
+        return this.arrayJoin(date, 'games', week);
     };
-    CalendarModel.prototype.timings = function (date) {
+    CalendarModel.prototype.timings = function (date, week) {
         var overrides = CalendarModel.value(this.overrides(date), 'timings', [])
             .map(function (o) { return { title: CalendarModel.markup(o.title, '*'), time: o.time }; });
         var extra = CalendarModel.value(this.extras(date), 'timings', [])
             .map(function (o) { return { title: CalendarModel.markup(o.title, '+'), time: o.time }; });
-        var rota = CalendarModel.dayValue(this.currentRota(), date, 'timings', []);
+        var rota = CalendarModel.dayValue(week, date, 'timings', []);
         return (overrides.length ? overrides : extra.concat(rota))
             .sort(CalendarModel.sortTime);
     };
@@ -123,12 +161,12 @@ var CalendarModel = /** @class */ (function () {
         }
         return l.title.localeCompare(r.title);
     };
-    CalendarModel.prototype.arrayJoin = function (date, key) {
+    CalendarModel.prototype.arrayJoin = function (date, key, week) {
         var overrides = CalendarModel.value(this.overrides(date), key, [])
             .map(function (o) { return CalendarModel.markup(o, '*'); });
         var extra = CalendarModel.value(this.extras(date), key, [])
             .map(function (o) { return CalendarModel.markup(o, '+'); });
-        var rota = CalendarModel.dayValue(this.currentRota(), date, key, []);
+        var rota = CalendarModel.dayValue(week, date, key, []);
         return overrides.length ? overrides : extra.concat(rota);
     };
     // private stringJoin(date: moment.Moment, key: string) {
@@ -152,17 +190,45 @@ var CalendarModel = /** @class */ (function () {
     };
     CalendarModel.merge = function (primary, secondary) {
         return {
-            uniform: CalendarModel.concatKey(primary, secondary, 'uniform'),
+            uniform: CalendarModel.firstNonEmpty(primary, secondary, 'uniform'),
             games: CalendarModel.concatKey(primary, secondary, 'games'),
             kit: CalendarModel.concatKey(primary, secondary, 'kit'),
             timings: CalendarModel.concatKey(primary, secondary, 'timings'),
             menu: CalendarModel.concatKey(primary, secondary, 'menu')
         };
     };
+    CalendarModel.normalise = function (data) {
+        var a = data ? CalendarModel.flat([data]) : [];
+        var result = {
+            uniform: [],
+            games: [],
+            kit: [],
+            timings: [],
+            menu: []
+        };
+        for (var i = 0; i < a.length; ++i) {
+            result = {
+                uniform: CalendarModel.concatKey(result, a[i], 'uniform'),
+                games: CalendarModel.concatKey(result, a[i], 'games'),
+                kit: CalendarModel.concatKey(result, a[i], 'kit'),
+                timings: CalendarModel.concatKey(result, a[i], 'timings'),
+                menu: CalendarModel.concatKey(result, a[i], 'menu')
+            };
+        }
+        return result;
+    };
     CalendarModel.concatKey = function (first, second, key) {
         var a = first && first[key] ? CalendarModel.flat([first[key]]) : [];
         var b = second && second[key] ? CalendarModel.flat([second[key]]) : [];
         return a.concat(b);
+    };
+    CalendarModel.firstNonEmpty = function (first, second, key) {
+        var a = first && first[key] ? CalendarModel.flat([first[key]]) : [];
+        var b = second && second[key] ? CalendarModel.flat([second[key]]) : [];
+        return a.length > 0 ? a : b;
+    };
+    CalendarModel.lastNonEmpty = function (first, second, key) {
+        return CalendarModel.firstNonEmpty(second, first, key);
     };
     CalendarModel.prototype.recentOrFutureDeadlines = function () {
         var recent = this.deadlineForList(this.optional(['yeargroup', 'deadlines'], undefined))
@@ -177,11 +243,11 @@ var CalendarModel = /** @class */ (function () {
             .concat(this.optional(['classes', this.currentClass, 'deadlines', dkey], []))
             .map(function (o) { return '!' + o; });
     };
-    CalendarModel.prototype.hasData = function (date) {
-        return this.uniform(date).length > 0
-            || this.games(date).length > 0
-            || this.kit(date).length > 0
-            || this.timings(date).length > 0;
+    CalendarModel.prototype.hasData = function (date, week) {
+        return this.uniform(date, week).length > 0
+            || this.games(date, week).length > 0
+            || this.kit(date, week).length > 0
+            || this.timings(date, week).length > 0;
     };
     CalendarModel.prototype.deadlineForList = function (deadlines) {
         if (deadlines === undefined) {
@@ -217,12 +283,27 @@ var CalendarModel = /** @class */ (function () {
         var weeks = this.currentDate.diff(rota.start, "week");
         return weeks >= 0 && weeks % rota.frequency === 0;
     };
+    CalendarModel.toWeekSchedule = function (rota) {
+        return {
+            title: rota.title,
+            start: rota.start,
+            frequency: rota.frequency,
+            monday: this.normalise(rota.monday),
+            tuesday: this.normalise(rota.tuesday),
+            wednesday: this.normalise(rota.wednesday),
+            thursday: this.normalise(rota.thursday),
+            friday: this.normalise(rota.friday),
+            saturday: this.normalise(rota.saturday),
+            sunday: this.normalise(rota.sunday),
+        };
+    };
     return CalendarModel;
 }());
 var Calendar = /** @class */ (function () {
     function Calendar(data, context) {
         this.model = new CalendarModel(data, context);
         this.classPicker = $('.class-pick');
+        this.optionPicker = $('#options');
         this.init();
     }
     Object.defineProperty(Calendar.prototype, "pickedClass", {
@@ -247,6 +328,28 @@ var Calendar = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(Calendar.prototype, "pickedOptions", {
+        get: function () {
+            try {
+                var optionsCsv = localStorage.getItem(this.model.optionPickKey);
+                return !optionsCsv ? [] : optionsCsv.split(',');
+            }
+            catch (e) {
+                return $($('.class-pick a')[0]).data('class');
+            }
+        },
+        set: function (options) {
+            this.model.currentOptions = options;
+            try {
+                localStorage.setItem(this.model.optionPickKey, options.join(','));
+            }
+            catch (err) {
+            }
+            this.repaint();
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(Calendar.prototype, "currentDate", {
         set: function (date) {
             this.model.currentDate = date;
@@ -261,16 +364,19 @@ var Calendar = /** @class */ (function () {
     });
     Calendar.prototype.paint = function () {
         this.paintClassPicker();
+        this.paintOptions();
         this.model.currentClass = this.pickedClass;
+        this.model.currentOptions = this.pickedOptions;
         this.repaint();
     };
     Calendar.prototype.repaint = function () {
+        var weekRota = this.model.currentRota();
         this.repaintClassPicker();
-        this.repaintHeaders();
-        this.repaintCalendar();
+        this.repaintHeaders(weekRota);
+        this.repaintCalendar(weekRota);
         this.repaintDeadlines();
     };
-    Calendar.prototype.repaintHeaders = function () {
+    Calendar.prototype.repaintHeaders = function (weekRota) {
         var today = moment();
         var tomorrow = moment(today).add(1, 'day');
         for (var i = 0; i < 7; ++i) {
@@ -280,7 +386,7 @@ var Calendar = /** @class */ (function () {
                 .toggleClass('today', date.isSame(today, 'day'))
                 .toggleClass('tomorrow', date.isSame(tomorrow, 'day'))
                 .toggleClass('is-holiday', this.model.isHoliday(date))
-                .toggleClass('d-none', this.shouldHide(date))
+                .toggleClass('d-none', this.shouldHide(date, weekRota))
                 .find('.date').text(date.format("MMM Do"));
         }
     };
@@ -292,6 +398,34 @@ var Calendar = /** @class */ (function () {
                 .data('class', key)
                 .text(key)
                 .addClass('class-' + key)));
+        }
+    };
+    Calendar.prototype.paintOptions = function () {
+        var options = this.pickedOptions;
+        for (var _i = 0, _a = this.model.optionGroups; _i < _a.length; _i++) {
+            var group = _a[_i];
+            var optionGroup = $('<div class="option-group"></div>')
+                .append($('<div class="option-group-title"></div>').text(group.title));
+            for (var _b = 0, _c = group.values; _b < _c.length; _b++) {
+                var option = _c[_b];
+                var input = $('<input type="radio" class="custom-control-input option-input">')
+                    .attr('id', 'option-' + option.key)
+                    .attr('name', group.title)
+                    .data('key', option.key);
+                if (options.includes(option.key)) {
+                    input[0].checked = true;
+                }
+                var label = $('<label class="custom-control-label"></label>')
+                    .text(option.value)
+                    .attr('for', 'option-' + option.key);
+                optionGroup.append($('<div class="custom-control custom-radio custom-control-inline"></div>')
+                    .append(input)
+                    .append(label));
+            }
+            this.optionPicker.append(optionGroup);
+        }
+        if (this.model.hasOptionGroups) {
+            $('body').addClass('has-options');
         }
     };
     Calendar.prototype.repaintClassPicker = function () {
@@ -306,10 +440,9 @@ var Calendar = /** @class */ (function () {
             el.append($('<dd></dd>').html(deadlines[i].title).toggleClass('expired', deadlines[i].expired));
         }
     };
-    Calendar.prototype.repaintCalendar = function () {
+    Calendar.prototype.repaintCalendar = function (weekRota) {
         $('.day .info').html('');
-        var weekRota = this.model.currentRota();
-        var title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined);
+        var title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.length > 0);
         if (weekRota !== undefined) {
             for (var _i = 0, _a = Calendar.weekdays(); _i < _a.length; _i++) {
                 var key = _a[_i];
@@ -317,18 +450,18 @@ var Calendar = /** @class */ (function () {
                 if (dayInfo === undefined) {
                     continue;
                 }
-                this.repaintCalendarDay(key, dayInfo);
+                this.repaintCalendarDay(key, dayInfo, weekRota);
             }
         }
     };
-    Calendar.prototype.repaintCalendarDay = function (day, info) {
+    Calendar.prototype.repaintCalendarDay = function (day, info, week) {
         var date = $('.day.' + day).data('date');
         var dl = $('<dl></dl>');
         Calendar.createSectionList('Deadlines', this.model.deadlines(date), dl);
-        Calendar.createSectionText('Uniform', this.model.uniform(date).reverse(), dl);
-        Calendar.createSectionText('Activities', this.model.games(date), dl);
-        Calendar.createSectionList('Kit', this.model.kit(date), dl);
-        var timings = this.model.timings(date);
+        Calendar.createSectionText('Uniform', this.model.uniform(date, week).reverse(), dl);
+        Calendar.createSectionText('Activities', this.model.games(date, week), dl);
+        Calendar.createSectionList('Kit', this.model.kit(date, week), dl);
+        var timings = this.model.timings(date, week);
         if (timings && timings.length) {
             var dd = Calendar.createSection('Timings', dl);
             for (var i = 0; i < timings.length; ++i) {
@@ -446,9 +579,13 @@ var Calendar = /** @class */ (function () {
             fn(e);
         }.bind(this);
     };
+    Calendar.collectOptionKeys = function () {
+        return $('.option-input:checked').toArray().map(function (x) { return $(x).data('key'); });
+    };
     Calendar.prototype.listeners = function () {
         var _this = this;
         $('.class-pick a').click(Calendar.listener(function (e) { return _this.pickedClass = ($(e.target).data('class')); }));
+        $('.option-input').click(function () { return _this.pickedOptions = Calendar.collectOptionKeys(); });
         $('.prev-week').click(function () { return _this.scrollWeek(-1); });
         $('.this-week').click(function () { return _this.currentDate = moment(); });
         $('.next-week').click(function () { return _this.scrollWeek(1); });
@@ -468,8 +605,8 @@ var Calendar = /** @class */ (function () {
             this.gotoToTodayOrTomorrow();
         }
     };
-    Calendar.prototype.shouldHide = function (date) {
-        return date.isoWeekday() > 5 && !this.model.hasData(date);
+    Calendar.prototype.shouldHide = function (date, week) {
+        return date.isoWeekday() > 5 && !this.model.hasData(date, week);
     };
     return Calendar;
 }());

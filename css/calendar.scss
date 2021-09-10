@@ -91,6 +91,24 @@
   color: white !important;
 }
 
+body:not(.has-options) .toggle-options {
+  display: none;
+}
+
+#options {
+    .option-group {
+      border: 1px solid rgba(0,0,0,.125);
+      padding: 15px;
+
+      .option-group-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-top: -10px;
+        margin-bottom: 10px;
+      }
+    }
+}
+
 .holiday {
   display: none;
 }

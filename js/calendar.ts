@@ -40,6 +40,19 @@ interface WeekRota {
     title?: string;
     start?: moment.Moment;
     frequency?: number;
+    monday?: DayData[];
+    tuesday?: DayData[];
+    wednesday?: DayData[];
+    thursday?: DayData[];
+    friday?: DayData[];
+    saturday?: DayData[];
+    sunday?: DayData[];
+}
+
+interface WeekSchedule {
+    title?: string;
+    start?: moment.Moment;
+    frequency?: number;
     monday?: DayData;
     tuesday?: DayData;
     wednesday?: DayData;
@@ -64,9 +77,26 @@ interface DataGroupMap {
     [key: string]: DataGroup;
 }
 
+interface KeyValue {
+    key: string;
+    value: string;
+}
+
+interface AdditionalMeta {
+    title: string;
+    multiselect: boolean;
+    values: KeyValue[]
+}
+
+interface DataAdditional {
+    meta: AdditionalMeta[];
+    data: DataGroupMap;
+}
+
 interface Data {
     yeargroup: DataGroup;
     classes: DataGroupMap;
+    additional?: DataAdditional;
     termTimes: DateRange[];
 }
 
@@ -76,6 +106,7 @@ class CalendarModel {
     private _data: Data;
     private readonly _context: string;
     public currentClass: string;
+    public currentOptions: string[];
 
     constructor(data: Data, context: string) {
         this.currentDate = moment();
@@ -85,6 +116,16 @@ class CalendarModel {
 
     get classNames(): Array<string> {
         return Object.keys(this._data.classes);
+    }
+
+    get hasOptionGroups(): boolean {
+        return this._data.additional && this._data.additional.meta && this._data.additional.meta.length > 0;
+    }
+
+    get optionGroups(): Array<AdditionalMeta> {
+        return this.hasOptionGroups
+            ? this._data.additional.meta
+            : [];
     }
 
     get currentDate(): moment.Moment {
@@ -97,6 +138,10 @@ class CalendarModel {
 
     get classPickKey(): string {
         return this._context ? 'pick-class-' + this._context : 'pick-class'
+    }
+
+    get optionPickKey(): string {
+        return this._context ? 'pick-option-' + this._context : 'pick-option'
     }
 
     private optional(stack: string[], def: any): any {
@@ -112,26 +157,42 @@ class CalendarModel {
         return cursor;
     }
 
-    currentRota(): WeekRota {
-        const yearRota = this.getRotaForWeek(this.optional(['yeargroup', 'rota'], {})) || {};
-        const classRota = this.getRotaForWeek(this.optional(['classes', this.currentClass, 'rota'], {})) || {};
-        return {
-            monday: CalendarModel.merge(classRota['monday'], yearRota['monday']),
-            tuesday: CalendarModel.merge(classRota['tuesday'], yearRota['tuesday']),
-            wednesday: CalendarModel.merge(classRota['wednesday'], yearRota['wednesday']),
-            thursday: CalendarModel.merge(classRota['thursday'], yearRota['thursday']),
-            friday: CalendarModel.merge(classRota['friday'], yearRota['friday']),
-            saturday: {},
-            sunday: {},
-            title: classRota.title
-        };
+    currentRota(): WeekSchedule {
+        const stack = [
+            this.getRotaForWeek(this.optional(['yeargroup', 'rota'], {})) || {},
+            this.getRotaForWeek(this.optional(['classes', this.currentClass, 'rota'], {})) || {}
+        ]
+
+        if (this.currentOptions) {
+            for (const currentOption of this.currentOptions) {
+                const optionRota = this.getRotaForWeek(this.optional(['additional', 'data', currentOption, 'rota'], null));
+                if (optionRota) {
+                    stack.push(optionRota);
+                }
+            }
+        }
+
+        let result = stack[0];
+        for (let i = 1; i < stack.length; ++i) {
+            result = {
+                monday: CalendarModel.merge(stack[i]['monday'], result['monday']),
+                tuesday: CalendarModel.merge(stack[i]['tuesday'], result['tuesday']),
+                wednesday: CalendarModel.merge(stack[i]['wednesday'], result['wednesday']),
+                thursday: CalendarModel.merge(stack[i]['thursday'], result['thursday']),
+                friday: CalendarModel.merge(stack[i]['friday'], result['friday']),
+                saturday: {},
+                sunday: {},
+                title: CalendarModel.firstNonEmpty(stack[i], result, 'title').toString(),
+            }
+        }
+        return result;
     }
 
-    private getRotaForWeek(rotas: WeekRotaMap): WeekRota {
+    private getRotaForWeek(rotas: WeekRotaMap): WeekSchedule {
         for (let key of Object.keys(rotas)) {
             const rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
-                return rota;
+                return CalendarModel.toWeekSchedule(rota);
             }
         }
         return undefined;
@@ -161,24 +222,24 @@ class CalendarModel {
         return !this.isTermTime(date);
     }
 
-    kit(date: moment.Moment): string[] {
-        return this.arrayJoin(date, 'kit');
+    kit(date: moment.Moment, week: WeekSchedule): string[] {
+        return this.arrayJoin(date, 'kit', week);
     }
 
-    uniform(date: moment.Moment): string[] {
-        return this.arrayJoin(date, 'uniform');
+    uniform(date: moment.Moment, week: WeekSchedule): string[] {
+        return this.arrayJoin(date, 'uniform', week);
     }
 
-    games(date: moment.Moment): string[] {
-        return this.arrayJoin(date, 'games');
+    games(date: moment.Moment, week: WeekSchedule): string[] {
+        return this.arrayJoin(date, 'games', week);
     }
 
-    timings(date: moment.Moment): Timing[] {
+    timings(date: moment.Moment, week: WeekSchedule): Timing[] {
         const overrides: Timing[] = CalendarModel.value(this.overrides(date), 'timings', [])
             .map(o => { return  { title: CalendarModel.markup(o.title, '*'), time: o.time} });
         const extra: Timing[] = CalendarModel.value(this.extras(date), 'timings', [])
             .map(o => { return  { title: CalendarModel.markup(o.title, '+'), time: o.time} });
-        const rota: Timing[] = CalendarModel.dayValue(this.currentRota(), date, 'timings', []);
+        const rota: Timing[] = CalendarModel.dayValue(week, date, 'timings', []);
         return (overrides.length ? overrides : extra.concat(rota))
             .sort(CalendarModel.sortTime);
     }
@@ -215,12 +276,12 @@ class CalendarModel {
         return l.title.localeCompare(r.title);
     }
 
-    private arrayJoin(date: moment.Moment, key: string) {
+    private arrayJoin(date: moment.Moment, key: string, week: WeekSchedule) {
         const overrides: string[] = CalendarModel.value(this.overrides(date), key, [])
             .map(o => CalendarModel.markup(o, '*'));
         const extra: string[] = CalendarModel.value(this.extras(date), key, [])
             .map(o => CalendarModel.markup(o, '+'));
-        const rota: string[] = CalendarModel.dayValue(this.currentRota(), date, key, []);
+        const rota: string[] = CalendarModel.dayValue(week, date, key, []);
         return overrides.length ? overrides : extra.concat(rota);
     }
 
@@ -233,7 +294,7 @@ class CalendarModel {
     //         : CalendarModel.flat([extra, rota].filter(o => o && o.length)).join(", ");
     // }
 
-    static dayValue(info: WeekRota, date: moment.Moment, key: string, def: any): any {
+    static dayValue(info: WeekSchedule, date: moment.Moment, key: string, def: any): any {
         return info
             ? CalendarModel.value(info[date.format('dddd').toLowerCase()], key, [])
             : def;
@@ -247,9 +308,9 @@ class CalendarModel {
         return arr.reduce((acc, val) => acc.concat(val), []);
     }
 
-    private static merge(primary: DayData, secondary: DayData) {
+    private static merge(primary: DayData, secondary: DayData) : DayData {
         return {
-            uniform: CalendarModel.concatKey(primary, secondary, 'uniform'),
+            uniform: CalendarModel.firstNonEmpty(primary, secondary, 'uniform'),
             games: CalendarModel.concatKey(primary, secondary, 'games'),
             kit: CalendarModel.concatKey(primary, secondary, 'kit'),
             timings: CalendarModel.concatKey(primary, secondary, 'timings'),
@@ -257,10 +318,41 @@ class CalendarModel {
         }
     }
 
+    private static normalise(data: DayData[]) : DayData {
+        const a = data ? CalendarModel.flat([data]) : [];
+        let result = {
+            uniform: [],
+            games: [],
+            kit: [],
+            timings: [],
+            menu: []
+        }
+        for (let i = 0; i < a.length; ++i) {
+            result = {
+                uniform: CalendarModel.concatKey(result, a[i], 'uniform'),
+                games: CalendarModel.concatKey(result, a[i], 'games'),
+                kit: CalendarModel.concatKey(result, a[i], 'kit'),
+                timings: CalendarModel.concatKey(result, a[i], 'timings'),
+                menu: CalendarModel.concatKey(result, a[i], 'menu')
+            }
+        }
+        return result;
+    }
+
     private static concatKey(first: any, second: any, key: string) {
         const a = first && first[key] ? CalendarModel.flat([first[key]]) : [];
         const b = second && second[key] ? CalendarModel.flat([second[key]]) : [];
         return a.concat(b);
+    }
+
+    private static firstNonEmpty(first: any, second: any, key: string) {
+        const a = first && first[key] ? CalendarModel.flat([first[key]]) : [];
+        const b = second && second[key] ? CalendarModel.flat([second[key]]) : [];
+        return a.length > 0 ? a : b;
+    }
+
+    private static lastNonEmpty(first: any, second: any, key: string) {
+        return CalendarModel.firstNonEmpty(second, first, key);
     }
 
     recentOrFutureDeadlines(): Deadline[] {
@@ -278,11 +370,11 @@ class CalendarModel {
             .map(o => '!' + o);
     }
 
-    hasData(date: moment.Moment) {
-        return this.uniform(date).length > 0
-            || this.games(date).length > 0
-            || this.kit(date).length > 0
-            || this.timings(date).length > 0;
+    hasData(date: moment.Moment, week: WeekSchedule) {
+        return this.uniform(date, week).length > 0
+            || this.games(date, week).length > 0
+            || this.kit(date, week).length > 0
+            || this.timings(date, week).length > 0;
     }
 
     private deadlineForList(deadlines: DeadlineMap): Deadline[] {
@@ -317,15 +409,32 @@ class CalendarModel {
         const weeks = this.currentDate.diff(rota.start, "week");
         return weeks >= 0 && weeks % rota.frequency === 0;
     }
+
+    private static toWeekSchedule(rota: WeekRota) : WeekSchedule {
+        return {
+            title: rota.title,
+            start: rota.start,
+            frequency: rota.frequency,
+            monday: this.normalise(rota.monday),
+            tuesday: this.normalise(rota.tuesday),
+            wednesday: this.normalise(rota.wednesday),
+            thursday: this.normalise(rota.thursday),
+            friday: this.normalise(rota.friday),
+            saturday: this.normalise(rota.saturday),
+            sunday: this.normalise(rota.sunday),
+        }
+    }
 }
 
 class Calendar {
     model: CalendarModel;
     classPicker: JQuery<HTMLElement>;
+    optionPicker: JQuery<HTMLElement>;
 
     constructor(data: Data, context: string) {
         this.model = new CalendarModel(data, context);
         this.classPicker = $('.class-pick');
+        this.optionPicker = $('#options');
         this.init();
     }
 
@@ -347,6 +456,24 @@ class Calendar {
         this.repaint();
     }
 
+    get pickedOptions(): string[] {
+        try {
+            const optionsCsv = localStorage.getItem(this.model.optionPickKey);
+            return !optionsCsv ? [] : optionsCsv.split(',');
+        } catch (e) {
+            return $($('.class-pick a')[0]).data('class');
+        }
+    }
+
+    set pickedOptions(options: string[]) {
+        this.model.currentOptions = options;
+        try {
+            localStorage.setItem(this.model.optionPickKey, options.join(','));
+        } catch (err) {
+        }
+        this.repaint();
+    }
+
     set currentDate(date: moment.Moment) {
         this.model.currentDate = date;
         window.location.hash = this.model.currentDate.format('YYYY-WW') == moment().format('YYYY-WW')
@@ -359,18 +486,21 @@ class Calendar {
 
     paint(): void {
         this.paintClassPicker();
+        this.paintOptions();
         this.model.currentClass = this.pickedClass;
+        this.model.currentOptions = this.pickedOptions;
         this.repaint();
     }
 
     repaint(): void {
+        const weekRota = this.model.currentRota();
         this.repaintClassPicker();
-        this.repaintHeaders();
-        this.repaintCalendar();
+        this.repaintHeaders(weekRota);
+        this.repaintCalendar(weekRota);
         this.repaintDeadlines();
     }
 
-    private repaintHeaders() {
+    private repaintHeaders(weekRota: WeekSchedule) {
         const today = moment();
         const tomorrow = moment(today).add(1, 'day');
         for (let i = 0; i < 7; ++i) {
@@ -380,7 +510,7 @@ class Calendar {
                 .toggleClass('today', date.isSame(today, 'day'))
                 .toggleClass('tomorrow', date.isSame(tomorrow, 'day'))
                 .toggleClass('is-holiday', this.model.isHoliday(date))
-                .toggleClass('d-none', this.shouldHide(date))
+                .toggleClass('d-none', this.shouldHide(date, weekRota))
                 .find('.date').text(date.format("MMM Do"));
         }
     }
@@ -392,6 +522,38 @@ class Calendar {
                     .data('class', key)
                     .text(key)
                     .addClass('class-' + key)));
+        }
+    }
+
+    private paintOptions(): void {
+        const options = this.pickedOptions;
+        for (let group of this.model.optionGroups) {
+            const optionGroup = $('<div class="option-group"></div>')
+                    .append($('<div class="option-group-title"></div>').text(group.title));
+
+            for (let option of group.values) {
+                const input = $('<input type="radio" class="custom-control-input option-input">')
+                    .attr('id', 'option-' + option.key)
+                    .attr('name', group.title)
+                    .data('key', option.key)
+
+                if (options.includes(option.key)) {
+                    input[0].checked = true;
+                }
+
+                const label = $('<label class="custom-control-label"></label>')
+                    .text(option.value)
+                    .attr('for', 'option-' + option.key)
+                optionGroup.append($('<div class="custom-control custom-radio custom-control-inline"></div>')
+                    .append(input)
+                    .append(label));
+            }
+
+            this.optionPicker.append(optionGroup);
+        }
+
+        if (this.model.hasOptionGroups) {
+            $('body').addClass('has-options');
         }
     }
 
@@ -409,32 +571,31 @@ class Calendar {
         }
     }
 
-    private repaintCalendar(): void {
+    private repaintCalendar(weekRota: WeekSchedule): void {
         $('.day .info').html('');
 
-        const weekRota = this.model.currentRota();
-        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined);
+        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.length > 0);
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];
                 if (dayInfo === undefined) {
                     continue;
                 }
-                this.repaintCalendarDay(key, dayInfo);
+                this.repaintCalendarDay(key, dayInfo, weekRota);
             }
         }
     }
 
-    private repaintCalendarDay(day: string, info: DayData): void {
+    private repaintCalendarDay(day: string, info: DayData, week: WeekSchedule): void {
         const date = $('.day.' + day).data('date');
         const dl = $('<dl></dl>');
 
         Calendar.createSectionList('Deadlines', this.model.deadlines(date), dl);
-        Calendar.createSectionText('Uniform', this.model.uniform(date).reverse(), dl);
-        Calendar.createSectionText('Activities', this.model.games(date), dl);
-        Calendar.createSectionList('Kit', this.model.kit(date), dl);
+        Calendar.createSectionText('Uniform', this.model.uniform(date, week).reverse(), dl);
+        Calendar.createSectionText('Activities', this.model.games(date, week), dl);
+        Calendar.createSectionList('Kit', this.model.kit(date, week), dl);
 
-        const timings = this.model.timings(date);
+        const timings = this.model.timings(date, week);
         if (timings && timings.length) {
             const dd = Calendar.createSection('Timings', dl);
             for (let i = 0; i < timings.length; ++i) {
@@ -568,8 +729,13 @@ class Calendar {
         }.bind(this);
     }
 
+    private static collectOptionKeys() : string[] {
+        return $('.option-input:checked').toArray().map((x) => $(x).data('key'));
+    }
+
     private listeners(): void {
         $('.class-pick a').click(Calendar.listener((e) => this.pickedClass = ($(e.target).data('class'))));
+        $('.option-input').click(() => this.pickedOptions = Calendar.collectOptionKeys());
         $('.prev-week').click(() => this.scrollWeek(-1));
         $('.this-week').click(() => this.currentDate = moment());
         $('.next-week').click(() => this.scrollWeek(1));
@@ -591,7 +757,7 @@ class Calendar {
         }
     }
 
-    private shouldHide(date: moment.Moment) {
-        return date.isoWeekday() > 5 && !this.model.hasData(date);
+    private shouldHide(date: moment.Moment, week: WeekSchedule) {
+        return date.isoWeekday() > 5 && !this.model.hasData(date, week);
     }
 }
