@@ -3,7 +3,7 @@ layout: calendar
 title: Year 1 Calendar
 homeLink: /year1/calendar
 manifest: manifest-year1
-css: calendar.css?cb=6
+css: calendar.css?cb=7
 ---
 
 <script>
@@ -13,14 +13,7 @@ css: calendar.css?cb=6
         "Water bottle"
     ];
 
-    var swimmingKit = [
-        "*Swimming costume",
-        "*Swimming hat",
-        "*Towel",
-        "*Sliders",
-        "*Tummy band",
-        "*Swimming goggles"
-    ];
+    var swimmingKit = ["Swimming costume, swimming hat, towel, sliders, tummy band, swimming goggles"];
 
     var timings = [
         { title: "Larks:", time: "8:00am" },
@@ -40,40 +33,54 @@ css: calendar.css?cb=6
             )
         },
         regular: {
-            uniform: "School uniform with blazer",
+            uniform: "School uniform",
             kit: commonKit,
             timings: timings
         },
+
         pe: {
             uniform: "PE Shorts, jogging top and bottoms, polo shorts and trainers",
             games: "Games",
             kit: commonKit,
             timings: timings
         },
+
         swimming: {
-            uniform: "School uniform with blazer",
             games: "Swimming",
-            kit: swimmingKit.concat(commonKit),
-            timings: timings
+            kit: swimmingKit,
+        },
+
+        spellingTest: {
+            games: "Spelling Test"
+        },
+
+        spellingTestBook: {
+            kit: ["*Spelling Test Book"]
         }
     };
-
-    var yearGroupRota = {
-        week: {
-            start: moment('2021-09-06'),
-            frequency: 1,
-            monday: commonDayData.swimming,
-            tuesday: commonDayData.regular,
-            wednesday: commonDayData.pe,
-            thursday: commonDayData.regular,
-            friday: commonDayData.regular
-        }
-    };
-
 
     var data = {
         yeargroup: {
             rota: {
+                week: {
+                    start: moment('2021-09-06'),
+                    frequency: 1,
+                    monday: [commonDayData.regular, commonDayData.spellingTestBook, {
+                        timings: [{title: "Yoga:", time: "4:30pm"}]
+                    }],
+                    tuesday: [commonDayData.regular, {
+                        timings: [{title: "Tennis:", time: "4:30pm"}, {title: "Gymnastics:", time: "5:00pm"}]
+                    }],
+                    wednesday: [commonDayData.pe, {
+                        timings: [{title: "Musical Theatre:", time: "4:30pm"}]
+                    }],
+                    thursday: [commonDayData.regular, {
+                        timings: [{title: "Cookery Fun:", time: "4:30pm"}, {title: "Choir:", time: "4:30pm"}]
+                    }],
+                    friday: [commonDayData.regular, commonDayData.spellingTest, {
+                        timings: [{title: "Multi Skills:", time: "4:30pm"}]
+                    }],
+                }
             },
             extras: {
                 '2021-09-06': {
@@ -120,35 +127,23 @@ css: calendar.css?cb=6
                     week: {
                         start: moment('2021-09-06'),
                         frequency: 1,
-                        monday: {
-                            uniform: "School uniform",
-                            games: ["Swimming", "French"],
-                            kit: ['*Spelling Test Book','*PE Kit'].concat(swimmingKit).concat(commonKit),
-                            timings: timings.concat([{title: "Yoga:", time: "4:30pm"}])
-                        },
+                        monday: [commonDayData.swimming, {
+                            games: ["French"],
+                            kit: ['PE Kit']
+                        }],
                         tuesday: {
-                            uniform: "School uniform",
-                            games: "PE",
-                            kit: commonKit,
-                            timings: timings.concat([{title: "Tennis:", time: "4:30pm"}, {title: "Gymnastics:", time: "5:00pm"}])
+                            games: "PE"
                         },
-                        wednesday: {
+                        wednesday: [{
                             uniform: "PE Kit",
-                            games: "Games",
-                            kit: commonKit,
-                            timings: timings.concat([{title: "Musical Theatre:", time: "4:30pm"}])
-                        },
+                            games: "Games"
+                        }],
                         thursday: {
-                            uniform: "School uniform",
-                            games: "ICT, Music",
-                            kit: commonKit,
-                            timings: timings.concat([{title: "Cookery Fun:", time: "4:30pm"}, {title: "Choir:", time: "4:30pm"}])
+                            games: "ICT, Music"
                         },
                         friday: {
-                            uniform: "School uniform",
-                            games: "Library, Spelling Test",
-                            kit: ['*Library Book'].concat(commonKit),
-                            timings: timings.concat([{title: "Multi Skills:", time: "4:30pm"}])
+                            games: "Library",
+                            kit: ['*Library Book'],
                         }
                     }
                 },
@@ -156,13 +151,13 @@ css: calendar.css?cb=6
                 deadlines: {}
             },
             '1GO': {
-                rota: yearGroupRota,
+                rota: {},
                 extras: {},
                 overrides: {},
                 deadlines: {}
             },
             '1JC': {
-                rota: yearGroupRota,
+                rota: {},
                 extras: {},
                 overrides: {},
                 deadlines: {}
