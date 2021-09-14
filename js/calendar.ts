@@ -38,8 +38,7 @@ interface DateRange {
 
 interface WeekRota {
     title?: string;
-    start?: moment.Moment;
-    frequency?: number;
+    matcher?: Function;
     monday?: DayData[];
     tuesday?: DayData[];
     wednesday?: DayData[];
@@ -51,8 +50,7 @@ interface WeekRota {
 
 interface WeekSchedule {
     title?: string;
-    start?: moment.Moment;
-    frequency?: number;
+    matcher?: Function;
     monday?: DayData;
     tuesday?: DayData;
     wednesday?: DayData;
@@ -413,18 +411,16 @@ class CalendarModel {
     }
 
     private isRotaForWeek(rota: WeekRota): boolean {
-        if(!rota.start) {
+        if(!rota.matcher) {
             return true;
         }
-        const weeks = this.currentDate.diff(rota.start, "week");
-        return weeks >= 0 && weeks % rota.frequency === 0;
+        return rota.matcher(this.currentDate);
     }
 
     private static toWeekSchedule(rota: WeekRota) : WeekSchedule {
         return {
             title: rota.title,
-            start: rota.start,
-            frequency: rota.frequency,
+            matcher: rota.matcher,
             monday: this.normalise(rota.monday),
             tuesday: this.normalise(rota.tuesday),
             wednesday: this.normalise(rota.wednesday),

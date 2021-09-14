@@ -8,9 +8,6 @@ css: calendar.css?cb=7
 
 <script>
 
-    const weekAStart = moment('2021-09-06');
-    const weekBStart = moment('2021-09-13');
-    
     const commonKit = [
         "Water bottle",
         "Breaktime snack"];
@@ -24,7 +21,7 @@ css: calendar.css?cb=7
 
     const commonDayData = {
         regular: {
-            uniform: "School uniform with blazer",
+            uniform: "School uniform",
             kit: commonKit,
             timings: timings
         },
@@ -70,12 +67,34 @@ css: calendar.css?cb=7
         },
     };
 
-    var data = {
+    const matchers = {
+        weekA: function(currentDate) {
+            const start = moment('2021-09-06');
+            const weeks = currentDate.diff(start, "week");
+            return weeks >= 0 && weeks % 2 === 0;
+        },
+        weekB: function(currentDate) {
+            const start = moment('2021-09-13');
+            const weeks = currentDate.diff(start, "week");
+            return weeks >= 0 && weeks % 2 === 0;
+        },
+        tennis: function(currentDate) {
+            const start = moment('2021-10-04');
+            const end = moment('2021-12-01');
+            return start.isSameOrBefore(currentDate) && end.isSameOrAfter(currentDate);
+        },
+        tennisA: function(currentDate) {
+            return matchers.weekA(currentDate) && matchers.tennis(currentDate);
+        },
+        tennisB: function(currentDate) {
+            return matchers.weekB(currentDate) && matchers.tennis(currentDate);
+        }
+    }
+
+    const data = {
         yeargroup: {
             rota: {
                 always: {
-                    start: weekAStart,
-                    frequency: 1,
                     monday: commonDayData.regular,
                     tuesday: commonDayData.regular,
                     wednesday: commonDayData.regular,
@@ -152,8 +171,6 @@ css: calendar.css?cb=7
             "4AB": {
                 rota: {
                     always: {
-                        start: weekAStart,
-                        frequency: 1,
                         monday: commonDayData.dance,
                         friday: commonDayData.library
                     }
@@ -167,8 +184,6 @@ css: calendar.css?cb=7
             "4C": {
                 rota: {
                     always: {
-                        start: weekAStart,
-                        frequency: 1,
                         tuesday: commonDayData.dance,
                         wednesday: commonDayData.library,
                     }
@@ -183,8 +198,6 @@ css: calendar.css?cb=7
             "4S": {
                 rota: {
                     always: {
-                        start: weekAStart,
-                        frequency: 1,
                         monday: [commonDayData.dance, commonDayData.library]
                     }
                 },
@@ -239,18 +252,14 @@ css: calendar.css?cb=7
                 "damson": {
                     rota: {
                         weekA: {
-                            title: "Week A",
-                            start: weekAStart,
-                            frequency: 2,
+                            matcher: matchers.weekA,
                             monday: commonDayData.hockey,
                             tuesday: commonDayData.netball,
                             wednesday: commonDayData.swimming,
                         },
 
                         weekB: {
-                            title: "Week B",
-                            start: weekBStart,
-                            frequency: 2,
+                            matcher: matchers.weekB,
                             monday: commonDayData.hockey,
                             wednesday: commonDayData.swimming,
                         }
@@ -260,18 +269,14 @@ css: calendar.css?cb=7
                 "teal": {
                     rota: {
                         weekA: {
-                            title: "Week A",
-                            start: weekAStart,
-                            frequency: 2,
+                            matcher: matchers.weekA,
                             monday: commonDayData.hockey,
                             tuesday: commonDayData.swimming,
                             wednesday: commonDayData.netball,
                         },
 
                         weekB: {
-                            title: "Week B",
-                            start: weekBStart,
-                            frequency: 2,
+                            matcher: matchers.weekB,
                             monday: commonDayData.hockey,
                             wednesday: commonDayData.netball,
                         }
@@ -281,18 +286,14 @@ css: calendar.css?cb=7
                 "white": {
                     rota: {
                         weekA: {
-                            title: "Week A",
-                            start: weekAStart,
-                            frequency: 2,
+                            matcher: matchers.weekA,
                             monday: commonDayData.swimming,
                             tuesday: commonDayData.netball,
                             wednesday: commonDayData.hockey,
                         },
 
                         weekB: {
-                            title: "Week B",
-                            start: weekBStart,
-                            frequency: 2,
+                            matcher: matchers.weekB,
                             monday: commonDayData.swimming,
                             wednesday: commonDayData.hockey,
                         }
@@ -362,6 +363,7 @@ css: calendar.css?cb=7
                 "bs_tennis_mon": {
                     rota: {
                         always: {
+                            matcher: matchers.tennis,
                             monday: {
                                 games: "Tennis (BS)",
                                 kit: ['Tennis racket'],
@@ -373,10 +375,20 @@ css: calendar.css?cb=7
 
                 "bs_tennis_tue": {
                     rota: {
-                        always: {
+                        weekA: {
+                            matcher: matchers.tennisA,
                             tuesday: {
-                                games: "Tennis (BS)",
-                                kit: ['Tennis racket'],
+                                games: "*Tennis (BS)",
+                                kit: ['*Tennis racket'],
+                                timings: [ {title: "Tennis Start", time: "7:50am"} ]
+                            },
+                        },
+                        weekB: {
+                            matcher: matchers.tennisB,
+                            tuesday: {
+                                uniform: commonDayData.tennis.uniform,
+                                games: "*Tennis (BS)",
+                                kit: ['*Tennis racket', '*School uniform'],
                                 timings: [ {title: "Tennis Start", time: "7:50am"} ]
                             },
                         }

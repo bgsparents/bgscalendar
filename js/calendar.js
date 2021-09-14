@@ -285,17 +285,15 @@ var CalendarModel = /** @class */ (function () {
         return date.isBetween(range.start, range.end, 'day', '[]');
     };
     CalendarModel.prototype.isRotaForWeek = function (rota) {
-        if (!rota.start) {
+        if (!rota.matcher) {
             return true;
         }
-        var weeks = this.currentDate.diff(rota.start, "week");
-        return weeks >= 0 && weeks % rota.frequency === 0;
+        return rota.matcher(this.currentDate);
     };
     CalendarModel.toWeekSchedule = function (rota) {
         return {
             title: rota.title,
-            start: rota.start,
-            frequency: rota.frequency,
+            matcher: rota.matcher,
             monday: this.normalise(rota.monday),
             tuesday: this.normalise(rota.tuesday),
             wednesday: this.normalise(rota.wednesday),
