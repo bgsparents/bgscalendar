@@ -16,10 +16,8 @@ css: calendar.css?cb=7
     var swimmingKit = ["Swimming costume, swimming hat, towel, sliders, tummy band, swimming goggles"];
 
     var timings = [
-        { title: "Larks:", time: "8:00am" },
-        { title: "Drop Off:", time: "8:35am" },
-        { title: "Pick Up:", time: "3:30pm" },
-        { title: "Owls:", time: "6:00pm" }
+        { title: "Drop Off", time: "8:35am" },
+        { title: "Pick Up", time: "3:30pm" },
     ];
 
     var commonDayData = {
@@ -28,7 +26,7 @@ css: calendar.css?cb=7
             kit: ['*Reading book', '*Water bottle', '*Full PE kit in yellow PE bag'].concat(commonKit),
             timings: timings.concat(
                 [
-                    { title: "Multi-Activity Club Pick Up:", time: "4:30pm" }
+                    { title: "Multi-Activity Club Pick Up", time: "4:30pm" }
                 ]
             )
         },
@@ -63,21 +61,11 @@ css: calendar.css?cb=7
         yeargroup: {
             rota: {
                 week: {
-                    monday: [commonDayData.regular, commonDayData.swimming, commonDayData.spellingTestBook, {
-                        timings: [{title: "Yoga:", time: "4:30pm"}]
-                    }],
-                    tuesday: [commonDayData.regular, {
-                        timings: [{title: "Tennis:", time: "4:30pm"}, {title: "Gymnastics:", time: "5:00pm"}]
-                    }],
-                    wednesday: [commonDayData.pe, {
-                        timings: [{title: "Musical Theatre:", time: "4:30pm"}]
-                    }],
-                    thursday: [commonDayData.regular, {
-                        timings: [{title: "Cookery Fun:", time: "4:30pm"}, {title: "Choir:", time: "4:30pm"}]
-                    }],
-                    friday: [commonDayData.regular, commonDayData.spellingTest, {
-                        timings: [{title: "Multi Skills:", time: "4:30pm"}]
-                    }],
+                    monday: [commonDayData.regular, commonDayData.swimming, commonDayData.spellingTestBook],
+                    tuesday: [commonDayData.regular],
+                    wednesday: [commonDayData.pe],
+                    thursday: [commonDayData.regular],
+                    friday: [commonDayData.regular, commonDayData.spellingTest],
                 }
             },
             extras: {
@@ -86,7 +74,7 @@ css: calendar.css?cb=7
                 },
                 '2021-09-07': {
                     timings: [
-                        {title: "Parent Tea:", time: "6:30pm"}]
+                        {title: "Parent Tea", time: "6:30pm"}]
                 },
             },
             overrides: {
@@ -95,33 +83,33 @@ css: calendar.css?cb=7
                     games: ['Sea Life Center Trip'],
                     kit: ['TBC'],
                     timings: [
-                        { title: "Larks:", time: "8:00am" },
-                        { title: "Drop Off:", time: "8:35am" },
-                        {title: "Pick Up:", time: "4:00pm"}],
+                        { title: "Larks", time: "8:00am" },
+                        { title: "Drop Off", time: "8:35am" },
+                        {title: "Pick Up", time: "4:00pm"}],
                 },
                 '2021-12-10': {
                     uniform: "School uniform with blazer",
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off:", time: "9:00am"},
-                        {title: "Pick Up:", time: "12:00pm"}],
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
                 },
                 '2022-03-25': {
                     uniform: "School uniform with blazer",
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off:", time: "9:00am"},
-                        {title: "Pick Up:", time: "12:00pm"}],
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
                 },
                 '2022-07-15': {
                     uniform: "School uniform with blazer",
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off:", time: "9:00am"},
-                        {title: "Pick Up:", time: "12:00pm"}],
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
                 },
             },
             deadlines: {
@@ -173,7 +161,226 @@ css: calendar.css?cb=7
             }
         },
 
-        termTimes: [
+        additional: {
+            meta:
+                [
+                    {
+                        title: "Extras",
+                        multiselect: true,
+                        values: [
+                            { key: "as_yoga", value: "Yoga (Mon)" },
+                            { key: "as_tennis", value: "Tennis (Tue)" },
+                            { key: "as_gymnastics", value: "Gymnastics (Tue)" },
+                            { key: "as_theatre", value: "Musical Theatre (Wed)" },
+                            { key: "as_cookery", value: "Cookery Fun (Thu)" },
+                            { key: "as_choir", value: "Choir (Thu)" },
+                            { key: "as_multi", value: "Multi Skills (Fri)" },
+                            { key: "bs_larks_mon", value: "Larks (Mon)" },
+                            { key: "bs_larks_tue", value: "Larks (Tue)" },
+                            { key: "bs_larks_wed", value: "Larks (Wed)" },
+                            { key: "bs_larks_thu", value: "Larks (Thu)" },
+                            { key: "bs_larks_fri", value: "Larks (Fri)" },
+                            { key: "as_owls_mon", value: "Owls (Mon)" },
+                            { key: "as_owls_tue", value: "Owls (Tue)" },
+                            { key: "as_owls_wed", value: "Owls (Wed)" },
+                            { key: "as_owls_thu", value: "Owls (Thu)" },
+                            { key: "as_owls_fri", value: "Owls (Fri)" },
+                            { key: "flo_tennis", value: "Flo Tennis" },
+                            { key: "flo_piano", value: "Flo Piano" }
+                        ]
+                    }
+                ],
+
+            data: {
+                "as_yoga": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ['Yoga (AS)'],
+                                timings: [{title: "Yoga", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                            tuesday: {
+                                kit: ['PE Kit']
+                            },
+                        }
+                    }
+                },
+                "as_tennis": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: ['Tennis (AS)'],
+                                kit: ['*Tennis racket'],
+                                timings: [{title: "Tennis", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_gymnastics": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: ['Gymnastics (AS)'],
+                                timings: [{title: "Gymnastics", time: "5:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_theatre": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: ['Musical Theatre (AS)'],
+                                timings: [{title: "Musical Theatre", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_cookery": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Cookery Fun (AS)'],
+                                timings: [{title: "Cookery Fun", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_choir": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Choir (AS)'],
+                                timings: [{title: "Choir", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_multi": {
+                    rota: {
+                        always: {
+                            friday: {
+                                games: ['Multi Skill (AS)'],
+                                timings: [{title: "Multi Skills", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_mon": {
+                    rota: {
+                        always: {
+                            monday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_tue": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_wed": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_thu": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_fri": {
+                    rota: {
+                        always: {
+                            friday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_mon": {
+                    rota: {
+                        always: {
+                            monday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_tue": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_wed": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_thu": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_fri": {
+                    rota: {
+                        always: {
+                            friday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "flo_tennis": {
+                    rota: {
+                        always: {
+                            friday: {
+                                uniform: 'PE Kit',
+                                games: ['*Tennis'],
+                                kit: ['*Tennis racket']
+                            },
+                        }
+                    }
+                },
+                "flo_piano": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['*Piano'],
+                                kit: ['*Piano books']
+                            },
+                        }
+                    }
+                },
+            },
+        },
+
+    termTimes: [
             {start: moment('2021-09-06'), end: moment('2021-10-15')},
             {start: moment('2021-11-01'), end: moment('2021-12-10')},
             {start: moment('2022-01-05'), end: moment('2022-02-11')},
