@@ -238,7 +238,13 @@ class CalendarModel {
         const extra: Timing[] = CalendarModel.value(this.extras(date), 'timings', [])
             .map(o => { return  { title: CalendarModel.markup(o.title, '+'), time: o.time} });
         const rota: Timing[] = CalendarModel.dayValue(week, date, 'timings', []);
-        return (overrides.length ? overrides : extra.concat(rota))
+
+        const allTimings = overrides.length ? overrides : extra.concat(rota);
+        const removeList = allTimings.filter((o) => o.title.startsWith('-')).map((o) => o.title);
+        console.log(removeList);
+        console.log(removeList.includes('-Drop Off'));
+        const timings = allTimings.filter((o) => !o.title.startsWith('-') && !removeList.includes('-' + o.title));
+        return (timings)
             .sort(CalendarModel.sortTime);
     }
 

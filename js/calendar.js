@@ -133,7 +133,12 @@ var CalendarModel = /** @class */ (function () {
         var extra = CalendarModel.value(this.extras(date), 'timings', [])
             .map(function (o) { return { title: CalendarModel.markup(o.title, '+'), time: o.time }; });
         var rota = CalendarModel.dayValue(week, date, 'timings', []);
-        return (overrides.length ? overrides : extra.concat(rota))
+        var allTimings = overrides.length ? overrides : extra.concat(rota);
+        var removeList = allTimings.filter(function (o) { return o.title.startsWith('-'); }).map(function (o) { return o.title; });
+        console.log(removeList);
+        console.log(removeList.includes('-Drop Off'));
+        var timings = allTimings.filter(function (o) { return !o.title.startsWith('-') && !removeList.includes('-' + o.title); });
+        return (timings)
             .sort(CalendarModel.sortTime);
     };
     CalendarModel.markup = function (value, symbol) {
