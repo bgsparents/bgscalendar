@@ -237,6 +237,16 @@ css: calendar.css?cb=7
                     ]
                 },
                 {
+                    title: "Lunch Clubs",
+                    multiselect: true,
+                    values: [
+                        { key: "lu_hockey", value: "Hockey Club (Wed)" },
+                        { key: "lu_science", value: "Science Club (Wed)" },
+                        { key: "lu_soprano", value: "Soprano Practice (Tue)" },
+                        { key: "lu_alto", value: "Alto Practice (Thu)" }
+                    ]
+                },
+                {
                     title: "After School",
                     multiselect: true,
                     values: [
@@ -391,6 +401,47 @@ css: calendar.css?cb=7
                                 games: "*Tennis (BS)",
                                 kit: ['*Tennis racket', '*School uniform'],
                                 timings: [ {title: "Tennis Start", time: "7:15am"}, {title: "-Drop Off"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_hockey": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: "Hockey (Lunch)",
+                                kit: hockeyKit,
+                            },
+                        }
+                    }
+                },
+
+                "lu_science": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: "Science Club"
+                            },
+                        }
+                    }
+                },
+
+                "lu_alto": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: "Alto Practice"
+                            },
+                        }
+                    }
+                },
+
+                "lu_soprano": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: "Soprano Practice"
                             },
                         }
                     }
