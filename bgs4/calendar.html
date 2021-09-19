@@ -233,6 +233,7 @@ css: calendar.css?cb=7
                         { key: "bs_swim_wed", value: "Swim Training (Wed)" },
                         { key: "bs_swim_fri", value: "Swim Training (Fri)" },
                         { key: "bs_tennis_mon", value: "Tennis (Mon)" },
+                        { key: "bs_tennis_mon_white", value: "Tennis - White (Mon)" },
                         { key: "bs_tennis_tue", value: "Tennis (Tue)" }
                     ]
                 },
@@ -240,7 +241,10 @@ css: calendar.css?cb=7
                     title: "Lunch Clubs",
                     multiselect: true,
                     values: [
+                        { key: "lu_netball", value: "Netball Club (Mon)" },
+                        { key: "lu_netball_white", value: "Netball Club - White (Mon)" },
                         { key: "lu_hockey", value: "Hockey Club (Wed)" },
+                        { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
                         { key: "lu_science", value: "Science Club (Wed)" },
                         { key: "lu_soprano", value: "Soprano Practice (Tue)" },
                         { key: "lu_alto", value: "Alto Practice (Thu)" }
@@ -383,6 +387,20 @@ css: calendar.css?cb=7
                     }
                 },
 
+                "bs_tennis_mon_white": {
+                    rota: {
+                        always: {
+                            matcher: matchers.tennis,
+                            monday: {
+                                uniform: commonDayData.netball.uniform,
+                                games: "*Tennis (BS)",
+                                kit: ['*Tennis racket'],
+                                timings: [ {title: "Tennis Start", time: "7:15am"}, {title: "-Drop Off"} ]
+                            },
+                        }
+                    }
+                },
+
                 "bs_tennis_tue": {
                     rota: {
                         weekA: {
@@ -406,10 +424,45 @@ css: calendar.css?cb=7
                     }
                 },
 
+                "lu_netball": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: "Netball (Lunch)",
+                                kit: astrosKit,
+                            },
+                        }
+                    }
+                },
+
+                "lu_netball_white": {
+                    rota: {
+                        always: {
+                            monday: {
+                                uniform: commonDayData.netball.uniform,
+                                games: "Netball (Lunch)",
+                                kit: astrosKit,
+                            },
+                        }
+                    }
+                },
+
                 "lu_hockey": {
                     rota: {
                         always: {
                             wednesday: {
+                                games: "Hockey (Lunch)",
+                                kit: hockeyKit,
+                            },
+                        }
+                    }
+                },
+
+                "lu_hockey_damson": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                uniform: commonDayData.hockey.uniform,
                                 games: "Hockey (Lunch)",
                                 kit: hockeyKit,
                             },
