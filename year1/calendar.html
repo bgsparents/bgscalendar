@@ -221,14 +221,16 @@ css: calendar.css?cb=7
                         title: "Extras",
                         multiselect: true,
                         values: [
+                            { key: "as_rugby", value: "Rugby (Mon)" },
                             { key: "as_yoga", value: "Yoga (Mon)" },
                             { key: "as_tennis", value: "Tennis (Tue)" },
-                            { key: "as_gymnastics", value: "Gymnastics (Tue)" },
-                            { key: "as_theatre", value: "Musical Theatre (Wed)" },
+                            // { key: "as_gymnastics", value: "Gymnastics (Tue)" },
+                            { key: "as_ballet", value: "Ballet (Wed)" },
+                            // { key: "as_theatre", value: "Musical Theatre (Wed)" },
                             { key: "bs_tennis", value: "Early Morning Tennis (Thu)" },
-                            { key: "as_cookery", value: "Cookery Fun (Thu)" },
                             { key: "as_choir", value: "Choir (Thu)" },
-                            { key: "as_multi", value: "Multi Skills (Fri)" },
+                            { key: "as_pottery", value: "Pottery (Thu)" },
+                            { key: "as_football", value: "Football (Fri)" },
                             { key: "bs_larks_mon", value: "Larks (Mon)" },
                             { key: "bs_larks_tue", value: "Larks (Tue)" },
                             { key: "bs_larks_wed", value: "Larks (Wed)" },
@@ -246,6 +248,19 @@ css: calendar.css?cb=7
                 ],
 
             data: {
+                "as_rugby": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ['Rugby (AS)'],
+                                timings: [{title: "Rugby", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                            tuesday: {
+                                kit: ['PE Kit']
+                            },
+                        }
+                    }
+                },
                 "as_yoga": {
                     rota: {
                         always: {
@@ -270,16 +285,16 @@ css: calendar.css?cb=7
                         }
                     }
                 },
-                "as_gymnastics": {
-                    rota: {
-                        always: {
-                            tuesday: {
-                                games: ['Gymnastics (AS)'],
-                                timings: [{title: "Gymnastics", time: "5:00pm"}, {title: '-Pick Up'}]
-                            },
-                        }
-                    }
-                },
+                // "as_gymnastics": {
+                //     rota: {
+                //         always: {
+                //             tuesday: {
+                //                 games: ['Gymnastics (AS)'],
+                //                 timings: [{title: "Gymnastics", time: "5:00pm"}, {title: '-Pick Up'}]
+                //             },
+                //         }
+                //     }
+                // },
                 "bs_tennis": {
                     rota: {
                         always: {
@@ -292,22 +307,22 @@ css: calendar.css?cb=7
                         }
                     }
                 },
-                "as_theatre": {
+                "as_ballet": {
                     rota: {
                         always: {
                             wednesday: {
-                                games: ['Musical Theatre (AS)'],
-                                timings: [{title: "Musical Theatre", time: "4:30pm"}, {title: '-Pick Up'}]
+                                games: ['Ballet (AS)'],
+                                timings: [{title: "Ballet", time: "5:00pm"}, {title: '-Pick Up'}]
                             },
                         }
                     }
                 },
-                "as_cookery": {
+                "as_pottery": {
                     rota: {
                         always: {
                             thursday: {
-                                games: ['Cookery Fun (AS)'],
-                                timings: [{title: "Cookery Fun", time: "4:30pm"}, {title: '-Pick Up'}]
+                                games: ['Pottery (AS)'],
+                                timings: [{title: "Pottery", time: "4:30pm"}, {title: '-Pick Up'}]
                             },
                         }
                     }
@@ -322,12 +337,12 @@ css: calendar.css?cb=7
                         }
                     }
                 },
-                "as_multi": {
+                "as_football": {
                     rota: {
                         always: {
                             friday: {
-                                games: ['Multi Skill (AS)'],
-                                timings: [{title: "Multi Skills", time: "4:30pm"}, {title: '-Pick Up'}]
+                                games: ['Football (AS)'],
+                                timings: [{title: "Football", time: "4:30pm"}, {title: '-Pick Up'}]
                             },
                         }
                     }
