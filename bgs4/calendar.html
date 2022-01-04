@@ -71,16 +71,16 @@ css: calendar.css?cb=7
         weekA: function(currentDate) {
             const start = moment('2021-09-06');
             const weeks = currentDate.diff(start, "week");
-            return weeks >= 0 && weeks % 2 === 0;
+            return weeks >= 0 && weeks % 2 === 1;
         },
         weekB: function(currentDate) {
             const start = moment('2021-09-13');
             const weeks = currentDate.diff(start, "week");
-            return weeks >= 0 && weeks % 2 === 0;
+            return weeks >= 0 && weeks % 2 === 1;
         },
         tennis: function(currentDate) {
-            const start = moment('2021-10-04');
-            const end = moment('2021-12-01');
+            const start = moment('2022-01-10');
+            const end = moment('2022-03-25');
             return start.isSameOrBefore(currentDate) && end.isSameOrAfter(currentDate);
         },
         tennisA: function(currentDate) {
@@ -155,7 +155,13 @@ css: calendar.css?cb=7
                     games: ["Christmas Concert (Senior School Assembly Hall)"],
                     timings: [
                         {title: "Christmas Concert", time: "6:30pm"}]
-                }
+                },
+                '2022-01-10': {
+                    games: ["Swimming Trials"],
+                    kit: swimmingKit,
+                    timings: [
+                        {title: "Swimming Trials", time: "5:30pm"}]
+                },
             },
             overrides: {
                 '2021-09-08': {
@@ -216,7 +222,9 @@ css: calendar.css?cb=7
                 '2021-10-20': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1ce3ie51mk470w/\' target=\'trip1\'>Half Term Swimming Training Reply Form</a>'],
                 '2021-11-08': ['<a href=\'https://jhodgkin.wufoo.com/forms/r14ufhys028ow2d/\' target=\'trip1\'>British Museum Reply Form</a>', '<a href=\'https://bedfordgirlsschool.schoolcloud.co.uk/\' target=\'trip1\'>Parents\' Consultation Booking Deadline (before 2:30pm)</a>', '<a href="https://jhodgkin.wufoo.com/forms/r16qqu8r1y4y5j2/" target="xmascard1">Christmas Card Orders</a>' ],
                 '2021-11-22': ['<a href=\'https://jhodgkin.wufoo.com/forms/3776-bedfordshire-festival-of-music-drama/\' target=\'trip1\'>Festival of Music Entry Form</a>'],
-                '2021-11-24': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1vlts40e7tw0s/\' target=\'xmas-choir\'>Christmas Fayre Choir Permission Slip</a>']
+                '2021-11-24': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1vlts40e7tw0s/\' target=\'xmas-choir\'>Christmas Fayre Choir Permission Slip</a>'],
+                '2022-01-05': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1yhez270low6i7/\' target=\'swim2\'>Swimming Trials Submission</a>']
+
             }
         },
 
@@ -295,7 +303,7 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "lu_netball", value: "Netball Club (Mon)" },
-                        { key: "lu_netball_white", value: "Netball Club - White (Mon)" },
+                        { key: "lu_netball_teal", value: "Netball Club - Teal (Mon)" },
                         { key: "lu_hockey", value: "Hockey Club (Wed)" },
                         { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
                         { key: "lu_science", value: "Science Club (Wed)" },
@@ -308,6 +316,7 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "as_choir", value: "Choir (Tue)" },
+                        { key: "as_hockey", value: "Hockey (Fri)" },
                         { key: "as_swim", value: "Swimming (Mon)" },
                         { key: "as_late_care_jr", value: "Late Care (Jr)" },
                         { key: "as_late_care_sr", value: "Late Care (Sr)" },
@@ -320,20 +329,37 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            monday: commonDayData.hockey,
-                            tuesday: commonDayData.netball,
+                            monday: commonDayData.netball,
+                            tuesday: commonDayData.hockey,
                             wednesday: commonDayData.swimming,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            monday: commonDayData.hockey,
+                            monday: commonDayData.netball,
                             wednesday: commonDayData.swimming,
                         }
                     }
                 },
 
                 "teal": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            monday: commonDayData.swimming,
+                            tuesday: commonDayData.hockey,
+                            wednesday: commonDayData.netball,
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            monday: commonDayData.swimming,
+                            wednesday: commonDayData.netball,
+                        }
+                    }
+                },
+
+                "white": {
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
@@ -346,23 +372,6 @@ css: calendar.css?cb=7
                             matcher: matchers.weekB,
                             monday: commonDayData.hockey,
                             wednesday: commonDayData.netball,
-                        }
-                    }
-                },
-
-                "white": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-                            monday: commonDayData.swimming,
-                            tuesday: commonDayData.netball,
-                            wednesday: commonDayData.hockey,
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            monday: commonDayData.swimming,
-                            wednesday: commonDayData.hockey,
                         }
                     }
                 },
@@ -486,7 +495,7 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "lu_netball_white": {
+                "lu_netball_teal": {
                     rota: {
                         always: {
                             monday: {
@@ -557,6 +566,18 @@ css: calendar.css?cb=7
                             tuesday: {
                                 games: "Choir (AS)",
                                 timings: [ {title: "Choir Pick Up", time: "5:15pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_hockey": {
+                    rota: {
+                        always: {
+                            friday: {
+                                games: "Hockey (AS)",
+                                kit: hockeyKit,
+                                timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
