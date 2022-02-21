@@ -68,12 +68,12 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const start = moment('2021-09-06');
+            const start = moment('2021-09-13');
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 1;
         },
         weekB: function(currentDate) {
-            const start = moment('2021-09-13');
+            const start = moment('2021-09-06');
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 1;
         },
