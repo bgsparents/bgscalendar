@@ -68,18 +68,18 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const start = moment('2021-09-13');
-            const weeks = currentDate.diff(start, "week");
-            return weeks >= 0 && weeks % 2 === 1;
-        },
-        weekB: function(currentDate) {
             const start = moment('2021-09-06');
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 1;
         },
+        weekB: function(currentDate) {
+            const start = moment('2021-09-13');
+            const weeks = currentDate.diff(start, "week");
+            return weeks >= 0 && weeks % 2 === 1;
+        },
         tennis: function(currentDate) {
-            const start = moment('2022-01-10');
-            const end = moment('2022-03-25');
+            const start = moment('2022-04-25');
+            const end = moment('2022-07-14');
             return start.isSameOrBefore(currentDate) && end.isSameOrAfter(currentDate);
         },
         tennisA: function(currentDate) {
@@ -87,6 +87,10 @@ css: calendar.css?cb=7
         },
         tennisB: function(currentDate) {
             return matchers.weekB(currentDate) && matchers.tennis(currentDate);
+        },
+        athletics: function(currentDate) {
+            const start = moment('2022-06-06');
+            return start.isSameOrBefore(currentDate);
         }
     }
 
@@ -223,6 +227,16 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Curriculum Conversation", time: "4:15pm"}]
                 },
+                '2022-04-25': {
+                    timings: [
+                        {title: "Curriculum Conversation", time: "4:15pm"}]
+                },
+                '2022-05-07': {
+                    games: ["The Bedford Regatta"]
+                },
+                '2022-07-02': {
+                    games: ["BGS Culture Festival"]
+                },
             },
             overrides: {
                 '2021-09-08': {
@@ -305,6 +319,9 @@ css: calendar.css?cb=7
                 '2022-03-24': {
                     uniform: "Mufti - Wear something Purple",
                 },
+                '2022-05-05': {
+                    uniform: ["Into the Future (Chanel)", "1990s (Parks)", "1980s (Nightingale)", "1970s (Austen)", "1960s (Franklin)", "1950s (Hepburn)"],
+                },
             },
             deadlines: {
                 '2021-10-20': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1ce3ie51mk470w/\' target=\'trip1\'>Half Term Swimming Training Reply Form</a>'],
@@ -315,6 +332,7 @@ css: calendar.css?cb=7
                 '2022-02-07': ['<a href=\'https://jhodgkin.wufoo.com/forms/rnoradx0it61l8/\' target=\'gwie\'>Grafham Info Attendance</a>'],
                 '2022-03-01': ['<a href=\'https://bedfordgirlsschool.parentseveningsystem.co.uk\' target=\'gwie\'>Parents\' Evening Booking</a>'],
                 '2022-03-21': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1qcbkav1g3r0nw/\' target=\'cc\'>Curriculum Conversation Reservation</a>'],
+                '2022-04-21': ['<a href=\'https://jhodgkin.wufoo.com/forms/rkc9eyy0va45nm/\' target=\'cc\'>Curriculum Conversation Reservation</a>'],
             }
         },
 
@@ -406,9 +424,9 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "as_choir", value: "Choir (Tue)" },
-                        { key: "as_hockey", value: "Hockey (Fri)" },
-                        { key: "as_netball", value: "Netball (Thu)" },
-                        { key: "as_swim", value: "Swimming (Mon)" },
+                        { key: "as_cricket", value: "Cricket (Mon)" },
+                        { key: "as_swim", value: "Swimming (Thu)" },
+                        { key: "as_athletics", value: "Athletics (Tue)" },
                         { key: "as_late_care_jr", value: "Late Care (Jr)" },
                         { key: "as_late_care_sr", value: "Late Care (Sr)" },
                     ]
@@ -660,25 +678,26 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_hockey": {
+                "as_cricket": {
                     rota: {
                         always: {
-                            friday: {
-                                games: "Hockey (AS)",
-                                kit: hockeyKit,
-                                timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            monday: {
+                                games: "Cricket (AS)",
+                                kit: ["White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers"],
+                                timings: [ {title: "Cricket Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
                 },
 
-                "as_netball": {
+                "as_athletics": {
                     rota: {
                         always: {
-                            thursday: {
-                                games: "Netball (AS)",
+                            matcher: matchers.athletics,
+                            tuesday: {
+                                games: "Athletics (AS)",
                                 kit: ["White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers"],
-                                timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                                timings: [ {title: "Athletics Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
@@ -687,7 +706,7 @@ css: calendar.css?cb=7
                 "as_swim": {
                     rota: {
                         always: {
-                            monday: {
+                            thursday: {
                                 games: "Swimming (AS)",
                                 kit: swimmingKit,
                                 timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]

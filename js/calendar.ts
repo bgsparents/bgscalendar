@@ -187,6 +187,9 @@ class CalendarModel {
     }
 
     private getRotaForWeek(rotas: WeekRotaMap): WeekSchedule {
+        if (!rotas) {
+            return undefined;
+        }
         for (let key of Object.keys(rotas)) {
             const rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
@@ -241,8 +244,6 @@ class CalendarModel {
 
         const allTimings = overrides.length ? overrides : extra.concat(rota);
         const removeList = allTimings.filter((o) => o.title.startsWith('-')).map((o) => o.title);
-        console.log(removeList);
-        console.log(removeList.includes('-Drop Off'));
         const timings = allTimings.filter((o) => !o.title.startsWith('-') && !removeList.includes('-' + o.title));
         return (timings)
             .sort(CalendarModel.sortTime);
@@ -551,7 +552,7 @@ class Calendar {
                     .data('key', option.key)
 
                 if (options.includes(option.key)) {
-                    input[0].checked = true;
+                    (input[0] as HTMLInputElement).checked = true;
                 }
 
                 const label = $('<label class="custom-control-label"></label>')

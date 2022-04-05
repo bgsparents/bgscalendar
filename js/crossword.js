@@ -3,73 +3,72 @@ var CwClueDirection;
     CwClueDirection["across"] = "across";
     CwClueDirection["down"] = "down";
 })(CwClueDirection || (CwClueDirection = {}));
-var CwCell = /** @class */ (function () {
-    function CwCell(cw, x, y) {
+class CwCell {
+    constructor(cw, x, y) {
         this.cw = cw;
         this.x = x;
         this.y = y;
         this.type = 'block';
         this.id = x + '-' + y;
     }
-    CwCell.prototype.isBlock = function () {
+    isBlock() {
         return this.type == 'block';
-    };
-    CwCell.prototype.nextX = function (n) {
-        var cx = this.x - 1;
-        for (var i = 1; i < this.cw.width; ++i) {
-            var x = (cx + this.cw.width + (i * n)) % this.cw.width;
-            var cell = this.cw.cell(x + 1, this.y);
+    }
+    nextX(n) {
+        let cx = this.x - 1;
+        for (let i = 1; i < this.cw.width; ++i) {
+            let x = (cx + this.cw.width + (i * n)) % this.cw.width;
+            let cell = this.cw.cell(x + 1, this.y);
             if (cell.type === 'letter') {
                 return cell;
             }
         }
-    };
-    CwCell.prototype.nextY = function (n) {
-        var cy = this.y - 1;
-        for (var i = 1; i < this.cw.height; ++i) {
-            var y = (cy + this.cw.height + (i * n)) % this.cw.height;
-            var cell = this.cw.cell(this.x, y + 1);
+    }
+    nextY(n) {
+        let cy = this.y - 1;
+        for (let i = 1; i < this.cw.height; ++i) {
+            let y = (cy + this.cw.height + (i * n)) % this.cw.height;
+            let cell = this.cw.cell(this.x, y + 1);
             if (cell.type === 'letter') {
                 return cell;
             }
         }
-    };
-    CwCell.prototype.next = function (n, direction, haltAtClueBoundary) {
-        var currentId;
+    }
+    next(n, direction, haltAtClueBoundary) {
+        let currentId;
         if (direction === CwClueDirection.across) {
-            var cell = this.nextX(n);
+            let cell = this.nextX(n);
             if (cell.across === this.across || cell.x > (this.x * n)) {
                 return cell;
             }
             currentId = this.across;
         }
         else {
-            var cell = this.nextY(n);
+            let cell = this.nextY(n);
             if (cell.down === this.down || cell.y > (this.y * n)) {
                 return cell;
             }
             currentId = this.down;
         }
         if (!haltAtClueBoundary) {
-            var next = (currentId - 1 + this.cw.clues.length + n) % this.cw.clues.length;
+            let next = (currentId - 1 + this.cw.clues.length + n) % this.cw.clues.length;
             return this.cw.clue(next + 1).firstCell;
         }
         return this;
-    };
-    return CwCell;
-}());
+    }
+}
 function _(json) {
     console.log(json);
 }
-var CwCrossword = /** @class */ (function () {
-    function CwCrossword(data) {
-        var wordXml = data.find("word");
+class CwCrossword {
+    constructor(data) {
+        let wordXml = data.find("word");
         this.title = $(data.find("metadata")).find("title").text();
         console.log("title=" + this.title);
         this.initClues(data.find("clue"), wordXml);
         this.initGrid(data.find("grid"), wordXml);
     }
-    CwCrossword.loadXml = function (url, callback, error) {
+    static loadXml(url, callback, error) {
         $.get(url, function (data) {
             callback(new CwCrossword($(data)));
         }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -81,19 +80,19 @@ var CwCrossword = /** @class */ (function () {
                 console.error("Failed to load crossword data - textStatus=" + textStatus + ", errorThrown=" + errorThrown);
             }
         });
-    };
-    CwCrossword.loadJs = function (url, callback, error) {
+    }
+    static loadJs(url, callback, error) {
         $.ajax({
             url: url,
             dataType: "jsonp",
         }).fail(function () {
             callback(new CwCrossword($(CrosswordPuzzleData)));
         });
-    };
-    CwCrossword.loadIndependentXml = function (code, callback, error) {
+    }
+    static loadIndependentXml(code, callback, error) {
         this.loadXml("https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/independent/daily-crossword/" + code + ".xml", callback, error);
-    };
-    CwCrossword.prototype.clue = function (id) {
+    }
+    clue(id) {
         if (id > this.clues.length) {
             id = 1;
         }
@@ -101,24 +100,23 @@ var CwCrossword = /** @class */ (function () {
             id = this.clues.length;
         }
         return this.clues[id - 1];
-    };
-    CwCrossword.prototype.cell = function (x, y) {
+    }
+    cell(x, y) {
         return this.grid[x - 1][y - 1];
-    };
-    CwCrossword.prototype.cellFromId = function (cellId) {
-        var coord = cellId.split("-").map(function (n) { return parseInt(n); });
+    }
+    cellFromId(cellId) {
+        const coord = cellId.split("-").map(n => parseInt(n));
         return this.cell(coord[0], coord[1]);
-    };
-    CwCrossword.prototype.initClues = function (cluesXml, wordXml) {
-        var _this = this;
+    }
+    initClues(cluesXml, wordXml) {
         this.clues = new Array(wordXml.length);
-        cluesXml.each(function (i, node) {
-            var clueXml = $(node);
-            var id = parseInt(clueXml.attr('word'));
+        cluesXml.each((i, node) => {
+            let clueXml = $(node);
+            let id = parseInt(clueXml.attr('word'));
             if (clueXml.attr('is-link')) {
             }
             else {
-                _this.clues[id - 1] = {
+                this.clues[id - 1] = {
                     id: id,
                     number: clueXml.attr('number'),
                     format: clueXml.attr('format'),
@@ -126,62 +124,57 @@ var CwCrossword = /** @class */ (function () {
                 };
             }
         });
-    };
-    CwCrossword.prototype.initGrid = function (gridXml, wordXml) {
-        var _this = this;
+    }
+    initGrid(gridXml, wordXml) {
         this.width = parseInt(gridXml.attr('width'));
         this.height = parseInt(gridXml.attr('height'));
         this.grid = new Array(this.width);
-        for (var x = 0; x < this.width; ++x) {
+        for (let x = 0; x < this.width; ++x) {
             this.grid[x] = new Array(this.height);
-            for (var y = 0; y < this.height; ++y) {
+            for (let y = 0; y < this.height; ++y) {
                 this.grid[x][y] = new CwCell(this, x + 1, y + 1);
             }
         }
-        gridXml.find('cell').each(function (i, node) {
-            var cellXml = $(node);
-            var cell = _this.cell(parseInt(cellXml.attr('x')), parseInt(cellXml.attr('y')));
+        gridXml.find('cell').each((i, node) => {
+            let cellXml = $(node);
+            let cell = this.cell(parseInt(cellXml.attr('x')), parseInt(cellXml.attr('y')));
             cell.number = cellXml.attr('number');
             cell.solution = cellXml.attr('solution');
         });
-        wordXml.each(function (i, wordNode) {
-            var word = $(wordNode);
-            var id = parseInt(word.attr('id'));
-            _this.wordToGrid(id, word, true);
-            word.find('cells').each(function (i, link) {
-                _this.wordToGrid(id, $(link), false);
+        wordXml.each((i, wordNode) => {
+            let word = $(wordNode);
+            let id = parseInt(word.attr('id'));
+            this.wordToGrid(id, word, true);
+            word.find('cells').each((i, link) => {
+                this.wordToGrid(id, $(link), false);
             });
         });
-    };
-    CwCrossword.prototype.wordToGrid = function (id, word, firstClue) {
-        var xl = word.attr('x').split('-').map(function (n) { return parseInt(n); });
-        var yl = word.attr('y').split('-').map(function (n) { return parseInt(n); });
-        var clue = this.clue(id);
+    }
+    wordToGrid(id, word, firstClue) {
+        let xl = word.attr('x').split('-').map(n => parseInt(n));
+        let yl = word.attr('y').split('-').map(n => parseInt(n));
+        let clue = this.clue(id);
         if (firstClue) {
             clue.firstCell = this.cell(xl[0], yl[0]);
         }
         if (xl.length > 1) {
-            for (var x = xl[0]; x <= xl[1]; ++x) {
+            for (let x = xl[0]; x <= xl[1]; ++x) {
                 this.cell(x, yl[0]).across = id;
                 this.cell(x, yl[0]).type = 'letter';
             }
         }
         else {
-            for (var y = yl[0]; y <= yl[1]; ++y) {
+            for (let y = yl[0]; y <= yl[1]; ++y) {
                 this.cell(xl[0], y).down = id;
                 this.cell(xl[0], y).type = 'letter';
             }
         }
-    };
-    return CwCrossword;
-}());
-var CwBoardCell = /** @class */ (function () {
-    function CwBoardCell() {
     }
-    return CwBoardCell;
-}());
-var CwBoard = /** @class */ (function () {
-    function CwBoard(crossword) {
+}
+class CwBoardCell {
+}
+class CwBoard {
+    constructor(crossword) {
         this.answerListeners = [];
         this.locationListeners = [];
         this.noteListeners = [];
@@ -191,40 +184,40 @@ var CwBoard = /** @class */ (function () {
         this.drawGrid();
         this.hookupKeyboard();
         this.hookupNotes();
-        var firstCell = this.crossword.clue(1).firstCell;
+        let firstCell = this.crossword.clue(1).firstCell;
         this.focused = {};
         this.focus(firstCell, firstCell.across ? CwClueDirection.across : CwClueDirection.down);
         this.moveFocus(this.crossword.clue(1).firstCell);
     }
-    CwBoard.loadXml = function (url, callback) {
-        CwCrossword.loadXml(url, function (cw) {
+    static loadXml(url, callback) {
+        CwCrossword.loadXml(url, (cw) => {
             callback(new CwBoard(cw));
         });
-    };
-    CwBoard.loadJs = function (url, callback) {
-        CwCrossword.loadJs(url, function (cw) {
+    }
+    static loadJs(url, callback) {
+        CwCrossword.loadJs(url, (cw) => {
             callback(new CwBoard(cw));
         });
-    };
-    CwBoard.loadIndependentXml = function (code, callback) {
+    }
+    static loadIndependentXml(code, callback) {
         this.loadXml("https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/independent/daily-crossword/" + code + ".xml", callback);
-    };
-    CwBoard.prototype.drawGrid = function () {
-        var that = this;
+    }
+    drawGrid() {
+        let that = this;
         this.gridContainer = $('#grid_container').css({
             width: 'calc(2rem * ' + this.crossword.width + ' + ' + (this.crossword.width + 1) + ' * 2px)'
         });
         this.gridTable = $("#grid");
-        for (var y = 1; y <= this.crossword.height; ++y) {
-            var row = $('<tr>');
-            var _loop_1 = function (x) {
-                var tableCell = $('<td>');
-                var cell = this_1.crossword.cell(x, y);
+        for (let y = 1; y <= this.crossword.height; ++y) {
+            let row = $('<tr>');
+            for (let x = 1; x <= this.crossword.width; ++x) {
+                let tableCell = $('<td>');
+                let cell = this.crossword.cell(x, y);
                 if (cell.type === 'block') {
                     tableCell.addClass('block');
                 }
                 else {
-                    this_1.lettersTotal++;
+                    this.lettersTotal++;
                     if (cell.number) {
                         tableCell.append($('<span>' + cell.number + '</span>').addClass('number'));
                     }
@@ -237,36 +230,32 @@ var CwBoard = /** @class */ (function () {
                     }
                     cell.cell = tableCell;
                     tableCell.attr('id', cell.id);
-                    tableCell.attr('tabindex', x + y * this_1.crossword.width);
+                    tableCell.attr('tabindex', x + y * this.crossword.width);
                     tableCell.data('cell', cell);
-                    tableCell.focus(function (e) { that.letterFocus(e, cell); });
-                    tableCell.click(function (e) { that.letterFocus(e, cell); });
-                    tableCell.keydown(function (e) { that.keyDownListener(e, cell); });
+                    tableCell.focus((e) => { that.letterFocus(e, cell); });
+                    tableCell.click((e) => { that.letterFocus(e, cell); });
+                    tableCell.keydown((e) => { that.keyDownListener(e, cell); });
                 }
                 row.append(tableCell);
-            };
-            var this_1 = this;
-            for (var x = 1; x <= this.crossword.width; ++x) {
-                _loop_1(x);
             }
             this.gridTable.append(row);
         }
-    };
-    CwBoard.prototype.backspace = function () {
+    }
+    backspace() {
         this.setFocused('');
         this.moveFocus(this.focused.cell.next(-1, this.focused.direction, true));
-    };
-    CwBoard.prototype.delete = function () {
+    }
+    delete() {
         this.setFocused('');
-    };
-    CwBoard.prototype.letter = function (letter) {
+    }
+    letter(letter) {
         this.setFocused(letter.toUpperCase());
-        var nextCell = this.focused.cell.next(1, this.focused.direction, false);
+        let nextCell = this.focused.cell.next(1, this.focused.direction, false);
         this.moveFocus(this.focused.cell.next(1, this.focused.direction, false));
-    };
-    CwBoard.prototype.setLetter = function (cell, value) {
-        var el = $("#" + cell.id + " .letter");
-        var currentValue = el.text();
+    }
+    setLetter(cell, value) {
+        let el = $("#" + cell.id + " .letter");
+        let currentValue = el.text();
         if (currentValue == value) {
             return;
         }
@@ -275,18 +264,18 @@ var CwBoard = /** @class */ (function () {
         this.lettersFilled += value.length - currentValue.length;
         $("#complete_percentage").text(Math.floor(100 * this.lettersFilled / this.lettersTotal));
         this.checkSolutions();
-    };
-    CwBoard.prototype.getLetter = function (cell) {
-        var el = $("#" + cell.id + " .letter");
+    }
+    getLetter(cell) {
+        let el = $("#" + cell.id + " .letter");
         return el.text();
-    };
-    CwBoard.prototype.checkSolutions = function () {
-        var el = $("#complete");
+    }
+    checkSolutions() {
+        const el = $("#complete");
         if (this.lettersFilled == this.lettersTotal) {
-            var hasMistake = false;
-            for (var x = 1; x <= this.crossword.width; ++x) {
-                for (var y = 1; y <= this.crossword.height; ++y) {
-                    var cell = this.crossword.cell(x, y);
+            let hasMistake = false;
+            for (let x = 1; x <= this.crossword.width; ++x) {
+                for (let y = 1; y <= this.crossword.height; ++y) {
+                    const cell = this.crossword.cell(x, y);
                     if (!cell.isBlock() && this.getLetter(cell) != cell.solution) {
                         hasMistake = true;
                     }
@@ -297,18 +286,18 @@ var CwBoard = /** @class */ (function () {
         else {
             el.removeClass("wrong right");
         }
-    };
-    CwBoard.prototype.setFocused = function (value) {
+    }
+    setFocused(value) {
         this.setLetter(this.focused.cell, value);
         this.fireAnswerListeners(this.focused.cell, value);
-    };
-    CwBoard.prototype.fireAnswerListeners = function (cell, answer) {
-        this.answerListeners.forEach(function (l) { l(cell, answer); });
-    };
-    CwBoard.prototype.fireLocationListeners = function (cell) {
-        this.locationListeners.forEach(function (l) { l(cell); });
-    };
-    CwBoard.prototype.keyDownListener = function (e, cell) {
+    }
+    fireAnswerListeners(cell, answer) {
+        this.answerListeners.forEach(l => { l(cell, answer); });
+    }
+    fireLocationListeners(cell) {
+        this.locationListeners.forEach(l => { l(cell); });
+    }
+    keyDownListener(e, cell) {
         if (e.which === 37) {
             this.moveFocus(this.focused.cell.nextX(-1));
         }
@@ -333,66 +322,64 @@ var CwBoard = /** @class */ (function () {
         else if ((e.which > 64 && e.which < 91) || (e.which > 96 && e.which < 123)) {
             this.letter(String.fromCharCode(e.which));
         }
-    };
-    CwBoard.prototype.hookupKeyboard = function () {
-        var _this = this;
-        $("#keyboard span").click(function (e) {
-            if (!_this.focused) {
+    }
+    hookupKeyboard() {
+        $("#keyboard span").click((e) => {
+            if (!this.focused) {
                 return;
             }
             var key = $(e.target).text();
             var action = $(e.target).data("action");
             if (key === 'BS') {
-                _this.backspace();
+                this.backspace();
             }
             else if (key === 'DEL') {
-                _this.delete();
+                this.delete();
             }
             else if (action === 'prev') {
-                _this.moveFocus(_this.crossword.clue(_this.focused.id - 1).firstCell);
+                this.moveFocus(this.crossword.clue(this.focused.id - 1).firstCell);
             }
             else if (action === 'next') {
-                _this.moveFocus(_this.crossword.clue(_this.focused.id + 1).firstCell);
+                this.moveFocus(this.crossword.clue(this.focused.id + 1).firstCell);
             }
             else if (action === 'right') {
-                _this.moveFocus(_this.focused.cell.nextX(1));
+                this.moveFocus(this.focused.cell.nextX(1));
             }
             else if (action === 'up') {
-                _this.moveFocus(_this.focused.cell.nextY(-1));
+                this.moveFocus(this.focused.cell.nextY(-1));
             }
             else if (action === 'left') {
-                _this.moveFocus(_this.focused.cell.nextX(-1));
+                this.moveFocus(this.focused.cell.nextX(-1));
             }
             else if (action === 'down') {
-                _this.moveFocus(_this.focused.cell.nextY(1));
+                this.moveFocus(this.focused.cell.nextY(1));
             }
             else {
-                _this.letter(key);
+                this.letter(key);
             }
-            _this.moveFocus(_this.focused.cell);
+            this.moveFocus(this.focused.cell);
         });
-    };
-    CwBoard.prototype.hookupNotes = function () {
-        var _this = this;
-        $("#notes-input").blur(function (e) {
-            var note = $("#notes-input").val();
-            _this.crossword.clue(_this.focused.id).note = note;
-            _this.fireNoteListeners(_this.focused.id, note, false);
+    }
+    hookupNotes() {
+        $("#notes-input").blur((e) => {
+            let note = $("#notes-input").val();
+            this.crossword.clue(this.focused.id).note = note;
+            this.fireNoteListeners(this.focused.id, note, false);
         });
-        $("#notes-input").keyup(function (e) {
-            var note = $("#notes-input").val();
-            _this.crossword.clue(_this.focused.id).note = note;
-            _this.fireNoteListeners(_this.focused.id, note, true);
+        $("#notes-input").keyup((e) => {
+            let note = $("#notes-input").val();
+            this.crossword.clue(this.focused.id).note = note;
+            this.fireNoteListeners(this.focused.id, note, true);
         });
-    };
-    CwBoard.prototype.fireNoteListeners = function (clueId, note, lock) {
-        this.noteListeners.forEach(function (l) { l(clueId, note, lock); });
-    };
-    CwBoard.prototype.moveFocus = function (cell) {
+    }
+    fireNoteListeners(clueId, note, lock) {
+        this.noteListeners.forEach(l => { l(clueId, note, lock); });
+    }
+    moveFocus(cell) {
         cell.cell.focus();
-    };
-    CwBoard.prototype.letterFocus = function (e, cell) {
-        var direction = this.focused.direction;
+    }
+    letterFocus(e, cell) {
+        let direction = this.focused.direction;
         if (e.type === 'click' && this.focused && cell.id === this.focused.letter) {
             if (this.focused.id === cell.across && cell.down) {
                 direction = CwClueDirection.down;
@@ -411,13 +398,13 @@ var CwBoard = /** @class */ (function () {
             direction = CwClueDirection.across;
         }
         this.focus(cell, direction);
-    };
-    CwBoard.prototype.focus = function (cell, direction) {
+    }
+    focus(cell, direction) {
         this.focused.direction = direction;
         this.focused.id = direction == CwClueDirection.across ? cell.across : cell.down;
         this.focused.letter = cell.id;
         this.focused.cell = cell;
-        var clue = this.crossword.clue(this.focused.id);
+        let clue = this.crossword.clue(this.focused.id);
         $('.focus').removeClass('focus');
         $('#' + cell.id).addClass('focus');
         $('.highlight').removeClass('highlight');
@@ -429,23 +416,23 @@ var CwBoard = /** @class */ (function () {
         $('#ic_format').text('(' + clue.format + ')');
         this.updateNote();
         this.fireLocationListeners(cell);
-    };
-    CwBoard.prototype.update = function (uuid, data) {
+    }
+    update(uuid, data) {
         console.log(data);
-        for (var cellId in data.grid) {
+        for (let cellId in data.grid) {
             if (data.grid[cellId] && data.grid[cellId] !== null) {
                 this.setLetter(this.crossword.cellFromId(cellId), data.grid[cellId].letter);
             }
         }
         if (data.notes) {
-            for (var clueId in data.notes) {
-                var clue = this.crossword.clue(parseInt(clueId));
-                var note = data.notes[clueId].note;
+            for (let clueId in data.notes) {
+                let clue = this.crossword.clue(parseInt(clueId));
+                let note = data.notes[clueId].note;
                 if (note !== undefined) {
                     clue.note = note;
                     clue.firstCell.cell.toggleClass('has-note', note.trim() != '');
                 }
-                var lockid = data.notes[clueId].lock;
+                let lockid = data.notes[clueId].lock;
                 if (lockid !== undefined) {
                     clue.noteLocked = lockid != null && lockid != uuid;
                     clue.firstCell.cell.toggleClass('note-locked', clue.noteLocked);
@@ -454,23 +441,22 @@ var CwBoard = /** @class */ (function () {
         }
         if (data.solvers) {
             $('.watched').removeClass('watched');
-            var keys = Object.keys(data.solvers);
-            var now = new Date().getTime();
-            for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
-                var key = keys_1[_i];
-                var solver = data.solvers[key];
+            const keys = Object.keys(data.solvers);
+            const now = new Date().getTime();
+            for (const key of keys) {
+                const solver = data.solvers[key];
                 if (key != uuid && (now - solver.timestamp) < 300000) {
                     $('#' + solver.cellId).addClass('watched');
                 }
             }
         }
         this.updateNote();
-    };
-    CwBoard.prototype.updateNote = function () {
-        var el = $("#notes-input");
+    }
+    updateNote() {
+        let el = $("#notes-input");
         if (!el.get(0).matches(":focus")) {
-            var clue = this.crossword.clue(this.focused.id);
-            var note = clue.note;
+            let clue = this.crossword.clue(this.focused.id);
+            let note = clue.note;
             if (clue.noteLocked) {
                 el.attr('readonly', 'readonly');
             }
@@ -479,20 +465,19 @@ var CwBoard = /** @class */ (function () {
             }
             el.val(note ? note : '');
         }
-    };
-    CwBoard.prototype.registerNoteListener = function (listener) {
+    }
+    registerNoteListener(listener) {
         this.noteListeners.push(listener);
-    };
-    CwBoard.prototype.registerLocationListener = function (listener) {
+    }
+    registerLocationListener(listener) {
         this.locationListeners.push(listener);
-    };
-    CwBoard.prototype.registerAnswerListener = function (listener) {
+    }
+    registerAnswerListener(listener) {
         this.answerListeners.push(listener);
-    };
-    return CwBoard;
-}());
-var CwStorage = /** @class */ (function () {
-    function CwStorage(id) {
+    }
+}
+class CwStorage {
+    constructor(id) {
         this.patchData = {};
         this.id = id;
         this.data = {
@@ -501,17 +486,16 @@ var CwStorage = /** @class */ (function () {
             notes: {}
         };
     }
-    CwStorage.prototype.age = function () {
+    age() {
         return Math.floor((new Date().getTime() - this.refreshed.getTime()) / 1000);
-    };
-    CwStorage.prototype.fetch = function (callback, error) {
-        var _this = this;
+    }
+    fetch(callback, error) {
         if (Object.keys(this.patchData).length > 0) {
             this.pushActual(callback);
         }
         else {
-            $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), function (data) {
-                _this.updateData(JSON.parse(data), callback);
+            $.get("https://extendsclass.com/api/json-storage/bin/" + this.id + "?cb=" + new Date().getTime(), (data) => {
+                this.updateData(JSON.parse(data), callback);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 if (error) {
                     error(errorThrown);
@@ -522,18 +506,18 @@ var CwStorage = /** @class */ (function () {
                 }
             });
         }
-    };
-    CwStorage.prototype.pushLetter = function (key, value, callback) {
-        var data = {
+    }
+    pushLetter(key, value, callback) {
+        let data = {
             grid: {}
         };
         data.grid[key] = {
             letter: value
         };
         this.push(data, callback);
-    };
-    CwStorage.prototype.pushNotes = function (key, value, lockuuid, callback) {
-        var data = {
+    }
+    pushNotes(key, value, lockuuid, callback) {
+        let data = {
             notes: {}
         };
         data.notes[key] = {
@@ -541,9 +525,9 @@ var CwStorage = /** @class */ (function () {
             lock: lockuuid,
         };
         this.push(data, callback);
-    };
-    CwStorage.prototype.pushLocation = function (uuid, cellId, callback) {
-        var data = {
+    }
+    pushLocation(uuid, cellId, callback) {
+        let data = {
             solvers: this.data.solvers
         };
         if (!data.solvers) {
@@ -556,13 +540,12 @@ var CwStorage = /** @class */ (function () {
         data.solvers[uuid].cellId = cellId;
         data.solvers[uuid].version = "v001";
         this.push(data, callback);
-    };
-    CwStorage.prototype.push = function (data, callback) {
+    }
+    push(data, callback) {
         this.patchData = this.merge(this.patchData, data);
-    };
-    CwStorage.prototype.merge = function (target, source) {
-        for (var _i = 0, _a = Object.keys(source); _i < _a.length; _i++) {
-            var key = _a[_i];
+    }
+    merge(target, source) {
+        for (const key of Object.keys(source)) {
             if (source[key] instanceof Object) {
                 if (!target[key]) {
                     target[key] = {};
@@ -571,20 +554,20 @@ var CwStorage = /** @class */ (function () {
             }
         }
         return Object.assign(target || {}, source);
-    };
-    CwStorage.prototype.diff = function (obj1, obj2) {
+    }
+    diff(obj1, obj2) {
         if (this.isValue(obj1) || this.isValue(obj2)) {
             return this.compareValues(obj1, obj2);
         }
-        var diff = {};
-        for (var key_1 in obj1) {
-            var value2 = undefined;
-            if (obj2[key_1] !== undefined) {
-                value2 = obj2[key_1];
+        let diff = {};
+        for (let key in obj1) {
+            let value2 = undefined;
+            if (obj2[key] !== undefined) {
+                value2 = obj2[key];
             }
-            var diffValue = this.diff(obj1[key_1], value2);
+            let diffValue = this.diff(obj1[key], value2);
             if (diffValue !== undefined) {
-                diff[key_1] = diffValue;
+                diff[key] = diffValue;
             }
         }
         for (var key in obj2) {
@@ -594,8 +577,8 @@ var CwStorage = /** @class */ (function () {
             diff[key] = this.diff(undefined, obj2[key]);
         }
         return Object.keys(diff).length == 0 ? undefined : diff;
-    };
-    CwStorage.prototype.compareValues = function (value1, value2) {
+    }
+    compareValues(value1, value2) {
         if (value1 === value2) {
             return undefined;
         }
@@ -609,60 +592,59 @@ var CwStorage = /** @class */ (function () {
             return null;
         }
         return value2;
-    };
-    CwStorage.prototype.isFunction = function (x) {
+    }
+    isFunction(x) {
         return Object.prototype.toString.call(x) === '[object Function]';
-    };
-    CwStorage.prototype.isArray = function (x) {
+    }
+    isArray(x) {
         return Object.prototype.toString.call(x) === '[object Array]';
-    };
-    CwStorage.prototype.isDate = function (x) {
+    }
+    isDate(x) {
         return Object.prototype.toString.call(x) === '[object Date]';
-    };
-    CwStorage.prototype.isObject = function (x) {
+    }
+    isObject(x) {
         return Object.prototype.toString.call(x) === '[object Object]';
-    };
-    CwStorage.prototype.isValue = function (x) {
+    }
+    isValue(x) {
         return !this.isObject(x) && !this.isArray(x);
-    };
-    CwStorage.prototype.pushActual = function (callback) {
-        var _this = this;
-        var data = this.patchData;
+    }
+    pushActual(callback) {
+        let data = this.patchData;
         data['code'] = this.data.code;
         this.patchData = {};
         $.ajax({
             type: "PATCH",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(data),
-            success: function (response) {
-                _this.updateData(JSON.parse(response.data), callback);
+            success: (response) => {
+                this.updateData(JSON.parse(response.data), callback);
             },
-            error: function () {
+            error: () => {
                 console.error("error: merging data back into patch data");
-                _this.patchData = _this.merge(_this.patchData, data);
+                this.patchData = this.merge(this.patchData, data);
                 alert("couldn't update db");
             },
             contentType: "application/merge-patch+json",
             dataType: "json"
         });
-    };
-    CwStorage.prototype.save = function () {
+    }
+    save() {
         $.ajax({
             type: "PUT",
             url: "https://extendsclass.com/api/json-storage/bin/" + this.id,
             data: JSON.stringify(this.data),
-            success: function (response) {
+            success: (response) => {
                 console.log("Full data save for recovery");
             },
-            error: function () { alert("couldn't update db"); },
+            error: () => { alert("couldn't update db"); },
             contentType: "application/json",
             dataType: "json"
         });
-    };
-    CwStorage.prototype.updateData = function (data, callback) {
+    }
+    updateData(data, callback) {
         this.refreshed = new Date();
         if (data.code && data.grid && Object.keys(this.data.grid).length <= Object.keys(data.grid).length) {
-            var diff = this.diff(this.data, data);
+            const diff = this.diff(this.data, data);
             if (diff !== undefined) {
                 diff.solvers = data.solvers;
                 callback(diff);
@@ -677,48 +659,46 @@ var CwStorage = /** @class */ (function () {
                 this.save();
             }
         }
-    };
-    CwStorage.create = function (crossword, code, callback) {
-        var data = { code: code, grid: {} };
+    }
+    static create(crossword, code, callback) {
+        let data = { code: code, grid: {} };
         $.ajax({
             type: "POST",
             url: "https://extendsclass.com/api/json-storage/bin",
             data: JSON.stringify(data),
-            success: function (response) { callback(response.id); },
-            error: function () { alert("Couldn't create db"); },
+            success: (response) => { callback(response.id); },
+            error: () => { alert("Couldn't create db"); },
             contentType: "application/json",
             dataType: "json"
         });
-    };
-    return CwStorage;
-}());
-var CwApp = /** @class */ (function () {
-    function CwApp(id) {
+    }
+}
+class CwApp {
+    constructor(id) {
         this.id = id;
         this.uuid = this.fetchUuid();
         $('body').addClass(this.hasId() ? 'has-id' : 'no-id');
     }
-    CwApp.prototype.start = function () {
-        var _this = this;
+    start() {
         if (this.hasId()) {
             this.storage = new CwStorage(this.id);
-            this.storage.fetch(function (data) { return _this.initBoard(data); }, this.showForm);
+            this.storage.fetch((data) => this.initBoard(data), this.showForm);
         }
         else {
             this.showForm();
         }
-    };
-    CwApp.prototype.hasId = function () {
+    }
+    hasId() {
         return !!this.id;
-    };
-    CwApp.prototype.uuidv4 = function () {
+    }
+    uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
-    };
-    CwApp.prototype.fetchUuid = function () {
-        var uuid;
+    }
+    fetchUuid() {
+        let uuid;
         if (window.localStorage) {
             uuid = window.localStorage.getItem("cw-uuid");
         }
@@ -735,8 +715,8 @@ var CwApp = /** @class */ (function () {
             }
         }
         return uuid;
-    };
-    CwApp.prototype.getCookie = function (cname) {
+    }
+    getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
@@ -750,14 +730,14 @@ var CwApp = /** @class */ (function () {
             }
         }
         return null;
-    };
-    CwApp.prototype.setCookie = function (cname, cvalue, exdays) {
+    }
+    setCookie(cname, cvalue, exdays) {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    };
-    CwApp.prototype.initBoard = function (data) {
+    }
+    initBoard(data) {
         $('body').addClass('has-id');
         if (data.data_url) {
             if (data.data_url.endsWith('.js')) {
@@ -770,8 +750,8 @@ var CwApp = /** @class */ (function () {
         else {
             CwBoard.loadIndependentXml(data.code, this.initBoardComplete.bind(this));
         }
-    };
-    CwApp.prototype.initBoardComplete = function (board) {
+    }
+    initBoardComplete(board) {
         this.board = board;
         this.board.update(this.uuid, this.storage.data);
         this.board.registerAnswerListener(this.storageAnswerUpdate.bind(this));
@@ -782,26 +762,23 @@ var CwApp = /** @class */ (function () {
         this.focusId = window.setInterval(this.locationRefresh.bind(this), 150000);
         window.setInterval(this.ageRefresh.bind(this), 1000);
         document.addEventListener("visibilitychange", this.browserFocusListener.bind(this));
-    };
-    CwApp.prototype.storageAnswerUpdate = function (cell, answer) {
-        var _this = this;
-        this.storage.pushLetter(cell.id, answer, function (data) {
-            _this.board.update(_this.uuid, data);
+    }
+    storageAnswerUpdate(cell, answer) {
+        this.storage.pushLetter(cell.id, answer, (data) => {
+            this.board.update(this.uuid, data);
         });
-    };
-    CwApp.prototype.storageNoteUpdate = function (clueId, note, lock) {
-        var _this = this;
-        this.storage.pushNotes(clueId, note, lock ? this.uuid : null, function (data) {
-            _this.board.update(_this.uuid, data);
+    }
+    storageNoteUpdate(clueId, note, lock) {
+        this.storage.pushNotes(clueId, note, lock ? this.uuid : null, (data) => {
+            this.board.update(this.uuid, data);
         });
-    };
-    CwApp.prototype.storageLocationUpdate = function (cell) {
-        var _this = this;
-        this.storage.pushLocation(this.uuid, cell.id, function (data) {
-            _this.board.update(_this.uuid, data);
+    }
+    storageLocationUpdate(cell) {
+        this.storage.pushLocation(this.uuid, cell.id, (data) => {
+            this.board.update(this.uuid, data);
         });
-    };
-    CwApp.prototype.browserFocusListener = function (e) {
+    }
+    browserFocusListener(e) {
         window.clearInterval(this.intervalId);
         window.clearInterval(this.focusId);
         if (document.visibilityState === 'visible') {
@@ -812,41 +789,37 @@ var CwApp = /** @class */ (function () {
         else {
             this.intervalId = window.setInterval(this.storageIntervalRefresh.bind(this), 60000);
         }
-    };
-    CwApp.prototype.ageRefresh = function () {
+    }
+    ageRefresh() {
         $("#last-refresh").text("Refreshed " + this.storage.age() + "s ago");
-    };
-    CwApp.prototype.locationRefresh = function () {
+    }
+    locationRefresh() {
         this.storage.pushLocation(this.uuid, this.board.focused.cell.id, null);
-    };
-    CwApp.prototype.storageIntervalRefresh = function () {
-        var _this = this;
-        this.storage.fetch(function (data) {
-            _this.board.update(_this.uuid, data);
+    }
+    storageIntervalRefresh() {
+        this.storage.fetch((data) => {
+            this.board.update(this.uuid, data);
         });
-    };
-    CwApp.prototype.showForm = function () {
-        var _this = this;
+    }
+    showForm() {
         $('body').addClass('no-id');
-        $('#cw-button').click(function () {
-            var code = $('#cw-code').val();
+        $('#cw-button').click(() => {
+            let code = $('#cw-code').val();
             if (code !== '') {
-                _this.setCode(code);
+                this.setCode(code);
             }
         });
-    };
-    CwApp.prototype.setCode = function (code) {
-        var _this = this;
-        CwCrossword.loadIndependentXml(code, function (cw) {
-            CwStorage.create(cw, code, _this.createSuccess);
+    }
+    setCode(code) {
+        CwCrossword.loadIndependentXml(code, (cw) => {
+            CwStorage.create(cw, code, this.createSuccess);
         });
-    };
-    CwApp.prototype.createSuccess = function (id) {
+    }
+    createSuccess(id) {
         window.location.href += "#" + id;
         window.location.reload();
-    };
-    return CwApp;
-}());
-var app = new CwApp(window.location.hash ? window.location.hash.substr(1) : null);
+    }
+}
+let app = new CwApp(window.location.hash ? window.location.hash.substr(1) : null);
 app.start();
 //# sourceMappingURL=crossword.js.map
