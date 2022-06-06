@@ -72,12 +72,12 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const start = moment('2021-09-06');
+            const start = moment('2021-09-13');
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 1;
         },
         weekB: function(currentDate) {
-            const start = moment('2021-09-13');
+            const start = moment('2021-09-06');
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 1;
         },
@@ -455,14 +455,14 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            monday: commonDayData.tennis,
+                            monday: commonDayData.cricket,
                             tuesday: commonDayData.athletics,
                             wednesday: commonDayData.swimming,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            monday: commonDayData.tennis,
+                            monday: commonDayData.cricket,
                             wednesday: commonDayData.swimming,
                         }
                     }
@@ -472,14 +472,14 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            monday: commonDayData.tennis,
+                            monday: commonDayData.cricket,
                             tuesday: commonDayData.athletics,
                             wednesday: commonDayData.swimming,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            monday: commonDayData.tennis,
+                            monday: commonDayData.cricket,
                             wednesday: commonDayData.swimming,
                         }
                     }
@@ -491,13 +491,13 @@ css: calendar.css?cb=7
                             matcher: matchers.weekA,
                             monday: commonDayData.swimming,
                             tuesday: commonDayData.athletics,
-                            wednesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
                             monday: commonDayData.swimming,
-                            wednesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
                         }
                     }
                 },
