@@ -1,0 +1,267 @@
+---
+layout: calendar
+title: Y5 Calendar
+homeLink: /bgs5/calendar
+manifest: manifest-bgsy5
+css: calendar.css?cb=7
+---
+
+<script>
+
+    const commonKit = [
+        "Water bottle",
+        "Breaktime snack"];
+    const astrosKit = ["Astroturf boots in a bag"];
+    const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
+    const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit)
+    const timings = [
+        {title: "Drop Off", time: "8:00am"},
+        {title: "Pick Up", time: "4:00pm"},
+    ];
+
+    const commonDayData = {
+        regular: {
+            uniform: "School uniform",
+            kit: commonKit,
+            timings: timings
+        },
+
+        library: {
+            games: "Library",
+            kit: ['*Return library books'],
+        },
+
+        swimming: {
+            uniform: "White sports top, White socks, tracksuit bottoms and trainers",
+            games: "Swimming",
+            kit: swimmingKit
+        },
+
+        netball: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Netball",
+        },
+
+        hockey: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Hockey",
+            kit: hockeyKit
+        },
+
+        dance: {
+            games: "Dance",
+            kit: ['Black t-shirt, leggings and dance socks/shoes'],
+        },
+
+        cricket: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Cricket",
+            kit: ['*Hat', '*Sun Cream'],
+        },
+        tennis: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Tennis",
+            kit: ['*Tennis Racket'],
+        },
+        athletics: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Athletics",
+        },
+    };
+
+    const matchers = {
+        weekA: function(currentDate) {
+            const starts =  [moment('2022-09-05'), moment('2023-01-02'), moment('2023-02-20'), moment('2023-06-05')];
+            const start = starts.reverse().find((o, i, a) => { return o.isSameOrBefore(currentDate)});
+            const weeks = currentDate.diff(start, "week");
+            return weeks >= 0 && weeks % 2 === 0;
+        },
+        weekB: function(currentDate) {
+            return !matchers.weekA(currentDate);
+        }
+    }
+
+    const data = {
+        weekLabel: function(currentDate) {
+            return matchers.weekA(currentDate)
+                ? 'Week A'
+                : 'Week B';
+        },
+        yeargroup: {
+            rota: {
+                always: {
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.regular,
+                    wednesday: commonDayData.regular,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.regular
+                }
+            },
+            extras: {
+                // '2021-09-08': {
+                //     games: ["School Photo"],
+                //     kit: [
+                //         "Damson sports top, Damson games socks and skort in games bag"],
+                //     timings: [
+                //         {title: "Swimming Trials", time: "5:30pm"}]
+                // },
+            },
+            overrides: {
+                '2022-09-02': {
+                    uniform: "Mufti or Hockey Sports Kit",
+                    games: ['Hockey Training', 'Induction Afternoon', 'Nearly New Uniform Sale'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Induction Start", time: "2:00pm"},
+                        {title: "Sale Start", time: "3:00pm"},
+                        {title: "Induction End", time: "3:30pm"},
+                        {title: "Sale End", time: "5:00pm"}],
+                },
+                '2022-12-09': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
+                },
+                '2023-03-24': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
+                },
+                '2023-07-14': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
+                },
+            },
+            deadlines: {
+                // '2021-10-20': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1ce3ie51mk470w/\' target=\'trip1\'>Half Term Swimming Training Reply Form</a>'],
+            }
+        },
+
+        classes: {
+            "5W": {
+                rota: {
+                    always: {
+                        monday: commonDayData.dance,
+                        friday: commonDayData.library
+                    }
+                },
+                extras: {
+                },
+                overrides: {
+                },
+                deadlines: {}
+            },
+        },
+
+        additional: {
+            meta:
+            [
+                // {
+                //     title: "Sports Group",
+                //     multiselect: false,
+                //     values: [
+                //         { key: "damson", value: "Damson" },
+                //         { key: "teal", value: "Teal" },
+                //         { key: "white", value: "White" }
+                //     ]
+                // },
+                {
+                    title: "Before School",
+                    multiselect: true,
+                    values: [
+                        { key: "bs_breakfast_club", value: "Breakfast Club" },
+                    ]
+                },
+                // {
+                //     title: "Lunch Clubs",
+                //     multiselect: true,
+                //     values: [
+                //         { key: "lu_swimming", value: "Swimming (Mon)" },
+                //         { key: "lu_netball", value: "Netball Club (Mon)" },
+                //         { key: "lu_netball_teal", value: "Netball Club - Teal (Mon)" },
+                //         { key: "lu_hockey", value: "Hockey Club (Wed)" },
+                //         { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
+                //         { key: "lu_science", value: "Science Club (Wed)" },
+                //         { key: "lu_soprano", value: "Soprano Practice (Tue)" },
+                //         { key: "lu_alto", value: "Alto Practice (Thu)" }
+                //     ]
+                // },
+                {
+                    title: "After School",
+                    multiselect: true,
+                    values: [
+                        // { key: "as_choir", value: "Choir (Tue)" },
+                        // { key: "as_cricket", value: "Cricket (Mon)" },
+                        // { key: "as_swim", value: "Swimming (Thu)" },
+                        // { key: "as_athletics", value: "Athletics (Tue)" },
+                        { key: "as_late_care_jr", value: "Late Care (Jr)" },
+                        { key: "as_late_care_sr", value: "Late Care (Sr)" },
+                    ]
+                }
+            ],
+
+            data: {
+                "bs_breakfast_club": {
+                    rota: {
+                        always: {
+                            monday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                            tuesday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                            wednesday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                            thursday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                            friday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "as_late_care_jr": {
+                    rota: {
+                        always: {
+                            monday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
+                            tuesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
+                            wednesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
+                            thursday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
+                            friday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
+                        }
+                    }
+                },
+
+                "as_late_care_sr": {
+                    rota: {
+                        always: {
+                            monday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            tuesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            wednesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            thursday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            friday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                        }
+                    }
+                },
+            },
+        },
+
+        termTimes: [
+            {start: moment('2022-09-01'), end: moment('2022-10-02')},
+            {start: moment('2022-09-05'), end: moment('2022-10-14')},
+            {start: moment('2022-10-31'), end: moment('2022-12-09')},
+            {start: moment('2023-01-04'), end: moment('2023-02-10')},
+            {start: moment('2023-02-20'), end: moment('2023-03-24')},
+            {start: moment('2023-04-18'), end: moment('2023-05-26')},
+            {start: moment('2023-06-05'), end: moment('2023-07-14')}
+        ]
+    };
+
+    new Calendar(data, 'bgs5');
+</script>
+
+<a href="spelling-y5">Spelling Y5 Printable Sheet</a>

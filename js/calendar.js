@@ -72,7 +72,11 @@ class CalendarModel {
         for (let key of Object.keys(rotas)) {
             const rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
-                return CalendarModel.toWeekSchedule(rota);
+                const ws = CalendarModel.toWeekSchedule(rota);
+                if (!ws.title && typeof (this._data.weekLabel) !== 'undefined') {
+                    ws.title = this._data.weekLabel(this.currentDate);
+                }
+                return ws;
             }
         }
         return undefined;
@@ -410,7 +414,7 @@ class Calendar {
     }
     repaintCalendar(weekRota) {
         $('.day .info').html('');
-        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.length > 0);
+        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.trim().length > 0);
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];
@@ -502,7 +506,7 @@ class Calendar {
         return $(window).width() < 768;
     }
     scrollBest() {
-        if (!Calendar.isMobileView() || !this.gotoToTodayOrTomorrow()) {
+        if (!Calendar.isMobileView()) {
             Calendar.gotoTop();
         }
     }
@@ -525,6 +529,11 @@ class Calendar {
     }
     gotoToTodayOrTomorrow() {
         if ($('.day.today').length) {
+            if (moment('14', "hh").isBefore(moment())) {
+                console.log("going tomorrow");
+                this.gotoTomorrow();
+                return true;
+            }
             this.gotoToday();
             return true;
         }

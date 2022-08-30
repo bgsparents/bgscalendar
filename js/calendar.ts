@@ -92,6 +92,7 @@ interface DataAdditional {
 }
 
 interface Data {
+    weekLabel?: Function;
     yeargroup: DataGroup;
     classes: DataGroupMap;
     additional?: DataAdditional;
@@ -193,7 +194,11 @@ class CalendarModel {
         for (let key of Object.keys(rotas)) {
             const rota = rotas[key];
             if (this.isRotaForWeek(rota)) {
-                return CalendarModel.toWeekSchedule(rota);
+                const ws = CalendarModel.toWeekSchedule(rota);
+                if(!ws.title && typeof(this._data.weekLabel) !== 'undefined') {
+                    ws.title = this._data.weekLabel(this.currentDate);
+                }
+                return ws;
             }
         }
         return undefined;
@@ -589,7 +594,7 @@ class Calendar {
     private repaintCalendar(weekRota: WeekSchedule): void {
         $('.day .info').html('');
 
-        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.length > 0);
+        const title = $('#title').html(weekRota.title).toggle(weekRota.title != undefined && weekRota.title.trim().length > 0);
         if (weekRota !== undefined) {
             for (const key of Calendar.weekdays()) {
                 const dayInfo = weekRota[key];
@@ -695,7 +700,7 @@ class Calendar {
     }
 
     private scrollBest(): void {
-        if (!Calendar.isMobileView() || !this.gotoToTodayOrTomorrow()) {
+        if (!Calendar.isMobileView()) {
             Calendar.gotoTop();
         }
     }
@@ -722,6 +727,10 @@ class Calendar {
 
     private gotoToTodayOrTomorrow(): boolean {
         if ($('.day.today').length) {
+            if (moment('14', "hh").isBefore(moment())) {
+                this.gotoTomorrow();
+                return true;
+            }
             this.gotoToday();
             return true;
         } else if ($('.day.tomorrow').length) {
