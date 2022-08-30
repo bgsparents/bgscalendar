@@ -727,7 +727,7 @@ class Calendar {
 
     private gotoToTodayOrTomorrow(): boolean {
         if ($('.day.today').length) {
-            if (moment('14', "hh").isBefore(moment())) {
+            if (moment('19', "hh").isBefore(moment())) {
                 this.gotoTomorrow();
                 return true;
             }

@@ -529,8 +529,7 @@ class Calendar {
     }
     gotoToTodayOrTomorrow() {
         if ($('.day.today').length) {
-            if (moment('14', "hh").isBefore(moment())) {
-                console.log("going tomorrow");
+            if (moment('19', "hh").isBefore(moment())) {
                 this.gotoTomorrow();
                 return true;
             }
