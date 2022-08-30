@@ -1,0 +1,485 @@
+---
+layout: calendar
+title: Year 2 Calendar
+homeLink: /year2/calendar
+manifest: manifest-year2
+css: calendar.css?cb=7
+---
+
+<script>
+
+    var commonKit = [
+        "Book bag",
+        "Water bottle"
+    ];
+
+    var swimmingKit = ["Swimming costume, swimming hat, towel, sliders, tummy band, swimming goggles"];
+
+    var timings = [
+        { title: "Drop Off", time: "8:30am" },
+        { title: "Pick Up", time: "3:30pm" },
+    ];
+
+    var commonDayData = {
+        regular: {
+            uniform: "School uniform",
+            kit: commonKit,
+            timings: timings
+        },
+        pe: {
+            uniform: "PE Shorts, jogging top and bottoms, polo shorts and trainers",
+            games: "Games",
+            kit: commonKit,
+            timings: timings
+        },
+        swimming: {
+            games: "Swimming",
+            kit: swimmingKit,
+        },
+        spellingTest: {
+            games: "Spelling Test"
+        },
+        spellingTestBook: {
+            kit: ["*Spelling Test Book"]
+        }
+    };
+
+    var data = {
+        yeargroup: {
+            rota: {
+                week: {
+                    monday: [commonDayData.regular, commonDayData.spellingTestBook],
+                    tuesday: [commonDayData.regular],
+                    wednesday: [commonDayData.regular],
+                    thursday: [commonDayData.regular],
+                    friday: [commonDayData.regular, commonDayData.spellingTest],
+                }
+            },
+            extras: {
+                '2022-09-15': {
+                    games: ["Parents' Tea"],
+                    timings: [
+                        {title: "Parents' Tea", time: "5:30pm"}]
+                },
+                '2022-09-17': {
+                    games: ["Autumn Fayre"],
+                    timings: [
+                        {title: "Fayre Opens", time: "2:00pm"},
+                        {title: "Fayre Closes", time: "5:00pm"}]
+                },
+            },
+            overrides: {
+            },
+            deadlines: {
+                // '2021-09-20': ['<a href=\'https://forms.office.com/r/YLtX8tde5x\' target=\'trip1\'>Year 1 Trip Consent</a>'],
+            }
+        },
+
+        classes: {
+            '2BS': {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            },
+            '2MW': {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            },
+            '2TM': {
+                rota: {},
+                extras: {},
+                overrides: {},
+                deadlines: {}
+            }
+        },
+
+        additional: {
+            meta:
+                [
+                    {
+                        title: "Monday",
+                        multiselect: true,
+                        values: [
+                            { key: "as_rugby", value: "Tag Rugby (Mon)" },
+                            { key: "as_yoga", value: "Yoga (Mon)" },
+                            { key: "as_swimming", value: "Swimming (Mon)" },
+                            { key: "bs_larks_mon", value: "Larks (Mon)" },
+                            { key: "as_owls_mon", value: "Owls (Mon)" },
+                        ]
+                    },
+                    {
+                        title: "Tuesday",
+                        multiselect: true,
+                        values: [
+                            { key: "bs_tennis_tue", value: "Morning Tennis (Tue)" },
+                            { key: "as_tennis", value: "Tennis (Tue)" },
+                            { key: "as_gymnastics", value: "Gymnastics (Tue)" },
+                            { key: "bs_larks_tue", value: "Larks (Tue)" },
+                            { key: "as_owls_tue", value: "Owls (Tue)" },
+                        ]
+                    },
+                    {
+                        title: "Wednesday",
+                        multiselect: true,
+                        values: [
+                            { key: "as_ballet", value: "Ballet (Wed)" },
+                            { key: "bs_larks_wed", value: "Larks (Wed)" },
+                            { key: "as_owls_wed", value: "Owls (Wed)" },
+                        ]
+                    },
+                    {
+                        title: "Thursday",
+                        multiselect: true,
+                        values: [
+                            { key: "bs_tennis_thu", value: "Morning Tennis (Thu)" },
+                            { key: "as_choir", value: "Choir (Thu)" },
+                            { key: "as_tennis2", value: "Tennis (Thu)" },
+                            { key: "as_bakeoff", value: "Bake Off (Thu)" },
+                            { key: "as_pottery", value: "Pottery (Thu)" },
+                            { key: "bs_larks_thu", value: "Larks (Thu)" },
+                            { key: "as_owls_thu", value: "Owls (Thu)" },
+                        ]
+                    },
+                    {
+                        title: "Friday",
+                        multiselect: true,
+                        values: [
+                            { key: "bs_tennis_fri", value: "Morning Tennis (Fri)" },
+                            { key: "as_football", value: "Football (Fri)" },
+                            { key: "as_orchestra", value: "Orchestra (Fri)" },
+                            { key: "bs_larks_fri", value: "Larks (Fri)" },
+                            { key: "as_owls_fri", value: "Owls (Fri)" },
+                        ]
+                    },
+                    {
+                        title: "Flo Extras",
+                        multiselect: true,
+                        values: [
+                            { key: "flo_tennis", value: "Flo Tennis" },
+                            { key: "flo_piano", value: "Flo Piano" },
+                            { key: "flo_singing", value: "Flo Singing" }
+                        ]
+                    }
+
+
+                ],
+
+            data: {
+                "as_rugby": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ['Tag Rugby (AS)'],
+                                timings: [{title: "Rugby", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                            tuesday: {
+                                kit: ['PE Kit']
+                            },
+                        }
+                    }
+                },
+                "as_yoga": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ['Yoga (AS)'],
+                                timings: [{title: "Yoga", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                            tuesday: {
+                                kit: ['PE Kit']
+                            },
+                        }
+                    }
+                },
+                "as_swimming": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ['Swimming (AS)'],
+                                kit: swimmingKit,
+                                timings: [{title: "Swimming", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_tennis": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: ['Tennis (AS)'],
+                                kit: ['*Tennis racket'],
+                                timings: [{title: "Tennis", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_gymnastics": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: ['Gymnastics (AS)'],
+                                timings: [{title: "Gymnastics", time: "5:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_ballet": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: ['Ballet (AS)'],
+                                kit: ['Ballet kit'],
+                                timings: [{title: "Ballet", time: "5:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_choir": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Choir (AS)'],
+                                timings: [{title: "Choir", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_tennis2": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Tennis (AS)'],
+                                kit: ['*Tennis racket'],
+                                timings: [{title: "Tennis", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_bakeoff": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Bake Off (AS)'],
+                                timings: [{title: "Bake Off", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_pottery": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                games: ['Pottery (AS)'],
+                                timings: [{title: "Pottery", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_football": {
+                    rota: {
+                        always: {
+                            friday: {
+                                games: ['Football (AS)'],
+                                kit: ['Football kit'],
+                                timings: [{title: "Football", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_orchestra": {
+                    rota: {
+                        always: {
+                            friday: {
+                                games: ['Orchestra (AS)'],
+                                kit: ['Instrument'],
+                                timings: [{title: "Orchestra", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "bs_tennis_tue": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                uniform: 'PE Kit',
+                                kit: ['*Tennis racket'],
+                                games: ['Tennis (BS)'],
+                                timings: [{title: "Tennis", time: "7:45am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_tennis_thu": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                uniform: 'PE Kit',
+                                kit: ['*Tennis racket'],
+                                games: ['Tennis (BS)'],
+                                timings: [{title: "Tennis", time: "7:45am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_tennis_fri": {
+                    rota: {
+                        always: {
+                            friday: {
+                                uniform: 'PE Kit',
+                                kit: ['*Tennis racket'],
+                                games: ['Tennis (BS)'],
+                                timings: [{title: "Tennis", time: "7:45am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_mon": {
+                    rota: {
+                        always: {
+                            monday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_tue": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_wed": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_thu": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "bs_larks_fri": {
+                    rota: {
+                        always: {
+                            friday: {
+                                timings: [{title: "Larks", time: "8:00am"}, {title: '-Drop Off'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_mon": {
+                    rota: {
+                        always: {
+                            monday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_tue": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_wed": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_thu": {
+                    rota: {
+                        always: {
+                            thursday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "as_owls_fri": {
+                    rota: {
+                        always: {
+                            friday: {
+                                timings: [{title: "Owls", time: "6:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+                "flo_tennis": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                uniform: 'PE Kit',
+                                games: ['*Tennis'],
+                                kit: ['*Tennis racket']
+                            },
+                        }
+                    }
+                },
+                "flo_piano": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                games: ['*Piano'],
+                                kit: ['*Piano books']
+                            },
+                        }
+                    }
+                },
+                "flo_singing": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: ['*Singing'],
+                                kit: ['*Singing books']
+                            },
+                        }
+                    }
+                },
+            },
+        },
+
+    termTimes: [
+            {start: moment('2022-09-05'), end: moment('2022-10-14')},
+            {start: moment('2022-10-31'), end: moment('2022-12-09')},
+            {start: moment('2023-01-04'), end: moment('2023-02-10')},
+            {start: moment('2023-02-20'), end: moment('2023-03-24')},
+            {start: moment('2023-04-18'), end: moment('2023-05-26')},
+            {start: moment('2023-06-05'), end: moment('2023-07-14')}
+        ]
+    };
+
+    new Calendar(data, "pps2");
+</script>
+
+<a href="spelling">Spelling Printable Sheet</a>
