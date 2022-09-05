@@ -14,6 +14,8 @@ css: calendar.css?cb=7
     const astrosKit = ["Astroturf boots in a bag"];
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit)
+    const damsonKit = "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers"
+    const whiteKit = "White sports top, White socks, tracksuit bottoms and trainers"
     const timings = [
         {title: "Drop Off", time: "8:00am"},
         {title: "Pick Up", time: "4:00pm"},
@@ -32,20 +34,21 @@ css: calendar.css?cb=7
         },
 
         swimming: {
-            uniform: "White sports top, White socks, tracksuit bottoms and trainers",
+            // uniform: whiteKit,
             games: "Swimming",
             kit: swimmingKit
         },
 
         netball: {
-            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            // uniform: whiteKit,
             games: "Netball",
+            kit: whiteKit
         },
 
         hockey: {
-            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            //uniform: damsonKit,
             games: "Hockey",
-            kit: hockeyKit
+            kit: hockeyKit.concat(damsonKit)
         },
 
         dance: {
@@ -54,17 +57,17 @@ css: calendar.css?cb=7
         },
 
         cricket: {
-            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            uniform: damsonKit,
             games: "Cricket",
             kit: ['*Hat', '*Sun Cream'],
         },
         tennis: {
-            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            uniform: whiteKit,
             games: "Tennis",
             kit: ['*Tennis Racket'],
         },
         athletics: {
-            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            uniform: whiteKit,
             games: "Athletics",
         },
     };
@@ -110,6 +113,7 @@ css: calendar.css?cb=7
             extras: {
                 '2022-09-08': {
                     games: ["Parent's Info Talk", "Swimming Trials"],
+                    kit: swimmingKit,
                     timings: [
                         {title: "Info Talk", time: "4:15pm"},
                         {title: "Swimming Trials", time: "5:30pm"}]
@@ -171,8 +175,8 @@ css: calendar.css?cb=7
             "5PW": {
                 rota: {
                     always: {
-                        // monday: commonDayData.dance,
-                        // friday: commonDayData.library
+                        wednesday: commonDayData.dance,
+                        tuesday: commonDayData.library
                     }
                 },
                 extras: {
@@ -225,15 +229,16 @@ css: calendar.css?cb=7
         additional: {
             meta:
             [
-                // {
-                //     title: "Sports Group",
-                //     multiselect: false,
-                //     values: [
-                //         { key: "damson", value: "Damson" },
-                //         { key: "teal", value: "Teal" },
-                //         { key: "white", value: "White" }
-                //     ]
-                // },
+                {
+                    title: "Sports Group",
+                    multiselect: false,
+                    values: [
+                        { key: "damson", value: "Damson" },
+                        { key: "teal", value: "Teal" },
+                        { key: "white", value: "White" },
+                        { key: "grey", value: "Grey" }
+                    ]
+                },
                 {
                     title: "Before School",
                     multiselect: true,
@@ -428,6 +433,74 @@ css: calendar.css?cb=7
                             wednesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
                             thursday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
                             friday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                        }
+                    }
+                },
+
+                "damson": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            thursday: commonDayData.swimming,
+                            friday: commonDayData.hockey
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            tuesday: commonDayData.netball,
+                            thursday: commonDayData.swimming,
+                            friday: commonDayData.hockey
+                        }
+                    }
+                },
+
+                "teal": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.hockey
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            tuesday: commonDayData.swimming,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.hockey
+                        }
+                    }
+                },
+
+                "white": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.swimming
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            tuesday: commonDayData.netball,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.swimming
+                        }
+                    }
+                },
+
+                "grey": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.netball
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            tuesday: commonDayData.hockey,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.netball
                         }
                     }
                 },
