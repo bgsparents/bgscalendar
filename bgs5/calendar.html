@@ -14,8 +14,8 @@ css: calendar.css?cb=7
     const astrosKit = ["Astroturf boots in a bag"];
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit)
-    const damsonKit = "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers"
-    const whiteKit = "White sports top, White socks, tracksuit bottoms and trainers"
+    const damsonKit = "Damson top & socks, black skort, trainers"
+    const whiteKit = "White top & socks, black skort, trainers"
     const timings = [
         {title: "Drop Off", time: "8:00am"},
         {title: "Pick Up", time: "4:00pm"},
@@ -113,10 +113,13 @@ css: calendar.css?cb=7
             extras: {
                 '2022-09-08': {
                     games: ["Parent's Info Talk", "Swimming Trials"],
-                    kit: swimmingKit,
+                    kit: swimmingKit.concat(["Trainers"]),
                     timings: [
                         {title: "Info Talk", time: "4:15pm"},
                         {title: "Swimming Trials", time: "5:30pm"}]
+                },
+                '2022-09-09': {
+                    kit: ["School uniform"],
                 },
             },
             overrides: {
@@ -139,6 +142,9 @@ css: calendar.css?cb=7
                         {title: "Sale Start", time: "3:00pm"},
                         {title: "Induction Pick Up", time: "3:30pm"},
                         {title: "Sale End", time: "5:00pm"}],
+                },
+                '2022-09-09': {
+                    uniform: whiteKit,
                 },
                 '2022-12-09': {
                     uniform: "School uniform with blazer",
@@ -236,7 +242,8 @@ css: calendar.css?cb=7
                         { key: "damson", value: "Damson" },
                         { key: "teal", value: "Teal" },
                         { key: "white", value: "White" },
-                        { key: "grey", value: "Grey" }
+                        { key: "grey", value: "Grey" },
+                        { key: "none", value: "None" }
                     ]
                 },
                 {
