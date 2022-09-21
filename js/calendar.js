@@ -124,6 +124,9 @@ class CalendarModel {
         if (value !== undefined && (value.startsWith("*") || value.startsWith("+"))) {
             value = value.substring(1, value.length);
         }
+        if (value !== undefined && (value.startsWith("-"))) {
+            return value;
+        }
         return symbol + value;
     }
     static sortTime(l, r) {

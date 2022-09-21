@@ -259,6 +259,10 @@ class CalendarModel {
             value = value.substring(1, value.length);
         }
 
+        if (value !== undefined && (value.startsWith("-"))) {
+            return value;
+        }
+
         return symbol + value;
     }
 
