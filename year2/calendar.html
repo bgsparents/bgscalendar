@@ -262,6 +262,8 @@ css: calendar.css?cb=7
                         multiselect: true,
                         values: [
                             { key: "as_ballet", value: "Ballet (Wed)" },
+                            { key: "as_coding", value: "Coding Club (Wed)" },
+                            { key: "as_cookery", value: "Cookery Club (Wed)" },
                             { key: "bs_larks_wed", value: "Larks (Wed)" },
                             { key: "as_owls_wed", value: "Owls (Wed)" },
                         ]
@@ -372,6 +374,28 @@ css: calendar.css?cb=7
                                 games: ['Ballet (AS)'],
                                 kit: ['Ballet kit'],
                                 timings: [{title: "Ballet", time: "5:00pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_coding": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: ['Coding Club (AS)'],
+                                timings: [{title: "Coding", time: "4:30pm"}, {title: '-Pick Up'}]
+                            },
+                        }
+                    }
+                },
+
+                "as_cookery": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                games: ['Cookery Club (AS)'],
+                                timings: [{title: "Cookery", time: "4:30pm"}, {title: '-Pick Up'}]
                             },
                         }
                     }
