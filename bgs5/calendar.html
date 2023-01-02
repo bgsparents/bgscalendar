@@ -146,10 +146,6 @@ css: calendar.css?cb=7
                     kit: hockeyKit,
                     timings: [ {title: "Hockey Start", time: "2:15pm"} ]
                 },
-                '2022-11-18': {
-                    games: ['+After School Hockey - Cancelled'],
-                    timings: [ {title: "-Hockey Pick Up"}, {title: "Pick Up", time: "5:00pm"} ]
-                },
                 '2022-11-10': {
                     games: ['Book Fair'],
                 },
@@ -394,9 +390,10 @@ css: calendar.css?cb=7
                         { key: "as_hiphop", value: "Hip Hop (Mon)" },
                         { key: "as_netball", value: "Netball (Mon)" },
                         { key: "as_choir", value: "Choir (Tue)" },
+                        { key: "as_hockey", value: "Hockey (Wed)" },
                         { key: "as_swim", value: "Swimming (Thu)" },
+                        { key: "as_swim2", value: "Swimming (Fri)" },
                         // { key: "as_cricket", value: "Cricket (Mon)" },
-                        { key: "as_hockey", value: "Hockey (Fri)" },
                         { key: "as_late_care_jr", value: "Late Care (Jr)" },
                         { key: "as_late_care_sr", value: "Late Care (Sr)" },
                     ]
@@ -561,7 +558,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            friday: {
+                            wednesday: {
                                 games: "Hockey (AS)",
                                 kit: hockeyKit,
                                 timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
@@ -586,6 +583,19 @@ css: calendar.css?cb=7
                         always: {
                             matcher: matchers.as_sport,
                             thursday: {
+                                games: "Swimming (AS)",
+                                kit: swimmingKit,
+                                timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_swim2": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            friday: {
                                 games: "Swimming (AS)",
                                 kit: swimmingKit,
                                 timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
