@@ -83,9 +83,13 @@ css: calendar.css?cb=7
         weekB: function(currentDate) {
             return !matchers.weekA(currentDate);
         },
+        lu_sport: function(currentDate) {
+            const startsAgain = moment('2023-04-19');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
         as_sport: function(currentDate) {
-            const start = moment('2022-09-12');
-            return start.isSameOrBefore(currentDate);
+            const startsAgain = moment('2023-04-17');
+            return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
             const start1 = moment('2023-01-09');
@@ -236,7 +240,10 @@ css: calendar.css?cb=7
                     kit: [whiteKit],
                 },
                 '2023-03-22': {
-                    kit: ['£2-£5 for Y8 National Tenner Challenge'],
+                    kit: ['£2-£5 for Y8 National Tenner Challenge',
+                      'Witham Netball: Tracksuit bottoms and mid-layer top, white games shirt, skort, astros/trainers, base layers and water bottle.'],
+                    timings: [
+                        {title: "Witham Netball Pickup", time: "5:00pm"}]
                 },
 
                 // '2022-09-11': {
@@ -286,7 +293,7 @@ css: calendar.css?cb=7
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Drop Off", time: "8:00am"},
                         {title: "Pick Up", time: "12:00pm"}],
                 },
                 '2023-03-02': {
@@ -300,7 +307,7 @@ css: calendar.css?cb=7
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Drop Off", time: "8:00am"},
                         {title: "Pick Up", time: "12:00pm"}],
                 },
                 '2023-06-14': {
@@ -322,7 +329,7 @@ css: calendar.css?cb=7
                     games: ['End of Term'],
                     kit: commonKit,
                     timings: [
-                        {title: "Drop Off", time: "9:00am"},
+                        {title: "Drop Off", time: "8:00am"},
                         {title: "Pick Up", time: "12:00pm"}],
                 },
                 '2023-02-13': {
@@ -545,6 +552,7 @@ css: calendar.css?cb=7
                 "lu_swimming": {
                     rota: {
                         always: {
+                            matcher: matchers.lu_sport,
                             tuesday: {
                                 games: "Swimming (Lunch)",
                                 kit: swimmingKit,
@@ -556,6 +564,7 @@ css: calendar.css?cb=7
                 "lu_swimming_thu": {
                     rota: {
                         always: {
+                            matcher: matchers.lu_sport,
                             thursday: {
                                 games: "Swimming (Lunch)",
                                 kit: swimmingKit,
@@ -601,6 +610,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             wednesday: {
+                                matcher: matchers.lu_sport,
                                 games: "Hockey (Lunch)",
                                 kit: hockeyKit,
                             },
@@ -612,6 +622,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             friday: {
+                                matcher: matchers.lu_sport,
                                 games: "Netball (Lunch)",
                             },
                         }
