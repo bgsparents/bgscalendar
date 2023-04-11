@@ -299,7 +299,7 @@ css: calendar.css?cb=7
                         title: "Monday",
                         multiselect: true,
                         values: [
-                            { key: "as_rugby", value: "Tag Rugby (Mon)" },
+                            { key: "as_cricket", value: "Cricket (Mon)" },
                             { key: "as_yoga", value: "Yoga (Mon)" },
                             { key: "as_swimming", value: "Swimming (Mon)" },
                             { key: "bs_larks_mon", value: "Larks (Mon)" },
@@ -322,8 +322,7 @@ css: calendar.css?cb=7
                         multiselect: true,
                         values: [
                             { key: "as_ballet", value: "Ballet (Wed)" },
-                            { key: "as_coding", value: "Coding Club (Wed)" },
-                            { key: "as_cookery", value: "Cookery Club (Wed)" },
+                            { key: "as_football_wed", value: "Football (Wed)" },
                             { key: "bs_larks_wed", value: "Larks (Wed)" },
                             { key: "as_owls_wed", value: "Owls (Wed)" },
                         ]
@@ -335,8 +334,6 @@ css: calendar.css?cb=7
                             { key: "bs_tennis_thu", value: "Morning Tennis (Thu)" },
                             { key: "as_choir", value: "Choir (Thu)" },
                             { key: "as_tennis2", value: "Tennis (Thu)" },
-                            { key: "as_bakeoff", value: "Bake Off (Thu)" },
-                            { key: "as_pottery", value: "Pottery (Thu)" },
                             { key: "bs_larks_thu", value: "Larks (Thu)" },
                             { key: "as_owls_thu", value: "Owls (Thu)" },
                         ]
@@ -366,12 +363,12 @@ css: calendar.css?cb=7
                 ],
 
             data: {
-                "as_rugby": {
+                "as_cricket": {
                     rota: {
                         always: {
                             monday: {
-                                games: ['Tag Rugby (AS)'],
-                                timings: [{title: "Rugby", time: "4:30pm"}, {title: '-Pick Up'}]
+                                games: ['Cricket (AS)'],
+                                timings: [{title: "Cricket", time: "4:30pm"}, {title: '-Pick Up'}]
                             },
                             tuesday: {
                                 kit: ['PE Kit']
@@ -439,23 +436,12 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_coding": {
+                "as_football_wed": {
                     rota: {
                         always: {
                             wednesday: {
-                                games: ['Coding Club (AS)'],
+                                games: ['Football (AS)'],
                                 timings: [{title: "Coding", time: "4:30pm"}, {title: '-Pick Up'}]
-                            },
-                        }
-                    }
-                },
-
-                "as_cookery": {
-                    rota: {
-                        always: {
-                            wednesday: {
-                                games: ['Cookery Club (AS)'],
-                                timings: [{title: "Cookery", time: "4:30pm"}, {title: '-Pick Up'}]
                             },
                         }
                     }
@@ -484,27 +470,6 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_bakeoff": {
-                    rota: {
-                        always: {
-                            thursday: {
-                                games: ['Bake Off (AS)'],
-                                timings: [{title: "Bake Off", time: "4:30pm"}, {title: '-Pick Up'}]
-                            },
-                        }
-                    }
-                },
-
-                "as_pottery": {
-                    rota: {
-                        always: {
-                            thursday: {
-                                games: ['Pottery (AS)'],
-                                timings: [{title: "Pottery", time: "4:30pm"}, {title: '-Pick Up'}]
-                            },
-                        }
-                    }
-                },
                 "as_football": {
                     rota: {
                         always: {
