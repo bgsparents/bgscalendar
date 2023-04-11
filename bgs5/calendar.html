@@ -84,7 +84,7 @@ css: calendar.css?cb=7
             return !matchers.weekA(currentDate);
         },
         lu_sport: function(currentDate) {
-            const startsAgain = moment('2023-04-19');
+            const startsAgain = moment('2023-04-17');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_sport: function(currentDate) {
@@ -92,10 +92,10 @@ css: calendar.css?cb=7
             return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
-            const start1 = moment('2023-01-09');
-            const end1 = moment('2023-02-07');
-            const start2 = moment('2023-02-20');
-            const end2 = moment('2023-03-14');
+            const start1 = moment('2023-04-24');
+            const end1 = moment('2023-05-25');
+            const start2 = moment('2023-06-05');
+            const end2 = moment('2023-07-05');
             return (start1.isSameOrBefore(currentDate) && end1.isSameOrAfter(currentDate))
                 || (start2.isSameOrBefore(currentDate) && end2.isSameOrAfter(currentDate));
         },
@@ -367,7 +367,7 @@ css: calendar.css?cb=7
                 '2023-02-09': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1scwxux08ngswe/\' target=\'d8\'>Residential Visit Consent Form</a>'],
                 '2023-02-21': ['<a href=\'https://bedfordgirlsschool.schoolcloud.co.uk/\' target=\'d10\'>Parents\` Consultation Booking</a>', '<a href=\'https://jhodgkin.wufoo.com/forms/rn10nzy1t2it8s/\' target=\'d9\'>Parents\' Consultation Late Care Booking</a>'],
                 '2023-03-13': ['<a href=\'https://jhodgkin.wufoo.com/forms/r1m3wihj02ahem2/\' target=\'d12\'>Harry Potter World Consent Form</a>'],
-
+                '2023-04-17': ['<a href=\'https://jhodgkin.wufoo.com/forms/rwqdgij0b1uzew/\' target=\'d12\'>Co-curricular Sports</a>'],
            }
         },
 
@@ -445,8 +445,8 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "bs_breakfast_club", value: "Breakfast Club" },
-                        { key: "bs_tennis_mon", value: "Riverside Tennis (Mon)" },
                         { key: "bs_swim_mon", value: "Swim Training (Mon)" },
+                        { key: "bs_tennis_tue", value: "Riverside Tennis (Tue)" },
                         { key: "bs_swim_wed", value: "Swim Training (Wed)" },
                         { key: "bs_swim_fri", value: "Swim Training (Fri)" },
                     ]
@@ -456,12 +456,15 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         //{ key: "lu_netball_teal", value: "Netball Club - Teal (Mon)" },
+                        { key: "lu_cricket", value: "Cricket (Mon)" },
+                        { key: "lu_netball", value: "Netball (Tue)" },
                         { key: "lu_swimming", value: "Swimming (Tue)" },
                         { key: "lu_hockey", value: "Hockey Club (Wed)" },
+                        { key: "lu_athletics", value: "Athletics (Wed)" },
                         { key: "lu_ballet", value: "Ballet (Wed)" },
                         { key: "lu_modern", value: "Modern Dance (Thu)" },
                         { key: "lu_swimming_thu", value: "Swimming (Thu)" },
-                        { key: "lu_netball", value: "Netball Club (Fri)" },
+                        { key: "lu_tennis", value: "Tennis (Fri)" },
                         { key: "lu_tap", value: "Tap Dancing (Fri)" },
                         // { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
                         // { key: "lu_science", value: "Science Club (Wed)" },
@@ -474,12 +477,12 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "as_hiphop", value: "Hip Hop (Mon)" },
-                        { key: "as_netball", value: "Netball (Mon)" },
+                        // { key: "as_netball", value: "Netball (Mon)" },
+                        { key: "as_swim", value: "Swimming (Mon)" },
                         { key: "as_choir", value: "Choir (Tue)" },
-                        { key: "as_hockey", value: "Hockey (Wed)" },
-                        { key: "as_swim", value: "Swimming (Thu)" },
-                        { key: "as_swim2", value: "Swimming (Fri)" },
-                        // { key: "as_cricket", value: "Cricket (Mon)" },
+                        { key: "as_athletics", value: "Athletics (Tue)" },
+                        { key: "as_tennis", value: "Tennis (Wed)" },
+                        { key: "as_cricket", value: "Cricket (Thu)" },
                         { key: "as_late_care_jr", value: "Late Care (Jr)" },
                         { key: "as_late_care_sr", value: "Late Care (Sr)" },
                     ]
@@ -535,11 +538,11 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "bs_tennis_mon": {
+                "bs_tennis_tue": {
                     rota: {
                         always: {
                             matcher: matchers.tennis,
-                            monday: {
+                            tuesday: {
                                 uniform: ["PE Kit"],
                                 games: "*Riverside Tennis (BS)",
                                 kit: ['*Tennis racket', "School uniform & school shoes"],
@@ -621,26 +624,63 @@ css: calendar.css?cb=7
                 "lu_netball": {
                     rota: {
                         always: {
-                            friday: {
+                            tuesday: {
                                 matcher: matchers.lu_sport,
                                 games: "Netball (Lunch)",
+                                kit: [whiteKit],
                             },
                         }
                     }
                 },
 
-                "as_netball": {
+                "lu_cricket": {
                     rota: {
                         always: {
-                            matcher: matchers.as_sport,
                             monday: {
-                                games: "Netball (AS)",
+                                matcher: matchers.lu_sport,
+                                games: "Cricket (Lunch)",
                                 kit: [whiteKit],
-                                timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
                 },
+
+                "lu_athletics": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                matcher: matchers.lu_sport,
+                                games: "Athletics (Lunch)",
+                                kit: [whiteKit],
+                            },
+                        }
+                    }
+                },
+
+                "lu_tennis": {
+                    rota: {
+                        always: {
+                            friday: {
+                                matcher: matchers.lu_sport,
+                                games: "Cricket (Lunch)",
+                                kit: [whiteKit, 'Tennis Racket'],
+                            },
+                        }
+                    }
+                },
+
+                // "as_netball": {
+                //     rota: {
+                //         always: {
+                //             matcher: matchers.as_sport,
+                //             monday: {
+                //                 games: "Netball (AS)",
+                //                 kit: [whiteKit],
+                //                 timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                //             },
+                //         }
+                //     }
+                // },
 
                 "as_hiphop": {
                     rota: {
@@ -654,14 +694,14 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_hockey": {
+                "as_athletics": {
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            wednesday: {
-                                games: "Hockey (AS)",
-                                kit: hockeyKit,
-                                timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            tuesday: {
+                                games: "Athletics (AS)",
+                                kit: [whiteKit],
+                                timings: [ {title: "Athletics Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
@@ -691,14 +731,27 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_swim2": {
+                "as_tennis": {
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            friday: {
+                            wednesday: {
                                 games: "Swimming (AS)",
-                                kit: swimmingKit,
-                                timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                                kit: [whiteKit, 'Tennis Racket'],
+                                timings: [ {title: "Tennis Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_cricket": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            thursday: {
+                                games: "Thursday (AS)",
+                                kit: [whiteKit],
+                                timings: [ {title: "Cricket Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
