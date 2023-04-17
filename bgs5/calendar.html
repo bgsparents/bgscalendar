@@ -14,7 +14,7 @@ css: calendar.css?cb=7
     const astrosKit = ["Astroturf boots in a bag"];
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit);
-    const damsonKit = "Damson top & socks, black skort, trainers";
+    const damsonKit = ["Damson top & socks, black skort, trainers"];
     const whiteKit = "White top & socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -58,14 +58,14 @@ css: calendar.css?cb=7
         },
 
         cricket: {
-            uniform: damsonKit,
+            //uniform: damsonKit,
             games: "Cricket",
-            kit: ['*Hat', '*Sun Cream'],
+            kit: [whiteKit].concat(['Hat', 'Sun Cream'])
         },
         tennis: {
-            uniform: whiteKit,
+            //uniform: whiteKit,
             games: "Tennis",
-            kit: ['*Tennis Racket'],
+            kit: [whiteKit].concat(['Tennis Racket'])
         },
         athletics: {
             uniform: whiteKit,
@@ -245,10 +245,10 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Witham Netball Pickup", time: "5:00pm"}]
                 },
-                '2023-04-18': {
-                    games: ['Athletics'],
-                    kit: ['School uniform']
-                },
+                // '2023-04-18': {
+                //     games: ['Athletics'],
+                //     kit: ['School uniform']
+                // },
                 '2023-04-21': {
                     games: ['Anna James Visit'],
                 },
@@ -353,9 +353,9 @@ css: calendar.css?cb=7
                         {title: "Drop Off (BGS Astro)", time: "1pm"},
                         {title: "Pick Up (BGS Astro)", time: "4pm"}],
                 },
-                '2023-04-18': {
-                    uniform: damsonKit
-                },
+                // '2023-04-18': {
+                //     uniform: damsonKit
+                // },
                 '2023-06-19': {
                     uniform: ["School Uniform with Blazer"],
                     games: ['Harry Potter World'],
@@ -554,7 +554,7 @@ css: calendar.css?cb=7
                         always: {
                             matcher: matchers.tennis,
                             tuesday: {
-                                uniform: ["PE Kit"],
+                                uniform: damsonKit,
                                 games: "*Riverside Tennis (BS)",
                                 kit: ['*Tennis racket', "School uniform & school shoes"],
                                 timings: [ {title: "Tennis Start", time: "7:10am"}, {title: "-Drop Off"} ]
@@ -673,7 +673,7 @@ css: calendar.css?cb=7
                         always: {
                             friday: {
                                 matcher: matchers.lu_sport,
-                                games: "Cricket (Lunch)",
+                                games: "Tennis (Lunch)",
                                 kit: [whiteKit, 'Tennis Racket'],
                             },
                         }
@@ -747,7 +747,7 @@ css: calendar.css?cb=7
                         always: {
                             matcher: matchers.as_sport,
                             wednesday: {
-                                games: "Swimming (AS)",
+                                games: "Tennis (AS)",
                                 kit: [whiteKit, 'Tennis Racket'],
                                 timings: [ {title: "Tennis Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
@@ -760,7 +760,7 @@ css: calendar.css?cb=7
                         always: {
                             matcher: matchers.as_sport,
                             thursday: {
-                                games: "Thursday (AS)",
+                                games: "Cricket (AS)",
                                 kit: [whiteKit],
                                 timings: [ {title: "Cricket Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
@@ -796,22 +796,26 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            thursday: commonDayData.netball,
+                            thursday: commonDayData.cricket,
                             friday: {
-                                uniform: damsonKit,
-                                games: "Hockey",
-                                kit: hockeyKit.concat(["School uniform & school shoes"])
+                                uniform: whiteKit,
+                                games: "Tennis",
+                                kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
                             }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.swimming,
-                            thursday: commonDayData.netball,
-                            friday: {
+                            tuesday: {
                                 uniform: damsonKit,
-                                games: "Hockey",
-                                kit: hockeyKit.concat(["School uniform & school shoes"])
+                                games: "Athletics",
+                                kit: ["School uniform & school shoes"]
+                            },
+                            thursday: commonDayData.cricket,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Tennis",
+                                kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
                             }
                         }
                     }
@@ -821,19 +825,27 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            thursday: commonDayData.netball,
-                            friday: commonDayData.swimming
+                            thursday: commonDayData.cricket,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Tennis",
+                                kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
+                            }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
                             tuesday: {
                                 uniform: damsonKit,
-                                games: "Hockey",
-                                kit: hockeyKit.concat(["School uniform & school shoes"])
+                                games: "Athletics",
+                                kit: ["School uniform & school shoes"]
                             },
-                            thursday: commonDayData.netball,
-                            friday: commonDayData.swimming
+                            thursday: commonDayData.cricket,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Tennis",
+                                kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
+                            }
                         }
                     }
                 },
@@ -842,10 +854,10 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            thursday: commonDayData.hockey,
+                            thursday: commonDayData.tennis,
                             friday: {
                                 uniform: whiteKit,
-                                games: "Netball",
+                                games: "Cricket",
                                 kit: ["School uniform & school shoes"]
                             }
                         },
@@ -853,14 +865,14 @@ css: calendar.css?cb=7
                         weekB: {
                             matcher: matchers.weekB,
                             tuesday: {
-                                uniform: whiteKit,
-                                games: "Netball",
+                                uniform: damsonKit,
+                                games: "Athletics",
                                 kit: ["School uniform & school shoes"]
                             },
-                            thursday: commonDayData.hockey,
+                            thursday: commonDayData.tennis,
                             friday: {
                                 uniform: whiteKit,
-                                games: "Netball",
+                                games: "Cricket",
                                 kit: ["School uniform & school shoes"]
                             }
                         }
@@ -871,10 +883,10 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            thursday: commonDayData.swimming,
+                            thursday: commonDayData.tennis,
                             friday: {
                                 uniform: whiteKit,
-                                games: "Netball",
+                                games: "Cricket",
                                 kit: ["School uniform & school shoes"]
                             }
                         },
@@ -883,13 +895,13 @@ css: calendar.css?cb=7
                             matcher: matchers.weekB,
                             tuesday: {
                                 uniform: damsonKit,
-                                games: "Hockey",
-                                kit: hockeyKit.concat(["School uniform & school shoes"])
+                                games: "Athletics",
+                                kit: ["School uniform & school shoes"]
                             },
-                            thursday: commonDayData.swimming,
+                            thursday: commonDayData.tennis,
                             friday: {
                                 uniform: whiteKit,
-                                games: "Netball",
+                                games: "Cricket",
                                 kit: ["School uniform & school shoes" ]
                             }
                         }
