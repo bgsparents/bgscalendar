@@ -75,7 +75,7 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const starts =  [moment('2022-09-05'), moment('2023-01-02'), moment('2023-02-20'), moment('2023-06-05')];
+            const starts =  [moment('2022-09-05'), moment('2023-01-02'), moment('2023-02-20'), moment('2023-04-10'), moment('2023-06-05')];
             const start = starts.reverse().find((o, i, a) => { return o.isSameOrBefore(currentDate)});
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 0;
@@ -245,6 +245,10 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Witham Netball Pickup", time: "5:00pm"}]
                 },
+                '2023-04-18': {
+                    games: ['Athletics'],
+                    kit: ['School uniform']
+                },
                 '2023-04-21': {
                     games: ['Anna James Visit'],
                 },
@@ -348,6 +352,9 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Drop Off (BGS Astro)", time: "1pm"},
                         {title: "Pick Up (BGS Astro)", time: "4pm"}],
+                },
+                '2023-04-18': {
+                    uniform: damsonKit
                 },
                 '2023-06-19': {
                     uniform: ["School Uniform with Blazer"],
