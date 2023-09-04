@@ -18,8 +18,8 @@ css: calendar.css?cb=7
     const whiteKit = "White top, white socks, white skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
-        {title: "Drop Off", time: "8:00am"},
-        {title: "Pick Up", time: "4:00pm"},
+        {title: "Drop Off", time: "8:30am"},
+        {title: "Pick Up", time: "3:45pm"},
     ];
 
     const commonDayData = {
@@ -119,22 +119,48 @@ css: calendar.css?cb=7
                 }
             },
             extras: {
-                '2023-09-05': {
-                    games: ["Uniform Sale"],
+                '2023-09-07': {
+                    games: ["Classroom Tea"],
+                    kit: ["Games bag", "PE bag", "Swimming bag"],
                     timings: [
-                        {title: "Uniform Sale Start", time: "3:00pm"},
-                        {title: "Uniform Sale End", time: "5:00pm"}]
+                        {title: "Classroom Tea", time: "3:15pm"}]
+                },
+                '2023-09-08': {
+                    games: ["Classroom Tea"],
+                    timings: [
+                        {title: "Classroom Tea", time: "3:15pm"}]
+                },
+                '2023-09-11': {
+                    games: ["Parents' Evening"],
+                    timings: [
+                        {title: "Parents' Evening", time: "4:00pm"}]
                 },
                 '2023-09-14': {
-                    games: ["Information Evening"],
+                    games: ["School Photo"]
+                },
+                '2023-11-15': {
+                    games: ["Parents' Evening"]
+                },
+                '2023-11-21': {
+                    games: ["Parents' Evening (Remote)"]
+                },
+                '2024-05-01': {
+                    games: ["Parents' Evening"]
+                },
+                '2024-05-07': {
+                    games: ["Parents' Evening (Remote)"]
+                },
+                '2024-07-08': {
+                    games: ["Celebration Afternoon"],
                     timings: [
-                        {title: "Information Evening", time: "4:10pm"}]
+                        {title: "Celebration Afternoon", time: "3:00pm"},
+                        {title: "Celebration Afternoon End", time: "4:30pm"}]
                 },
             },
             overrides: {
             },
             deadlines: {
-                '2023-09-04': ['<a href=\'https://jhodgkin.wufoo.com/forms/rd7tmfw0kdsqh8/\' target=\'d1\'>Parents\' Information Talk Registration</a>'],
+                // '2023-09-04': ['<a href=\'https://jhodgkin.wufoo.com/forms/rd7tmfw0kdsqh8/\' target=\'d1\'>Parents\' Information Talk Registration</a>'],
            }
         },
 
@@ -145,6 +171,12 @@ css: calendar.css?cb=7
                     }
                 },
                 extras: {
+                    '2024-06-21': {
+                        games: ["Class Assembly"],
+                        timings: [
+                            {title: "Class Assembly", time: "1:35pm"},
+                            {title: "Class Assembly End", time: "2:05pm"}]
+                    },
                 },
                 overrides: {
                 },
@@ -156,17 +188,29 @@ css: calendar.css?cb=7
                     }
                 },
                 extras: {
+                    '2024-05-17': {
+                        games: ["Class Assembly"],
+                        timings: [
+                            {title: "Class Assembly", time: "1:35pm"},
+                            {title: "Class Assembly End", time: "2:05pm"}]
+                    },
                 },
                 overrides: {
                 },
                 deadlines: {}
             },
-            "3LW": {
+            "3LJW": {
                 rota: {
                     always: {
                     }
                 },
                 extras: {
+                    '2024-06-14': {
+                        games: ["Class Assembly"],
+                        timings: [
+                            {title: "Class Assembly", time: "1:35pm"},
+                            {title: "Class Assembly End", time: "2:05pm"}]
+                    },
                 },
                 overrides: {
                 },
@@ -177,23 +221,26 @@ css: calendar.css?cb=7
         additional: {
             meta:
             [
-                {
-                    title: "Sports Group",
-                    multiselect: false,
-                    values: [
-                        { key: "damson", value: "Damson" },
-                        { key: "teal", value: "Teal" },
-                        { key: "white", value: "White" },
-                        { key: "grey", value: "Lime" },
-                        { key: "none", value: "None" }
-                    ]
-                },
+                // {
+                //     title: "Sports Group",
+                //     multiselect: false,
+                //     values: [
+                //         { key: "damson", value: "Damson" },
+                //         { key: "teal", value: "Teal" },
+                //         { key: "white", value: "White" },
+                //         { key: "grey", value: "Lime" },
+                //         { key: "none", value: "None" }
+                //     ]
+                // },
                 {
                     title: "Before School",
                     multiselect: true,
                     values: [
-                        { key: "bs_breakfast_club", value: "Breakfast Club" },
-                        { key: "bs_tennis_tue", value: "Riverside Tennis (Tue)" },
+                        { key: "bs_breakfast_club_mon", value: "Breakfast Club (Mon)" },
+                        { key: "bs_breakfast_club_tue", value: "Breakfast Club (Tue)" },
+                        { key: "bs_breakfast_club_wed", value: "Breakfast Club (Wed)" },
+                        { key: "bs_breakfast_club_thu", value: "Breakfast Club (Thu)" },
+                        { key: "bs_breakfast_club_fri", value: "Breakfast Club (Fri)" },
                     ]
                 },
                 // {
@@ -207,345 +254,92 @@ css: calendar.css?cb=7
                     title: "After School",
                     multiselect: true,
                     values: [
-                        { key: "as_swim_mon", value: "Swimming (Mon)" },
-                        { key: "as_hiphop", value: "Hip Hop (Mon)" },
-                        { key: "as_swim_tue", value: "Swimming (Tue)" },
-                        { key: "as_choir", value: "Choir (Tue)" },
-                        { key: "as_hockey", value: "Hockey (Wed)" },
-                        { key: "as_ballet", value: "Ballet (Wed)" },
-                        { key: "as_netball", value: "Netball (Fri)" },
-
-                        // { key: "as_netball", value: "Netball (Mon)" },
-                        // { key: "as_athletics", value: "Athletics (Tue)" },
-                        // { key: "as_tennis", value: "Tennis (Wed)" },
-                        // { key: "as_cricket", value: "Cricket (Thu)" },
-                        // { key: "as_late_care_jr", value: "Late Care (Jr)" },
-                        // { key: "as_late_care_sr", value: "Late Care (Sr)" },
+                        { key: "as_late_care_mon", value: "After-School Care (Mon)" },
+                        { key: "as_late_care_tue", value: "After-School Care (Tue)" },
+                        { key: "as_late_care_wed", value: "After-School Care (Wed)" },
+                        { key: "as_late_care_thu", value: "After-School Care (Thu)" },
+                        { key: "as_late_care_fri", value: "After-School Care (Fri) " },
                     ]
                 }
             ],
 
             data: {
-                "bs_breakfast_club": {
+                "bs_breakfast_club_mon": {
                     rota: {
                         always: {
                             monday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "bs_breakfast_club_tue": {
+                    rota: {
+                        always: {
                             tuesday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "bs_breakfast_club_wed": {
+                    rota: {
+                        always: {
                             wednesday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "bs_breakfast_club_thu": {
+                    rota: {
+                        always: {
                             thursday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "bs_breakfast_club_fri": {
+                    rota: {
+                        always: {
                             friday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
                         }
                     }
                 },
 
-                "bs_tennis_tue": {
+                "as_late_care_mon": {
                     rota: {
                         always: {
-                            matcher: matchers.tennis,
-                            tuesday: {
-                                uniform: damsonKit,
-                                games: "*Riverside Tennis (BS)",
-                                kit: ['*Tennis racket', "School uniform & school shoes"],
-                                timings: [ {title: "Tennis Start", time: "7:10am"}, {title: "-Drop Off"} ]
-                            },
+                            monday: { timings: [ {title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
 
-                "lu_ballet": {
+                "as_late_care_tue": {
                     rota: {
                         always: {
-                            wednesday: {
-                                games: "Ballet (Lunch)",
-                                kit: ["Ballet Kit"],
-                            },
+                            tuesday: { timings: [ {title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
 
-                "lu_modern": {
+                "as_late_care_wed": {
                     rota: {
                         always: {
-                            thursday: {
-                                games: "Modern Dance (Lunch)",
-                                kit: danceKit,
-                            },
+                            wednesday: { timings: [ {title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
 
-                "lu_tap": {
+                "as_late_care_thu": {
                     rota: {
                         always: {
-                            friday: {
-                                games: "Tap Dancing (Lunch)",
-                                kit: ['Tap dancing kit'],
-                            },
+                            thursday: { timings: [ {title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
 
-                "lu_babybels": {
+                "as_late_care_fri": {
                     rota: {
                         always: {
-                            friday: {
-                                games: "Baby Bels (Lunch)"
-                            },
-                        }
-                    }
-                },
-
-                "lu_hockey": {
-                    rota: {
-                        always: {
-                            friday: {
-                                matcher: matchers.lu_sport,
-                                games: "Hockey (Lunch)",
-                                kit: hockeyKit,
-                            },
-                        }
-                    }
-                },
-
-                "lu_netball": {
-                    rota: {
-                        always: {
-                            tuesday: {
-                                matcher: matchers.lu_sport,
-                                games: "Netball (Lunch)",
-                                kit: [whiteKit],
-                            },
-                        }
-                    }
-                },
-
-                "as_netball": {
-                    rota: {
-                        always: {
-                            matcher: matchers.as_sport,
-                            friday: {
-                                games: "Netball (AS)",
-                                kit: [whiteKit],
-                                timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-                "as_hockey": {
-                    rota: {
-                        always: {
-                            matcher: matchers.as_sport,
-                            wednesday: {
-                                games: "Hockey (AS)",
-                                kit: hockeyKit,
-                                timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-                "as_swim_mon": {
-                    rota: {
-                        always: {
-                            matcher: matchers.as_sport,
-                            monday: {
-                                games: "Swimming (AS)",
-                                kit: swimmingKit,
-                                timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-                "as_swim_tue": {
-                    rota: {
-                        always: {
-                            matcher: matchers.as_sport,
-                            tuesday: {
-                                games: "Swimming (AS)",
-                                kit: swimmingKit,
-                                timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-                "as_hiphop": {
-                    rota: {
-                        always: {
-                            monday: {
-                                games: "Hip Hop (AS)",
-                                kit: [danceKit],
-                                timings: [ {title: "Hip Hop Pick Up", time: "5:15pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-                "as_ballet": {
-                    rota: {
-                        always: {
-                            wednesday: {
-                                games: "Ballet (AS)",
-                                kit: ["Ballet Kit"],
-                                timings: [ {title: "Ballet Pick Up", time: "5:15pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-
-                "as_choir": {
-                    rota: {
-                        always: {
-                            tuesday: {
-                                games: "Choir (AS)",
-                                timings: [ {title: "Choir Pick Up", time: "5:15pm"}, {title: "-Pick Up"} ]
-                            },
-                        }
-                    }
-                },
-
-
-                "as_late_care_jr": {
-                    rota: {
-                        always: {
-                            monday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            tuesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            wednesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            thursday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            friday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                        }
-                    }
-                },
-
-                "as_late_care_sr": {
-                    rota: {
-                        always: {
-                            monday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            tuesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            wednesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            thursday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            friday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                        }
-                    }
-                },
-
-                "damson": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-/*
-                            thursday: commonDayData.cricket,
-                            friday: {
-                                uniform: whiteKit,
-                                games: "Tennis",
-                                kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
-                            }
-*/
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            // tuesday: {
-                            //     uniform: damsonKit,
-                            //     games: "Athletics",
-                            //     kit: ["School uniform & school shoes"]
-                            // },
-                            // thursday: commonDayData.cricket,
-                            // friday: {
-                            //     uniform: whiteKit,
-                            //     games: "Tennis",
-                            //     kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
-                            // }
-                        }
-                    }
-                },
-
-                "teal": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-                            // thursday: commonDayData.cricket,
-                            // friday: {
-                            //     uniform: whiteKit,
-                            //     games: "Tennis",
-                            //     kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
-                            // }
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            // tuesday: {
-                            //     uniform: damsonKit,
-                            //     games: "Athletics",
-                            //     kit: ["School uniform & school shoes"]
-                            // },
-                            // thursday: commonDayData.cricket,
-                            // friday: {
-                            //     uniform: whiteKit,
-                            //     games: "Tennis",
-                            //     kit: ['Tennis Racket'].concat(["School uniform & school shoes"])
-                            // }
-                        }
-                    }
-                },
-
-                "white": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-                            // thursday: commonDayData.tennis,
-                            // friday: {
-                            //     uniform: damsonKit,
-                            //     games: "Cricket",
-                            //     kit: ["School uniform & school shoes"]
-                            // }
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            // tuesday: {
-                            //     uniform: damsonKit,
-                            //     games: "Athletics",
-                            //     kit: ["School uniform & school shoes"]
-                            // },
-                            // thursday: commonDayData.tennis,
-                            // friday: {
-                            //     uniform: damsonKit,
-                            //     games: "Cricket",
-                            //     kit: ["School uniform & school shoes"]
-                            // }
-                        }
-                    }
-                },
-
-                "grey": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-                            // thursday: commonDayData.tennis,
-                            // friday: {
-                            //     uniform: damsonKit,
-                            //     games: "Cricket",
-                            //     kit: ["School uniform & school shoes"]
-                            // }
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            // tuesday: {
-                            //     uniform: damsonKit,
-                            //     games: "Athletics",
-                            //     kit: ["School uniform & school shoes"]
-                            // },
-                            // thursday: commonDayData.tennis,
-                            // friday: {
-                            //     uniform: damsonKit,
-                            //     games: "Cricket",
-                            //     kit: ["School uniform & school shoes" ]
-                            // }
+                            friday: { timings: [ {title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
@@ -576,6 +370,9 @@ css: calendar.css?cb=7
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="https://www.bedmod.co.uk/wp-content/uploads/2023/06/Junior-School-Info-for-New-Students-2023-24-PDF-Version-Singles.pdf" target="_newstudents">Students' Guide</a></li>
                 <li class="list-group-item"><a href="https://www.bedmod.co.uk/my-bms/parents/information-for-new-parents/welcome-to-the-junior-school/" target="cocurricular">Junior School Guide</a></li>
+                <li class="list-group-item"><a href="https://bedfordmodern.myschoolportal.co.uk/" target="parentportal">Parent Portal</a></li>
+                <li class="list-group-item"><a href="https://bedmod.isamshosting.cloud/" target="parentportal">Billing Portal</a></li>
+                <li class="list-group-item"><a href="https://sport.bedmod.co.uk/" target="parentportal">Sports Home</a></li>
             </ul>
         </div>
     </div>
