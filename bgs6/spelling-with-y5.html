@@ -1,0 +1,267 @@
+---
+layout: default
+title: Izzy's Y4/Y5 Spelling
+homeLink: /bgs5/spelling
+css: calendar.css?cb=7
+---
+
+<style>
+    #word-table {
+        margin: 2rem 0;
+        width: 100%;
+        font-size: 1.1rem;
+    }
+
+    #word-table td {
+        border: 1px solid #444;
+        padding: 0.5rem;
+        width: 16.66666%;
+    }
+
+    @media print{
+        @page {size: landscape}
+    }
+</style>
+
+<div class="buttons text-right d-print-none mt-2 ">
+    <button type="button" class="btn btn-outline-secondary" onclick="location.reload();">New Words</button>
+</div>
+<div>
+    <table id="word-table">
+        <tr><th></th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Monday</th><th>Tuesday</th></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+</div>
+
+<script>
+    const words =
+        ['accident',
+        'accidentally',
+        'actual',
+        'actually',
+        'address',
+        'answer',
+        'appear',
+        'arrive',
+        'believe',
+        'bicycle',
+        'breath',
+        'breathe',
+        'build',
+        'business',
+        'busy',
+        'calendar',
+        'caught',
+        'centre',
+        'century',
+        'certain',
+        'circle',
+        'complete',
+        'consider',
+        'continue',
+        'decide',
+        'describe',
+        'difficult',
+        'disappear',
+        'early',
+        'earth',
+        'eight',
+        'eighth',
+        'enough',
+        'exercise',
+        'experience',
+        'experiment',
+        'extreme',
+        'famous',
+        'favourite',
+        'February',
+        'forward',
+        'forwards',
+        'fruit',
+        'grammar',
+        'group',
+        'guide',
+        'guard',
+        'heard',
+        'heart',
+        'height',
+        'history',
+        'imagine',
+        'important',
+        'increase',
+        'interest',
+        'island',
+        'knowledge',
+        'learn',
+        'length',
+        'library',
+        'material',
+        'medicine',
+        'mention',
+        'minute',
+        'natural',
+        'naughty',
+        'notice',
+        'occasion',
+        'occasionally',
+        'often',
+        'opposite',
+        'ordinary',
+        'particular',
+        'peculiar',
+        'perhaps',
+        'popular',
+        'position',
+        'possess',
+        'possession',
+        'possible',
+        'potatoes',
+        'pressure',
+        'probably',
+        'promise',
+        'purpose',
+        'quarter',
+        'question',
+        'recent',
+        'regular',
+        'reign',
+        'remember',
+        'sentence',
+        'separate',
+        'special',
+        'straight',
+        'strange',
+        'strength',
+        'suppose',
+        'surprise',
+        'therefore',
+        'though',
+        'although',
+        'thought',
+        'through',
+        'various',
+        'weight',
+        'woman',
+        'women',
+            "accommodate",
+            "accompany",
+            "according",
+            "achieve",
+            "aggressive",
+            "amateur",
+            "ancient",
+            "apparent",
+            "appreciate",
+            "attached",
+            "available",
+            "average",
+            "awkward",
+            "bargain",
+            "bruise",
+            "category",
+            "cemetery",
+            "committee",
+            "communicate",
+            "community",
+            "competition",
+            "conscience",
+            "conscious",
+            "controversy",
+            "convenience",
+            "correspond",
+            "criticise",
+            "curiosity",
+            "definite",
+            "desperate",
+            "determined",
+            "developed.",
+            "dictionary",
+            "disastrous",
+            "embarrass",
+            "equip",
+            "equipment",
+            "equipped",
+            "especially",
+            "exaggerate",
+            "excellent",
+            "existence",
+            "explanation",
+            "familiar",
+            "foreign",
+            "forty",
+            "frequently",
+            "government",
+            "guarantee",
+            "harass",
+            "hindrance",
+            "identity",
+            "immediate",
+            "immediately",
+            "individual",
+            "interfere",
+            "interrupt",
+            "language",
+            "leisure",
+            "lightning",
+            "marvellous",
+            "mischievous",
+            "muscle",
+            "necessary",
+            "neighbour",
+            "nuisance",
+            "occupy",
+            "occur",
+            "opportunity",
+            "parliament",
+            "persuade",
+            "physical",
+            "prejudice",
+            "privilege",
+            "profession",
+            "programme",
+            "pronunciation",
+            "queue",
+            "recognise",
+            "recommend",
+            "relevant",
+            "restaurant",
+            "rhyme",
+            "rhythm",
+            "sacrifice",
+            "secretary",
+            "shoulder",
+            "signature",
+            "sincere",
+            "sincerely",
+            "soldier",
+            "stomach",
+            "sufficient",
+            "suggest",
+            "symbol",
+            "system",
+            "temperature",
+            "thorough",
+            "twelfth",
+            "variety",
+            "vegetable",
+            "vehicle",
+            "yacht"];
+
+    words.sort(() => Math.random() - 0.5);
+
+    const rows = $('#word-table tr');
+    console.log(rows.length);
+    for (let i = 1; i < rows.length; ++i) {
+        $($(rows[i]).find('td:first')).text(words[i - 1]);
+    }
+</script>
+
