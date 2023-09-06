@@ -15,7 +15,7 @@ css: calendar.css?cb=7
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const damsonKit = "Damson top, damson socks, black skort, trainers";
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
-    const whiteKit = "White top, white socks, white skort, trainers";
+    const whiteKit = "White top, white socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
         {title: "Drop Off", time: "8:00am"},
@@ -26,6 +26,13 @@ css: calendar.css?cb=7
         regular: {
             uniform: "School uniform",
             kit: commonKit,
+            timings: timings
+        },
+
+        games: {
+            uniform: "School uniform",
+            kit: commonKit.concat(damsonKit),
+            games: ["Games"],
             timings: timings
         },
 
@@ -109,12 +116,21 @@ css: calendar.css?cb=7
         },
         yeargroup: {
             rota: {
-                always: {
+                weekA: {
+                    matcher: matchers.weekA,
                     monday: commonDayData.regular,
-                    tuesday: commonDayData.regular,
-                    wednesday: commonDayData.regular,
+                    tuesday: commonDayData.games,
+                    wednesday: commonDayData.games,
                     thursday: commonDayData.regular,
-                    friday: commonDayData.regular
+                    friday: commonDayData.games
+                },
+                weekB: {
+                    matcher: matchers.weekB,
+                    monday: commonDayData.regular,
+                    tuesday: commonDayData.games,
+                    wednesday: commonDayData.games,
+                    thursday: commonDayData.regular,
+                    friday: commonDayData.regular,
                 }
             },
             extras: {
@@ -124,10 +140,16 @@ css: calendar.css?cb=7
                         {title: "Uniform Sale Start", time: "3:00pm"},
                         {title: "Uniform Sale End", time: "5:00pm"}]
                 },
+                '2023-09-12': {
+                    games: ["School Photo"]
+                },
                 '2023-09-14': {
                     games: ["Information Evening"],
                     timings: [
                         {title: "Information Evening", time: "4:10pm"}]
+                },
+                '2023-10-02': {
+                    games: ["Whole School Photo"]
                 },
             },
             overrides: {
@@ -141,6 +163,14 @@ css: calendar.css?cb=7
             "6C": {
                 rota: {
                     always: {
+                        thursday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
+                        friday: {
+                            kit: [danceKit],
+                            games: ["Dance"]
+                        },
                     }
                 },
                 extras: {
