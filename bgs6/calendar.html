@@ -36,6 +36,13 @@ css: calendar.css?cb=7
             timings: timings
         },
 
+        games2: {
+            uniform: damsonKit,
+            kit: commonKit.concat(["School Uniform"]),
+            games: ["Games"],
+            timings: timings
+        },
+
         library: {
             games: "Library",
             kit: ['*Return library books'],
@@ -122,7 +129,7 @@ css: calendar.css?cb=7
                     tuesday: commonDayData.games,
                     wednesday: commonDayData.games,
                     thursday: commonDayData.regular,
-                    friday: commonDayData.games
+                    friday: commonDayData.games2
                 },
                 weekB: {
                     matcher: matchers.weekB,
