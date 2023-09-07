@@ -14,7 +14,9 @@ css: calendar.css?cb=7
     const astrosKit = ["Astroturf boots in a bag"];
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const damsonKit = "Damson top, damson socks, black skort, trainers";
-    const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
+    const gamesKit = "Sports kit, striped socks & trainers";
+    const peKit = "Sports kit, white socks & trainers";
+    const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(gamesKit);
     const whiteKit = "White top, white socks, white skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -56,7 +58,7 @@ css: calendar.css?cb=7
         hockey: {
             //uniform: damsonKit,
             games: "Hockey",
-            kit: hockeyKit.concat([damsonKit])
+            kit: hockeyKit.concat([gamesKit])
         },
 
         dance: {
@@ -97,6 +99,18 @@ css: calendar.css?cb=7
         },
         as_sport: function(currentDate) {
             const startsAgain = moment('2023-09-11');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
+        as_clubs: function(currentDate) {
+            const startsAgain = moment('2023-09-18');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
+        as_clubs2: function(currentDate) {
+            const startsAgain = moment('2023-09-25');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
+        as_xcountry: function(currentDate) {
+            const startsAgain = moment('2023-11-06');
             return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
@@ -247,6 +261,8 @@ css: calendar.css?cb=7
                     title: "Before School",
                     multiselect: true,
                     values: [
+                        { key: "bs_tennis_mon", value: "Tennis (Mon)" },
+                        { key: "bs_tennis_wed", value: "Tennis (Wed)" },
                         { key: "bs_breakfast_club_mon", value: "Breakfast Club (Mon)" },
                         { key: "bs_breakfast_club_tue", value: "Breakfast Club (Tue)" },
                         { key: "bs_breakfast_club_wed", value: "Breakfast Club (Wed)" },
@@ -254,17 +270,33 @@ css: calendar.css?cb=7
                         { key: "bs_breakfast_club_fri", value: "Breakfast Club (Fri)" },
                     ]
                 },
-                // {
-                //     title: "Lunch Clubs",
-                //     multiselect: true,
-                //     values: [
-                //         // { key: "lu_netball", value: "Netball (Tue)" },
-                //     ]
-                // },
+                {
+                    title: "Lunch Clubs",
+                    multiselect: true,
+                    values: [
+                        { key: "lu_violin", value: "Beginner Violin (Mon)" },
+                        { key: "lu_odyssey", value: "Odyssey (Tue)" },
+                        { key: "lu_recorders", value: "Recorders (Tue)" },
+                        { key: "lu_chess", value: "Chess (Thu)" },
+                        { key: "lu_wind", value: "Wind Ensemble (Thu)" },
+                        { key: "lu_singers", value: "Year 3 Singers (Thu)" },
+                    ]
+                },
                 {
                     title: "After School",
                     multiselect: true,
                     values: [
+                        { key: "as_hockey", value: "Hockey (Mon)" },
+                        { key: "as_art", value: "Art & Craft (Mon)" },
+                        { key: "as_lego", value: "Lego Club (Tue)" },
+                        { key: "as_chill", value: "Chill Chat Colour (Tue)" },
+                        { key: "as_cards", value: "Card Making Club (Wed)" },
+                        { key: "as_zentangle", value: "Zentangle Club (Wed)" },
+                        { key: "as_yahtzee", value: "Yahtzee Club (Thu)" },
+                        { key: "as_xcountry", value: "Cross Country (Thu)" },
+                        { key: "as_film", value: "Film Club (Thu)" },
+                        { key: "as_ttrock", value: "TT Rockstars (Fri)" },
+                        { key: "as_orchestra", value: "Orchestra (Fri)" },
                         { key: "as_late_care_mon", value: "After-School Care (Mon)" },
                         { key: "as_late_care_tue", value: "After-School Care (Tue)" },
                         { key: "as_late_care_wed", value: "After-School Care (Wed)" },
@@ -275,6 +307,32 @@ css: calendar.css?cb=7
             ],
 
             data: {
+                "bs_tennis_mon": {
+                    rota: {
+                        always: {
+                            monday: {
+                                uniform: ["PE Kit"],
+                                games: ["Tennis (BS)"],
+                                kit: ["Tennis racket", "School Uniform & shoes"],
+                                timings: [ {title: "Tennis", time: "7:30am"}, {title: "-Drop Off"} ]
+                            },
+                        }
+                    }
+                },
+
+                "bs_tennis_wed": {
+                    rota: {
+                        always: {
+                            wednesday: {
+                                uniform: ["PE Kit"],
+                                games: ["Tennis (BS)"],
+                                kit: ["Tennis racket", "School Uniform & shoes"],
+                                timings: [ {title: "Tennis", time: "7:30am"}, {title: "-Drop Off"} ]
+                            },
+                        }
+                    }
+                },
+
                 "bs_breakfast_club_mon": {
                     rota: {
                         always: {
@@ -311,6 +369,210 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             friday: { timings: [ {title: "Breakfast Club", time: "7:30am"}, {title: "-Drop Off"} ] },
+                        }
+                    }
+                },
+
+                "lu_violin": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            monday: {
+                                games: ["Beginners Violin (Lunch)"],
+                                timings: [ {title: "Violin", time: "1:00pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_odyssey": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs2,
+                            tuesday: {
+                                games: ["Odyssey of the Mind (Lunch)"],
+                                timings: [ {title: "Odyssey", time: "1:10pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_recorders": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            tuesday: {
+                                games: ["Recorders (Lunch)"],
+                                timings: [ {title: "Recorders", time: "1:00pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_chess": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Chess Club (Lunch)"],
+                                timings: [ {title: "Chess Club", time: "1:00pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_wind": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Wind Ensemble (Lunch)"],
+                                timings: [ {title: "Wind Ensemble", time: "1:00pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "lu_singers": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Year 3 Singers (Lunch)"],
+                                timings: [ {title: "Y3 Singers", time: "1:00pm"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_hockey": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ["Hockey (AS)"],
+                                kit: hockeyKit,
+                                timings: [ {title: "Hockey", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_art": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            monday: {
+                                games: ["Art & Craft (AS)"],
+                                timings: [ {title: "Art & Craft", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_lego": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            tuesday: {
+                                games: ["Lego Club (AS)"],
+                                timings: [ {title: "Lego Club", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_chill": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            tuesday: {
+                                games: ["Chill Chat Colour (AS)"],
+                                timings: [ {title: "Chill Chat Colour", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_cards": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            wednesday: {
+                                games: ["Card Making Club (AS)"],
+                                timings: [ {title: "Card Making Club", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_zentangle": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs2,
+                            wednesday: {
+                                games: ["Zentangle Club (AS)"],
+                                timings: [ {title: "Zentangle Club", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_yahtzee": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Yahtzee Club (AS)"],
+                                timings: [ {title: "Yahtzee Club", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_xcountry": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_xcountry,
+                            thursday: {
+                                games: ["Cross Country (AS)"],
+                                timings: [ {title: "Cross Country", time: "4:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_film": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Film Club (AS)"],
+                                timings: [ {title: "Film Club", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_ttrock": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            friday: {
+                                games: ["TT Rockstars (AS)"],
+                                timings: [ {title: "TT Rockstars", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_orchestra": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            friday: {
+                                games: ["Orchestra (AS)"],
+                                timings: [ {title: "Orchestra", time: "5:00pm"}, {title: "-Pick Up"} ]
+                            },
                         }
                     }
                 },
