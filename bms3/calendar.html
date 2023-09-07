@@ -32,16 +32,23 @@ css: calendar.css?cb=7
         },
 
         games: {
-            uniform: "Sports kit & hooped socks",
+            uniform: "Games kit & hooped socks",
             games: ["Games"],
-            kit: commonKit.concat("School Uniform & shoes"),
+            kit: commonKit,
             timings: timings
         },
 
         pe: {
-            uniform: "Sports kit & white socks",
+            uniform: "PE kit & white socks",
             games: ["PE"],
             kit: commonKit.concat("School Uniform & shoes"),
+            timings: timings
+        },
+
+        keySkills: {
+            uniform: "Games kit & hooped socks",
+            games: ["Key Skills"],
+            kit: commonKit,
             timings: timings
         },
 
@@ -146,7 +153,7 @@ css: calendar.css?cb=7
             rota: {
                 always: {
                     monday: commonDayData.regular,
-                    tuesday: commonDayData.regular,
+                    tuesday: commonDayData.keySkills,
                     wednesday: commonDayData.swimmingAndLibrary,
                     thursday: commonDayData.pe,
                     friday: commonDayData.games
