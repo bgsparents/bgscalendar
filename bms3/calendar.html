@@ -12,7 +12,7 @@ css: calendar.css?cb=7
         "Water bottle",
         "Breaktime snack"];
     const astrosKit = ["Astroturf boots in a bag"];
-    const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
+    const swimmingKit = ["Black costume, towel, goggles and swim hat"];
     const damsonKit = "Damson top, damson socks, black skort, trainers";
     const gamesKit = "Sports kit, striped socks & trainers";
     const peKit = "Sports kit, white socks & trainers";
@@ -32,8 +32,15 @@ css: calendar.css?cb=7
         },
 
         games: {
-            uniform: "Sports kit",
+            uniform: "Sports kit & hooped socks",
             games: ["Games"],
+            kit: commonKit.concat("School Uniform & shoes"),
+            timings: timings
+        },
+
+        pe: {
+            uniform: "Sports kit & white socks",
+            games: ["PE"],
             kit: commonKit.concat("School Uniform & shoes"),
             timings: timings
         },
@@ -44,9 +51,15 @@ css: calendar.css?cb=7
         },
 
         swimming: {
-            // uniform: whiteKit,
+            uniform: "School uniform",
             games: "Swimming",
             kit: swimmingKit
+        },
+
+        swimmingAndLibrary: {
+            uniform: "School uniform",
+            games: ["Swimming", "Library"],
+            kit: commonKit.concat(swimmingKit).concat(['*Return library books'])
         },
 
         netball: {
@@ -133,10 +146,10 @@ css: calendar.css?cb=7
             rota: {
                 always: {
                     monday: commonDayData.regular,
-                    tuesday: commonDayData.games,
-                    wednesday: commonDayData.regular,
-                    thursday: commonDayData.games,
-                    friday: commonDayData.regular
+                    tuesday: commonDayData.regular,
+                    wednesday: commonDayData.swimmingAndLibrary,
+                    thursday: commonDayData.pe,
+                    friday: commonDayData.games
                 }
             },
             extras: {
