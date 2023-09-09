@@ -176,7 +176,8 @@ css: calendar.css?cb=7
         classes: {
             "6C": {
                 rota: {
-                    always: {
+                    weekA: {
+                        matcher: matchers.weekA,
                         thursday: {
                             kit: ["Library books"],
                             games: ["Library"]
@@ -184,6 +185,13 @@ css: calendar.css?cb=7
                         friday: {
                             kit: [danceKit],
                             games: ["Dance"]
+                        },
+                    },
+                    weekB: {
+                        matcher: matchers.weekB,
+                        thursday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
                         },
                     }
                 },
@@ -195,7 +203,19 @@ css: calendar.css?cb=7
             },
             "6B": {
                 rota: {
-                    always: {
+                    weekA: {
+                        matcher: matchers.weekA,
+                        friday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
+                    },
+                    weekB: {
+                        matcher: matchers.weekB,
+                        friday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
                     }
                 },
                 extras: {
@@ -206,7 +226,23 @@ css: calendar.css?cb=7
             },
             "6H": {
                 rota: {
-                    always: {
+                    weekA: {
+                        matcher: matchers.weekA,
+                        thursday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
+                    },
+                    weekB: {
+                        matcher: matchers.weekB,
+                        monday: {
+                            kit: [danceKit],
+                            games: ["Dance"]
+                        },
+                        thursday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
                     }
                 },
                 extras: {
@@ -217,7 +253,27 @@ css: calendar.css?cb=7
             },
             "6I": {
                 rota: {
-                    always: {
+                    weekA: {
+                        matcher: matchers.weekA,
+                        monday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
+                        friday: {
+                            kit: [danceKit],
+                            games: ["Dance"]
+                        },
+                    },
+                    weekB: {
+                        matcher: matchers.weekB,
+                        monday: {
+                            kit: ["Library books"],
+                            games: ["Library"]
+                        },
+                        friday: {
+                            kit: [danceKit],
+                            games: ["Dance"]
+                        },
                     }
                 },
                 extras: {
