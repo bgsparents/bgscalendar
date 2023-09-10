@@ -175,11 +175,20 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Classroom Tea", time: "3:30pm"}]
                 },
+                '2023-09-21': {
+                    games: ["House Team Building"],
+                },
+                '2023-09-28': {
+                    games: ["Woburn Safari"],
+                },
                 '2023-11-15': {
                     games: ["Parents' Evening"]
                 },
                 '2023-11-21': {
                     games: ["Parents' Evening (Remote)"]
+                },
+                '2024-02-06': {
+                    games: ["Rocks and Soils Day"]
                 },
                 '2024-05-01': {
                     games: ["Parents' Evening"]
@@ -465,7 +474,8 @@ css: calendar.css?cb=7
 
                 "as_hockey": {
                     rota: {
-                        always: {
+                        week1: {
+                            matcher: matchers.week1,
                             monday: {
                                 games: ["Hockey (AS)"],
                                 kit: hockeyKit.concat(gamesKit),
