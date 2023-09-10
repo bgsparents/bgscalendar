@@ -15,7 +15,7 @@ css: calendar.css?cb=7
     const swimmingKit = ["Black costume, towel, flip-flops, goggles and swim hat"];
     const damsonKit = "Damson top, damson socks, black skort, trainers";
     const gamesKit = "Damson top, white socks, black skort, trainers";
-    const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
+    const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit);
     const whiteKit = "White top, white socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -174,21 +174,35 @@ css: calendar.css?cb=7
                 rota: {
                     weekA: {
                         matcher: matchers.weekA,
+                        monday: {
+                            kit: [danceKit, "Return library books"],
+                            games: ["Library", "Dance"]
+                        },
+                        tuesday: {
+                            uniform: damsonKit,
+                            games: ["Hockey"],
+                            kit: hockeyKit
+                        },
                         thursday: {
-                            kit: ["Library books"],
-                            games: ["Library"]
-                        },
-                        friday: {
-                            kit: [danceKit],
-                            games: ["Dance"]
-                        },
+                            games: ['Swimming'],
+                            kit: swimmingKit
+                        }
                     },
                     weekB: {
                         matcher: matchers.weekB,
-                        thursday: {
-                            kit: ["Library books"],
-                            games: ["Library"]
+                        monday: {
+                            kit: [whiteKit, danceKit, "Return library books"],
+                            games: ["Dance", "Library", "Netball"]
                         },
+                        tuesday: {
+                            uniform: damsonKit,
+                            games: ["Hockey"],
+                            kit: hockeyKit
+                        },
+                        thursday: {
+                            games: ['Swimming'],
+                            kit: swimmingKit
+                        }
                     }
                 },
                 extras: {
@@ -197,21 +211,35 @@ css: calendar.css?cb=7
                 },
                 deadlines: {}
             },
-            "3B": {
+            "3T": {
                 rota: {
                     weekA: {
                         matcher: matchers.weekA,
-                        friday: {
-                            kit: ["Library books"],
-                            games: ["Library"]
+                        tuesday: {
+                            uniform: damsonKit,
+                            games: ["Hockey"],
+                            kit: hockeyKit
                         },
+                        thursday: {
+                            games: ['Swimming'],
+                            kit: swimmingKit
+                        }
                     },
                     weekB: {
                         matcher: matchers.weekB,
-                        friday: {
-                            kit: ["Library books"],
-                            games: ["Library"]
+                        monday: {
+                            games: ["Netball"],
+                            kit: [whiteKit],
                         },
+                        tuesday: {
+                            uniform: damsonKit,
+                            games: ["Hockey"],
+                            kit: hockeyKit
+                        },
+                        thursday: {
+                            games: ['Swimming'],
+                            kit: swimmingKit
+                        }
                     }
                 },
                 extras: {
