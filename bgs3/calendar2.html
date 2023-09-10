@@ -1,0 +1,412 @@
+---
+layout: calendar
+title: Y3 Calendar
+homeLink: /bgs3/calendar
+manifest: manifest-bgsy3
+css: calendar.css?cb=5
+---
+
+<script>
+
+    var commonKit = [
+        // "A full pencil case",
+        "A filled water bottle",
+        "Two healthy snacks",
+        "An optional face covering in a named plastic bag",
+        "Hand Gel",
+        "Packet of tissues"
+    ];
+
+    var astrosKit = [
+        "*Astroturf boots in a bag"
+    ];
+
+    var danceKit = [
+        '*Black t-shirt, leggings and dance socks/shoes'
+    ];
+
+    var tennis = {
+        //kit: ['Tennis racket for those in Tennis Academy'],
+        timings: [{title: "Tennis Academy", time: "7:25am"}]
+    };
+
+    var timings = [
+        {title: "Drop Off:", time: "8:00am"},
+        {title: "Pick Up:", time: "4:00pm"}
+    ];
+
+    var commonDayData = {
+        regular: {
+            uniform: "School uniform with blazer",
+            kit: commonKit,
+            timings: timings
+        },
+        regularAndUkulele: {
+            uniform: "School uniform with blazer",
+            kit: ['+Ukulele'].concat(commonKit),
+            timings: timings
+        },
+        wednesday: {
+            uniform: "School uniform with blazer",
+            kit: ['*Return library books'].concat(danceKit).concat(commonKit),
+            timings: timings
+        },
+        netball: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Netball",
+            kit: astrosKit.concat(commonKit),
+            timings: timings
+        },
+        hockey: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Hockey",
+            kit: [
+                "*Hockey stick",
+                "*Shin pads",
+                "*Gum shield"
+            ].concat(astrosKit).concat(commonKit),
+            timings: timings
+        },
+        cricket: {
+            uniform: "Damson sports top and Damson games socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Cricket",
+            kit: ['*Hat', '*Sun Cream'].concat(commonKit),
+            timings: timings
+        },
+        tennis: {
+            uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Tennis",
+            kit: ['*Tennis Racket', '*Hat', '*Sun Cream'].concat(commonKit),
+            timings: timings
+        },
+        swimming: {
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Swimming",
+            kit: [
+                "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit),
+            timings: timings
+        },
+        swimmingAndUkulele: {
+            uniform: "Damson or white sports top, Damson or white socks, tracksuit bottoms/mid-layer/skort and trainers",
+            games: "Swimming",
+            kit: [
+                "+Ukulele", "*Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+            ].concat(commonKit),
+            timings: timings
+        }
+    };
+
+    var data = {
+        yeargroup: {
+            rota: {
+                always: {
+                    start: moment('2021-03-01'),
+                    frequency: 1,
+                    friday: {
+                        timings: [
+                            {title: "Cricket Practice Pickup:", time: "5:30pm"}
+                        ]
+                    }
+                }
+            //     weekA: {
+            //         start: moment('2020-08-31'),
+            //         frequency: 3,
+            //         monday: {
+            //             menu: {
+            //                 mains: ["Spiced Chicken Fajitas", "Macaroni Cheese", "Mixed Salad"],
+            //                 sides: ["Potato Wedges", "Corn on the Cob", "Sauteed Leeks"],
+            //                 desserts: ["Cherry and Apple Oaty Crumble", "Cupcakes"]
+            //             }
+            //         },
+            //         tuesday: {
+            //             menu: {
+            //                 mains: ["Spaghetti Bolognese", "Spiced Quinoa and Courgette Filled Peppers", "Mixed Salad"],
+            //                 sides: ["Spaghetti", "Cauliflower Florets", "Garlic Glazed Green Beans"],
+            //                 desserts: ["Fruit Salad", "Fruit Cookies", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         wednesday: {
+            //             menu: {
+            //                 mains: ["Roast Chicken Thighs", "Quorn Sausage Toad in the Hole", "Mixed Salad"],
+            //                 sides: ["Roast Potatoes", "Glazed Carrots and Broccoli"],
+            //                 desserts: ["Lemon Sponge", "Raspberry Jelly and Millionaire Shortbread"]
+            //             }
+            //         },
+            //         thursday: {
+            //             menu: {
+            //                 mains: ["Sausage Meat Plait", "Mushroom and Broccoli Gnocchi", "Mixed Salad"],
+            //                 sides: ["Parsley New Potatoes", "Sauteed Peppers and Mushrooms", "Sweetcorn"],
+            //                 desserts: ["Vanilla Rice Pudding", "Strawberry Mousse", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         friday: {
+            //             menu: {
+            //                 mains: ["Battered Fish", "Chickpea Falafel in Pitta Bread", "Mixed Salad"],
+            //                 sides: ["Skinny Fries", "Garden Peas", "Baked Beans"],
+            //                 desserts: ["Marbled Sponge in Chocolate Sauce", "Lemon Eton Mess", "Selection of Cakes"]
+            //             },
+            //             timings:
+            //                 [
+            //                     { title: "Cricket Practice Pick Up:", time: "5:30pm" }
+            //                 ]
+            //
+            //         }
+            //     },
+            //     weekB: {
+            //         start: moment('2020-09-07'),
+            //         frequency: 3,
+            //         monday: {
+            //             menu: {
+            //                 mains: ["Braised Beef and Beef Chilli", "Thai Sweet Potato and Chickpea Curry", "Mixed Salad"],
+            //                 sides: ["Steamed Rice", "Peppers and Sweetcorn", "Sauteed Courgette"],
+            //                 desserts: ["Jam Tart", "Butterscotch Whip", "Banana and Chocolate Chip Cake"]
+            //             }
+            //         },
+            //         tuesday: {
+            //             menu: {
+            //                 mains: ["Chicken and Vegetable Pie", "Courgette and Pea Risotto", "Mixed Salad"],
+            //                 sides: ["Herby Baked Potatoes", "Braised Red Cabbage", "Fine Green Beans"],
+            //                 desserts: ["Fruit Salad", "Strawberry Jelly", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         wednesday: {
+            //             menu: {
+            //                 mains: ["Baked Bacon Chop", "Mushroom, Lentil and Sage Wellington", "Mixed Salad"],
+            //                 sides: ["Roasted New Potatoes", "Glazed Carrots", "Medley of Green Vegetables"],
+            //                 desserts: ["Steamed Syrup Sponge", "Raspberry Mousse", "White Chocolate Oaty Cookies"]
+            //             }
+            //         },
+            //         thursday: {
+            //             menu: {
+            //                 mains: ["Traditional Baked Lasagna", "Spanish-Style Vegetable Paella", "Mixed Salad"],
+            //                 sides: ["Cajun Spiced Tomato Wedges", "Broccoli Florets", "Roasted Pepper and Red Onions"],
+            //                 desserts: ["Warm Chocolate Brownie", "Lemon Jelly", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         friday: {
+            //             menu: {
+            //                 mains: ["Jumbo Fish Fingers", "Cheddar Panini", "Mixed Salad"],
+            //                 sides: ["Chunky Chips", "Garden Peas", "Baked Beans"],
+            //                 desserts: ["Baked Vanilla Cheesecake", "Winter Berry Fool", "Selection of Cakes"]
+            //             },
+            //             timings:
+            //                 [
+            //                 { title: "Cricket Practice Pick Up:", time: "5:30pm" }
+            //                 ]
+            //
+            //         }
+            //     },
+            //     weekC: {
+            //         start: moment('2020-09-14'),
+            //         frequency: 3,
+            //         monday: {
+            //             menu: {
+            //                 mains: ["Sticky Beef Stir Fry", "Mushroom and Thyme Risotto", "Mixed Salad"],
+            //                 sides: ["Egg Noodles", "Oriental Vegetables", "Sweetcorn"],
+            //                 desserts: ["Apple and Cinnamon Crumble", "Chocolate Oaty Cookies", "Butterscotch Mousse"]
+            //             }
+            //         },
+            //         tuesday: {
+            //             menu: {
+            //                 mains: ["Cumberland and Sausage Mash", "Quorn Shepherd's Pie", "Mixed Salad"],
+            //                 sides: ["Creamy Mashed Potatoes", "Shredded Kale", "Vegetable Medley"],
+            //                 desserts: ["Fruit Salad", "Lemon Jelly", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         wednesday: {
+            //             menu: {
+            //                 mains: ["Roast Beef", "Mediterranean Vegetable Tart", "Mixed Salad"],
+            //                 sides: ["Roasted Potatoes", "Glazed Carrots and Parsnips", "Green Beans"],
+            //                 desserts: ["Chocolate Fudge Cake", "Banoffee Pie", "Vanilla Traybake"]
+            //             }
+            //         },
+            //         thursday: {
+            //             menu: {
+            //                 mains: ["Chicken Shawarma", "Vegetarian Lasagna", "Mixed Salad"],
+            //                 sides: ["Herbed Sauteed Potatoes", "Roasted Aubergines and Courgette"],
+            //                 desserts: ["Strawberry Jelly Mousse Delight", "Blackcurrant Jelly", "Fruit-Topped Yoghurt"]
+            //             }
+            //         },
+            //         friday: {
+            //             menu: {
+            //                 mains: ["Battered Fish", "Cheese and Tomato Panini", "Mixed Salad"],
+            //                 sides: ["Skinny Fries", "Garden Peas", "Baked Beans"],
+            //                 desserts: ["S'Mores Pizza", "Strawberry Trifle", "Selection of Cakes"]
+            //             },
+            //             timings:
+            //                 [
+            //                     { title: "Rounders Practice Pick Up:", time: "5:30pm" }
+            //                 ]
+            //
+            //         }
+            //     }
+            },
+            extras: {
+                '2021-05-22': {
+                    uniform: "White sports top, white socks, tracksuit bottoms/mid-layer/skort and trainers",
+                    games: ['Saturday Morning Tennis'],
+                    kit: ['Tennis Racket', 'Water Bottle'],
+                    timings: [
+                        {title: "Drop Off:", time: "8:50am"},
+                        {title: "Pick Up:", time: "10:15am"}],
+                    menu: {}
+                },
+                '2021-06-19': {
+                    uniform: "School PE kit or tennis whites",
+                    games: ['Tennis Practice'],
+                    kit: ['Tennis Racket', 'Water Bottle(s)'],
+                    timings: [
+                        {title: "Drop Off (Astros on Cardington Road):", time: "8:50am"},
+                        {title: "Pick Up:", time: "10:00am"}],
+                    menu: {}
+                },
+                '2021-06-26': {
+                    uniform: "School PE kit or tennis whites",
+                    games: ['Tennis Championships'],
+                    kit: ['Tennis Racket', 'Water Bottle(s)', 'Snacks/packed lunch', 'Cap / sun cream OR waterproofs'],
+                    timings: [
+                        {title: "Drop Off (Astros on Cardington Road):", time: "8:30am"},
+                        {title: "Pick Up:", time: "11:30am"}],
+                    menu: {}
+                },
+                '2021-06-25': {
+                    games: ['Sport Matches with Bedford Prep School'],
+                    kit: ['Sun Hat', 'Sun Cream']
+                }
+            },
+            overrides: {
+                '2020-12-11': {
+                    uniform: "School uniform with blazer",
+                    games: ['End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off:", time: "9:00am"},
+                        {title: "Pick Up:", time: "12:00pm"}],
+                    menu: {}
+                },
+                '2021-05-25': {
+                    uniform: "Games Kit",
+                    games: ['Experiential Learning Day']
+                },
+                '2021-06-25': {
+                    uniform: "School Games Kit",
+                }
+            },
+            deadlines: {
+                '2020-09-10': ['Tennis Academy Registration']
+            }
+        },
+
+        classes: {
+            "3M": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-06-07'),
+                        frequency: 2,
+                        monday: commonDayData.cricket,
+                        tuesday: commonDayData.tennis,
+                        wednesday: commonDayData.wednesday,
+                        thursday: commonDayData.regularAndUkulele,
+                        friday: commonDayData.swimming
+                    },
+
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-06-14'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.tennis,
+                        wednesday: commonDayData.wednesday,
+                        thursday: commonDayData.regularAndUkulele,
+                        friday: commonDayData.swimming
+                    }
+                },
+                extras: {
+                    "2021-04-27": tennis,
+                    "2021-05-04": tennis,
+                    "2021-05-11": tennis,
+                    "2021-05-18": tennis,
+                    "2021-05-25": tennis,
+                    "2021-06-08": tennis,
+                    "2021-06-15": tennis,
+                    "2021-06-22": tennis,
+                    "2021-06-29": tennis
+                },
+                overrides: {
+                    '2020-12-05': {
+                        uniform: ["BGS Tracksuit"],
+                        games: "Swimming",
+                        kit: [
+                            "Black costume, towel, flipflops, goggles and swim hat – all to be kept in a drawstring bag of choice."
+                        ],
+                        timings: [
+                            {title: "Drop Off:", time: "10:15am"},
+                            {title: "Pick Up:", time: "11:45am"}
+                        ]
+                    }
+                },
+                deadlines: {}
+            },
+
+            "3C": {
+                rota: {
+                    weekA: {
+                        title: "Week A",
+                        start: moment('2021-06-07'),
+                        frequency: 2,
+                        monday: commonDayData.cricket,
+                        tuesday: commonDayData.swimmingAndUkulele,
+                        wednesday: commonDayData.wednesday,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.tennis
+                    },
+                    weekB: {
+                        title: "Week B",
+                        start: moment('2021-06-14'),
+                        frequency: 2,
+                        monday: commonDayData.regular,
+                        tuesday: commonDayData.swimmingAndUkulele,
+                        wednesday: commonDayData.wednesday,
+                        thursday: commonDayData.regular,
+                        friday: commonDayData.tennis
+                    }
+                },
+                extras: {
+                    "2021-04-27": tennis,
+                    "2021-05-04": tennis,
+                    "2021-05-11": tennis,
+                    "2021-05-18": tennis,
+                    "2021-05-25": tennis,
+                    "2021-06-08": tennis,
+                    "2021-06-15": tennis,
+                    "2021-06-22": tennis,
+                    "2021-06-29": tennis
+                },
+                overrides: {
+                    '2020-04-24': {
+                        uniform: ["PE Kit"],
+                        games: "Swimming",
+                        timings: [
+                            {title: "Drop Off:", time: "9:00m"},
+                            {title: "Pick Up:", time: "10:00am"}
+                        ]
+                    }
+                },
+                deadlines: {}
+            }
+        },
+
+        termTimes: [
+            {start: moment('2020-09-03'), end: moment('2020-10-16')},
+            {start: moment('2020-11-02'), end: moment('2020-12-11')},
+            {start: moment('2021-01-05'), end: moment('2021-02-12')},
+            {start: moment('2021-02-22'), end: moment('2021-03-26')},
+            {start: moment('2021-04-20'), end: moment('2021-05-28')},
+            {start: moment('2021-06-07'), end: moment('2021-07-09')}
+        ]
+    };
+
+    new Calendar(data);
+</script>
