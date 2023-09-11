@@ -324,6 +324,7 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "as_hockey", value: "Hockey (Mon)" },
+                        { key: "as_rugby", value: "Rugby (Mon)" },
                         { key: "as_art", value: "Art & Craft (Mon)" },
                         { key: "as_lego", value: "Lego Club (Tue)" },
                         { key: "as_chill", value: "Chill Chat Colour (Tue)" },
@@ -489,6 +490,18 @@ css: calendar.css?cb=7
                                 games: ["Hockey (AS)"],
                                 kit: hockeyKit.concat(gamesKit),
                                 timings: [{title: "Hockey", time: "5:00pm"}, {title: "-Pick Up"}]
+                            },
+                        }
+                    }
+                },
+
+                "as_rugby": {
+                    rota: {
+                        always: {
+                            monday: {
+                                games: ["Rugby (AS)"],
+                                kit: rugbyKit.concat(gamesKit),
+                                timings: [{title: "Rugby", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
                     }
