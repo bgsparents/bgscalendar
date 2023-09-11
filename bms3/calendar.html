@@ -33,22 +33,22 @@ css: calendar.css?cb=7
         },
 
         games: {
-            uniform: "Games kit & hooped socks",
+            uniform: "Games kit, hooped socks & blazer",
             //games: ["Games/Hockey"],
             kit: commonKit,
             timings: timings
         },
 
         pe: {
-            uniform: "PE kit & white socks",
+            uniform: "PE kit, white socks & blazer",
             games: ["PE"],
             kit: commonKit.concat("School Uniform & shoes"),
             timings: timings
         },
 
         keySkills: {
-            uniform: "Games kit & hooped socks",
-            games: ["Key Skills"],
+            uniform: "Games kit, hooped socks & blazer",
+            //games: ["Key Skills"],
             kit: commonKit,
             timings: timings
         },
@@ -664,6 +664,10 @@ css: calendar.css?cb=7
                 "hockey": {
                     rota: {
                         always: {
+                            tuesday: {
+                                games: "Key Skills/Hockey",
+                                kit: hockeyKit
+                            },
                             friday: {
                                 games: "Games/Hockey",
                                 kit: hockeyKit
@@ -675,6 +679,10 @@ css: calendar.css?cb=7
                 "rugby": {
                     rota: {
                         always: {
+                            tuesday: {
+                                games: "Key Skills/Rugby",
+                                kit: rugbyKit
+                            },
                             friday: {
                                 games: "Games/Rugby",
                                 kit: rugbyKit
