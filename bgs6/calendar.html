@@ -106,6 +106,10 @@ css: calendar.css?cb=7
             const startsAgain = moment('2023-09-11');
             return startsAgain.isSameOrBefore(currentDate);
         },
+        as_netball: function(currentDate) {
+            const startsAgain = moment('2023-09-18');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
         tennis: function(currentDate) {
             const start1 = moment('2023-09-18');
             const end1 = moment('2023-10-20');
@@ -468,7 +472,7 @@ css: calendar.css?cb=7
                 "as_netball": {
                     rota: {
                         always: {
-                            matcher: matchers.as_sport,
+                            matcher: matchers.as_netball,
                             friday: {
                                 games: "Netball (AS)",
                                 kit: [whiteKit],
