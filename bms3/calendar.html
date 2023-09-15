@@ -14,8 +14,8 @@ css: calendar.css?cb=7
     const astrosKit = ["Astroturf boots in a bag"];
     const swimmingKit = ["Black costume, towel, goggles and swim hat"];
     const damsonKit = "Damson top, damson socks, black skort, trainers";
-    const gamesKit = "Sports kit, striped socks & trainers";
-    const peKit = "Sports kit, white socks & trainers";
+    const gamesKit = ["Games kit, striped socks & trainers"];
+    const peKit = ["PE kit, white socks & trainers"];
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit);
     const rugbyKit = ["Rugby boots & gum shield"];
     const whiteKit = "White top, white socks, white skort, trainers";
@@ -32,22 +32,28 @@ css: calendar.css?cb=7
             timings: timings
         },
 
+        monday: {
+            uniform: "School uniform",
+            kit: ["Sports bag with PE & Games kit & trainers"].concat(commonKit),
+            timings: timings
+        },
+
         games: {
-            uniform: "Games kit, hooped socks & blazer",
+            uniform: "School uniform",
             //games: ["Games/Hockey"],
             kit: commonKit,
             timings: timings
         },
 
         pe: {
-            uniform: "PE kit, white socks & blazer",
+            uniform: "School uniform",
             games: ["PE"],
-            kit: commonKit.concat("School Uniform & shoes"),
+            kit: commonKit,
             timings: timings
         },
 
         keySkills: {
-            uniform: "Games kit, hooped socks & blazer",
+            uniform: "School uniform",
             //games: ["Key Skills"],
             kit: commonKit,
             timings: timings
@@ -121,6 +127,10 @@ css: calendar.css?cb=7
             const startsAgain = moment('2023-09-11');
             return startsAgain.isSameOrBefore(currentDate);
         },
+        as_hockey: function(currentDate) {
+            const startsAgain = moment('2023-09-25');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
         as_clubs: function(currentDate) {
             const startsAgain = moment('2023-09-18');
             return startsAgain.isSameOrBefore(currentDate);
@@ -152,11 +162,11 @@ css: calendar.css?cb=7
         yeargroup: {
             rota: {
                 always: {
-                    monday: commonDayData.regular,
-                    tuesday: commonDayData.keySkills,
+                    monday: commonDayData.monday,
+                    tuesday: commonDayData.regular,
                     wednesday: commonDayData.swimmingAndLibrary,
                     thursday: commonDayData.pe,
-                    friday: commonDayData.games
+                    friday: commonDayData.regular
                 }
             },
             extras: {
@@ -176,7 +186,7 @@ css: calendar.css?cb=7
                         {title: "Classroom Tea", time: "3:30pm"}]
                 },
                 '2023-09-18': {
-                    games: ["BMSPA AGM (Rutherford)"],
+                    games: ["BMSPA AGM (Rutherford)", "No after-school hockey"],
                     timings: [
                         {title: "BMSPA AGM", time: "7:00pm"}]
                 },
@@ -185,6 +195,9 @@ css: calendar.css?cb=7
                 },
                 '2023-09-28': {
                     games: ["Woburn Safari"],
+                },
+                '2023-10-06': {
+                    games: ["JS House Music"],
                 },
                 '2023-11-15': {
                     games: ["Parents' Evening"]
@@ -216,6 +229,12 @@ css: calendar.css?cb=7
                 '2023-09-08': {
                     uniform: ["Sports kits (red and black sports top, black shorts or skort, short white sock and trainers) and blazer"],
                     kit: commonKit.concat(["Sunscreen", "BMS or black cap"])
+                },
+                '2023-10-06': {
+                    uniform: "House t-shirt and jeans/leggings (no blazer)",
+                },
+                '2023-10-19': {
+                    uniform: "Mufti",
                 },
                 '2023-11-16': {
                     uniform: "Dress like an Egyptian &#x1302F;",
@@ -315,6 +334,7 @@ css: calendar.css?cb=7
                         { key: "lu_odyssey", value: "Odyssey (Tue)" },
                         { key: "lu_recorders", value: "Recorders (Tue)" },
                         { key: "lu_chess", value: "Chess (Thu)" },
+                        { key: "lu_guitar", value: "Guitar Club (Thu)" },
                         { key: "lu_wind", value: "Wind Ensemble (Thu)" },
                         { key: "lu_singers", value: "Year 3 Singers (Thu)" },
                     ]
@@ -471,6 +491,18 @@ css: calendar.css?cb=7
                     }
                 },
 
+                "lu_guitar": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_clubs,
+                            thursday: {
+                                games: ["Guitar Club (Lunch)"],
+                                timings: [{title: "Guitar Club", time: "1:00pm"}]
+                            },
+                        }
+                    }
+                },
+
                 "lu_singers": {
                     rota: {
                         always: {
@@ -486,9 +518,11 @@ css: calendar.css?cb=7
                 "as_hockey": {
                     rota: {
                         always: {
+                            matcher: matchers.as_hockey,
                             monday: {
                                 games: ["Hockey (AS)"],
-                                kit: hockeyKit.concat(gamesKit),
+                                kit: hockeyKit,
+                                //kit: hockeyKit.concat(gamesKit),
                                 timings: [{title: "Hockey", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
@@ -500,7 +534,8 @@ css: calendar.css?cb=7
                         always: {
                             monday: {
                                 games: ["Rugby (AS)"],
-                                kit: rugbyKit.concat(gamesKit),
+                                kit: rugbyKit,
+                                //kit: rugbyKit.concat(gamesKit),
                                 timings: [{title: "Rugby", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
@@ -689,7 +724,8 @@ css: calendar.css?cb=7
                         always: {
                             tuesday: {
                                 games: "Key Skills/Hockey",
-                                kit: hockeyKit
+                                kit: hockeyKit,
+                                // kit: gamesKit.concat(hockeyKit)
                             },
                             friday: {
                                 games: "Games/Hockey",
@@ -705,10 +741,12 @@ css: calendar.css?cb=7
                             tuesday: {
                                 games: "Key Skills/Rugby",
                                 kit: rugbyKit
+                                //kit: gamesKit.concat(rugbyKit)
                             },
                             friday: {
                                 games: "Games/Rugby",
                                 kit: rugbyKit
+                                //kit: gamesKit.concat(rugbyKit)
                             }
                         },
                     }
