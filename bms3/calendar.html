@@ -73,7 +73,8 @@ css: calendar.css?cb=7
         swimmingAndLibrary: {
             uniform: "School uniform",
             games: ["Swimming", "Library"],
-            kit: commonKit.concat(swimmingKit).concat(['*Return library books'])
+            kit: commonKit.concat(swimmingKit).concat(['*Return library books']),
+            timings: timings
         },
 
         netball: {
@@ -198,7 +199,9 @@ css: calendar.css?cb=7
                     // games: ["JS House Music"],
                 },
                 '2023-10-12': {
-                    games: ["JS Mufti Day"],
+                    games: ["JS Mufti Day", "Information Evening"],
+                    timings: [
+                        {title: "Information Evening", time: "6:00pm"}]
                 },
                 '2023-10-19': {
                     games: ["JS House Music"],
