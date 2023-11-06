@@ -39,9 +39,9 @@ css: calendar.css?cb=7
         },
 
         games: {
-            uniform: "School uniform",
+            uniform: "Sports kit",
             //games: ["Games/Hockey"],
-            kit: commonKit,
+            kit: commonKit.concat("School uniform"),
             timings: timings
         },
 
@@ -167,7 +167,7 @@ css: calendar.css?cb=7
                     tuesday: commonDayData.regular,
                     wednesday: commonDayData.swimmingAndLibrary,
                     thursday: commonDayData.pe,
-                    friday: commonDayData.regular
+                    friday: commonDayData.games
                 }
             },
             extras: {
