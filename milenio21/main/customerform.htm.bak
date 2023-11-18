@@ -1,0 +1,142 @@
+<html>
+<head>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+</head>
+
+<script LANGUAGE="JavaScript" SRC="../main/utils.js"></script>
+
+<script>
+	str_formwarning = [ "Please complete the form before you proceed",
+							  "German",
+							  "Spanish"];
+							 
+	str_fields = [ [ "Forename", "Surname", "Address", "City/Town", "Postal Code", 
+							"Country", "Telephone Number", "Fax Number", "Email"],
+						
+						[ "German", "German", "German", "German", "German", 
+							"German", "German", "German", "German"],							
+						
+						[ "Spanish", "Spanish", "Spanish", "Spanish", "Spanish", 
+							"Spanish", "Spanish", "Spanish", "Spanish"] ]; 
+
+</script>
+
+<script>     
+   
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+
+
+	function submitter(theForm) {
+		
+		if(checkFormFilled(theForm) == false) {
+			alert(str_formwarning[language]);				
+			return false;
+		}
+		
+		setCustomerDetails(theForm.forename.value, theForm.surname.value, 
+			theForm.address.value, theForm.city.value, theForm.country.value,
+			theForm.postalcode.value, theForm.phone.value, theForm.fax.value,
+			theForm.email.value);
+			
+		
+		document.location.replace("creditcardform.htm");             
+	}                     
+	
+	function checkFormFilled(theForm) {
+  		var rval = true
+  		
+  		rval &= checkValue(theForm.forename.value);
+  		rval &= checkValue(theForm.surname.value);
+  		rval &= checkValue(theForm.address.value);
+  		rval &= checkValue(theForm.city.value);
+  		rval &= checkValue(theForm.country.value);
+  		rval &= checkValue(theForm.postalcode.value);
+  		rval &= checkValue(theForm.email.value);
+  		
+  		return rval;
+  		
+	}
+	
+	function checkValue(val) {
+		var str = val.replace(/ /i, "");
+		
+		if(val.length == 0) return false;
+		
+		return true;		
+	}
+
+</script>
+
+<body id=textarea>
+
+<H1>Customer Details</H1>
+
+Please fill in your details. Fields marked with a (*) are optional.
+
+<FORM name="busqueda" >
+  <table BORDER="0" CELLPADDING="0" CELLSPACING="0" style="FONT-SIZE: 12px">
+    <tr>
+      <td><script>document.write(str_fields[language][0])</script>:</td>
+      <td><input type="text" name="forename" size="32"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][1])</script>:</td>
+      <td><input type="text" name="surname" size="32"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][2])</script>:</td>
+      <td><input type="text" name="address" size="32"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][3])</script>:</td>
+      <td><input type="text" name="city" size="32"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][4])</script>:</td>
+      <td><input type="text" name="postalcode" size="10"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][5])</script>:</td>
+      <td><input type="text" name="country" size="32"></td>
+    </tr>
+    <tr>
+      <td>*<script>document.write(str_fields[language][6])</script>:</td>
+      <td><input type="text" name="phone" size="25"></td>
+    </tr>
+    <tr>
+      <td>*<script>document.write(str_fields[language][7])</script>:</td>
+      <td><input type="text" name="fax" size="25"></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][8])</script>:</td>
+      <td><input type="text" name="email" size="20"></td>
+    </tr>
+  </table>
+  
+  <div id=detailssend><img id=next border=0 onClick="submitter(document.busqueda)"></div>   
+
+</form>
+
+<SCRIPT>
+	if(customer != null) {   
+		var theForm = document.busqueda;
+		
+		theForm.forename.value 		= customer[CUST_FORENAME];
+		theForm.surname.value 		= customer[CUST_SURNAME];
+		theForm.address.value 		= customer[CUST_ADDRESS];
+		theForm.city.value 			= customer[CUST_CITY];
+		theForm.postalcode.value 	= customer[CUST_POSTCODE];
+		theForm.country.value 		= customer[CUST_COUNTRY];
+		theForm.phone.value 			= customer[CUST_PHONE];
+		theForm.fax.value 			= customer[CUST_FAX];
+		theForm.email.value 			= customer[CUST_EMAIL];
+	}
+   
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+	
+	document.all("next").src = '../images/button_next' + gifadd[language];
+	 	
+</SCRIPT>
+
+</body>
+</html>

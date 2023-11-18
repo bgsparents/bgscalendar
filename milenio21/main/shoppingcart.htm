@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+</HEAD>
+<BODY id=textarea>
+
+<SCRIPT language=javascript src="../main/utils.js"></SCRIPT>
+
+<SCRIPT language=javascript>
+	// Translations
+	var cur_header		= "(" + currency_strings[currency] + ")";
+	
+	var headings		= [ ["Quantity","Title","Art. No.","Price" + cur_header,"Total"  + cur_header,"Action"],
+						  ["German","German","German","German" + cur_header,"German" + cur_header,"German"],
+						  ["Spanish","Spanish","Spanish","Spanish" + cur_header,"Spanish" + cur_header,"Spanish"] ];
+	
+	var str_title		= ["Shopping Cart", "German", "Cesta de Compra"]; 
+	var str_currency 	= ["Currency:", "German:", "Spanish:"];
+	var str_total		= ["Total:", "German:", "Spanish:"];
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+	
+</SCRIPT>
+
+<H1><SCRIPT>document.writeln(str_title[language])</SCRIPT></H1>
+
+<FORM>
+<P align=center>
+<TABLE border=0 cellPadding=0 cellSpacing=0 style="FONT-SIZE: 12px" width=100%>
+    <TR style="BACKGROUND-COLOR: white; COLOR: black; FONT-WEIGHT: bold">
+        <SCRIPT language=javascript>
+			// The headings to the cart
+			for(var i = 0; i < headings[language].length; ++i) {
+				document.writeln('<TD align="center">&nbsp;' + headings[language][i] + '&nbsp;</TD>');
+			}
+		</SCRIPT>
+	</TR>
+		
+	<SCRIPT>
+		// The headings to the cart
+		var basket = parent.basket;  
+		var buf = '';
+	
+		// The items in the basket   
+		for(var i = 0; i < basket.length; ++i) {
+			var basketitem = basket[i];
+			var it = basketitem[0];
+			var n  = basketitem[1];
+			var price = it[ITEM_PRICE_GBP + currency];
+			var subtotal = roundPrice(n * price, currency);
+	   
+			buf += '<TR>';
+			buf += '<TD>' + n + '</TD>';
+			buf += '<TD>&nbsp;' + it[ITEM_TITLE] + '&nbsp;</TD>';
+			buf += '<TD>&nbsp;' + it[ITEM_ARTNO] + '&nbsp;</TD>';
+			buf += '<TD align="right">' + price + '&nbsp;</TD>';
+			buf += '<TD align="right">' + subtotal + '&nbsp;</TD>';
+			buf += '<TD align="right"><A href=' + document.URL + '>';
+			buf += '<IMG border=0 SRC="../images/button_remove' + gifadd[language] + '" onClick="removeFromBasket(' + i + ')">';
+			buf += '</A></TD>';
+			buf += '</TR>';
+		}
+		
+		document.writeln(buf);
+		
+	</SCRIPT>
+</TABLE>
+</P>
+
+<TABLE border=0 cellPadding=0 cellSpacing=0 id=cartfooter width=100%>
+	<TR>
+		<TD align=left id=cartfootercell noWrap>
+			<FONT color=black face="" style="BACKGROUND-COLOR: white; FONT-WEIGHT: bold">
+				<SCRIPT>document.writeln(str_currency[language])</SCRIPT>
+			</FONT>
+			<IMG align=absMiddle height=25 src="../images/bg_main.gif" width=1>
+			<A href="shoppingcart.htm">
+			<IMG border=0 onclick=setCurrency(SPANISH) src="../images/smallflag_spanish.gif">
+			<IMG border=0 onclick=setCurrency(GERMAN)  src="../images/smallflag_german.gif">
+			<IMG border=0 onclick=setCurrency(ENGLISH) src="../images/smallflag_gb.gif">
+			<IMG border=0 onclick=setCurrency(EURO)		src="../images/smallflag_euro.gif">
+			</A>
+		</TD>
+        <TD width=100%></TD>
+			<SCRIPT>
+            if(basket.length > 0) {
+        			document.writeln('<TD align=right id=cartfootercell noWrap>');
+					document.writeln('<FONT color=black face="" style="BACKGROUND-COLOR: white; FONT-WEIGHT: bold">');
+					document.writeln(str_total[language]);
+					document.writeln('</FONT>'); 
+					document.writeln(getTotalString(currency));
+            	document.writeln('<A href="../main/customerform.htm">');
+					document.writeln('<IMG align=absMiddle border=0 src="../images/button_purchase' + gifadd[language] +'">');
+					document.writeln('</A>'); 
+				}
+			</SCRIPT>
+		</TD>
+	</TR>
+</TABLE>
+
+</FORM>
+</BODY>
+</HTML>

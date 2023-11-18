@@ -1,0 +1,206 @@
+BODY
+{
+    PADDING-RIGHT: 5px
+}
+#foldheader
+{
+    CURSOR: hand;
+    LIST-STYLE: disc
+}
+#foldinglist
+{
+    LIST-STYLE: none outside;
+    MARGIN-BOTTOM: 4px;
+    MARGIN-LEFT: 3px;
+    MARGIN-TOP: 3px;
+    PADDING-LEFT: 0px
+}
+#sslstamp
+{
+    LEFT: 250px;
+    POSITION: absolute;
+    TOP: 30px
+}
+#cccards
+{
+    LEFT: 5px;
+    POSITION: absolute;
+    TOP: 250px
+}
+#menutools
+{
+    BORDER-BOTTOM: medium none;
+    BORDER-LEFT: medium none;
+    BORDER-RIGHT: medium none;
+    BORDER-TOP: medium none;
+    LEFT: 10px;
+    POSITION: absolute;
+    TOP: 50px
+}
+#menuicons
+{
+    LEFT: 0px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#menuhome
+{
+    BORDER-BOTTOM: medium none;
+    BORDER-LEFT: medium none;
+    BORDER-RIGHT: medium none;
+    BORDER-TOP: medium none;
+    LEFT: 10px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#menumusic
+{
+    BORDER-BOTTOM: medium none;
+    BORDER-LEFT: medium none;
+    BORDER-RIGHT: medium none;
+    BORDER-TOP: medium none;
+    LEFT: 10px;
+    POSITION: absolute;
+    TOP: 25px
+}
+#submenu
+{
+    COLOR: black;
+    FONT-FAMILY: Arial, 'Arial Black';
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bolder;
+    LEFT: 1px;
+    POSITION: absolute;
+    TOP: 60px;
+    Z-INDEX: 1
+}
+#textarea
+{
+    BACKGROUND-IMAGE: url(../images/bg_main.gif);
+    COLOR: #a379f7;
+    FONT-FAMILY: Arial;
+    FONT-SIZE: 15px;
+    TEXT-DECORATION: none
+}
+#banestoarea
+{
+    COLOR: #a379f7;
+    FONT-FAMILY: Arial;
+    FONT-SIZE: 15px;
+    TEXT-DECORATION: none
+}
+#textenglish
+{
+    LEFT: 0px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#textgerman
+{
+    LEFT: 0px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#textspanish
+{
+    LEFT: 0px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#cddescription
+{
+    LEFT: 160px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#cdcover
+{
+    BORDER-BOTTOM: black solid thin;
+    BORDER-LEFT: black solid thin;
+    BORDER-RIGHT: black solid thin;
+    BORDER-TOP: black solid thin;
+    LEFT: 0px;
+    POSITION: absolute;
+    TOP: 0px;
+    WIDTH: 150px
+}
+#prices
+{
+    FONT-SIZE: 12px;
+    LEFT: 0px;
+    LIST-STYLE: none;
+    MARGIN: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-RIGHT: 0px;
+    PADDING-TOP: 0px;
+    POSITION: absolute;
+    TOP: 160px
+}
+#cdorder
+{
+    LEFT: 0px;
+    PADDING-RIGHT: 10px;
+    POSITION: absolute;
+    TEXT-ALIGN: right;
+    TOP: 235px
+}
+#carttotal
+{
+}
+#cartfooter
+{
+    FONT-SIZE: 14px;
+    LEFT: 0px;
+    POSITION: absolute;
+    TEXT-ALIGN: left;
+    TOP: 268px
+}
+#detailssend
+{
+    LEFT: 0px;
+    POSITION: absolute;
+    TEXT-ALIGN: right;
+    TOP: 260px
+}
+#9lbanner
+{
+    LEFT: 485px;
+    POSITION: absolute;
+    TOP: 0px
+}
+#9llogo
+{
+    LEFT: 500px;
+    POSITION: absolute;
+    TOP: 0px
+}
+INPUT
+{
+    BACKGROUND-COLOR: #eef8c4;
+    BORDER-BOTTOM: black solid 2px;
+    BORDER-LEFT: black solid 2px;
+    BORDER-RIGHT: black solid 2px;
+    BORDER-TOP: black solid 2px;
+    FONT-SIZE: 12px
+}
+H1
+{
+    FONT-SIZE: 18px;
+    TEXT-DECORATION: underline
+}
+#cartfootercell
+{
+    BORDER-BOTTOM: white solid 1px;
+    BORDER-LEFT: white solid 1px;
+    BORDER-RIGHT: white solid 1px;
+    BORDER-TOP: white solid 1px
+}
+#cartfootercell A:link
+{
+    TEXT-DECORATION: none
+}
+#cartfootercell A:active
+{
+    TEXT-DECORATION: none
+}

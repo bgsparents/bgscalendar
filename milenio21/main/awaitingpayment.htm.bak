@@ -1,0 +1,84 @@
+<HTML>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+
+<script LANGUAGE="JavaScript" SRC="../main/utils.js"></script>
+
+<SCRIPT LANGUAGE="JavaScript"> 
+	var enviarSiNo = 1;
+	function Enviar() {
+		if (enviarSiNo) {
+			enviarSiNo = 0;
+			document.form1.submit();
+		}
+	} 
+	
+  parent.reference = calcular_referencia();
+</SCRIPT> 
+</head>
+
+<body id=textarea text="#000000" bgcolor="#EFEFF7" link="#0000EE" vlink="#551A8B" alink="#FF0000"><br><br><!-- BODY -->
+
+
+<!-----------------formulario de pago electronico-------------------------->
+
+<FORM NAME="form1" METHOD=POST ACTION=https://www.banesto.es/cgi-bin/ciber/comercio/factura>
+<INPUT type=hidden name="comercio" value="MILENIO21">
+<INPUT type=hidden name="referencia" value="">
+<INPUT type=hidden name="coste" value="">
+<INPUT type=hidden name="fecha" value="000207">
+<INPUT type=hidden name="moneda" value="ESP">
+<INPUT type=hidden name="institucion" value="0030">
+<input TYPE=hidden SIZE=15 MAXLENGTH=29 NAME="tnom" VALUE="">									
+<input TYPE=hidden SIZE=15 MAXLENGTH=50 NAME="direlec" VALUE="">		
+Reference: <SCRIPT>document.writeln(parent.reference);</SCRIPT><BR>							
+Cost: <SCRIPT>document.writeln(getTotalString(SPANISH));</SCRIPT><BR>							
+Credit Card No:<input TYPE=TEXT SIZE=17 MAXLENGTH=17 NAME="num_tarjeta"><BR>
+Expiration date: <select name=mes>                 
+	<option value="" selected></option>                 
+	<option value="01">01</option>                 
+	<option value="02">02</option>                 
+	<option value="03">03</option>                 
+	<option value="04">04</option>                 
+	<option value="05">05</option>                 
+	<option value="06">06</option>                 
+	<option value="07">07</option>                 
+	<option value="08">08</option>                 
+	<option value="09">09</option>                 
+	<option value="10">10</option>                 
+	<option value="11">11</option>                 
+	<option value="12">12</option>         
+</select>&nbsp;&nbsp;        
+<select name=ano>                 
+	<option value="" selected></option>                 
+	<option value="2000">2000</option>                 
+	<option value="2001">2001</option>                 
+	<option value="2002">2002</option>                 
+	<option value="2003">2003</option>                 
+	<option value="2004">2004</option>                 
+	<option value="2005">2005</option>                 
+	<option value="2006">2006</option>                 
+	<option value="2007">2007</option>                 
+	<option value="2008">2008</option>                 
+	<option value="2009">2009</option>                 
+	<option value="2010">2010</option>                 
+	<option value="2011">2011</option>                 
+	<option value="2012">2012</option>                 
+	<option value="2013">2013</option>         
+</select>  <BR>
+<INPUT type=hidden name="resto" value="">
+<input TYPE=BUTTON NAME=Aceptar VALUE="PAGAR (Pay)" OnClick=Enviar()>
+<input TYPE=RESET VALUE="BORRAR">
+</form>
+
+<SCRIPT>
+	if(customer != null) {   
+		var form = document.form1; 
+	
+		form.referencia.value			= parent.reference;
+		form.coste.value					= getTotal(SPANISH);  
+	}
+	 	
+</SCRIPT>
+
+</body>
+</html>

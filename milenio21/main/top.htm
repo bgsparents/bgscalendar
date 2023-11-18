@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+
+<SCRIPT LANGUAGE=JAVASCRIPT SRC="../main/utils.js"></SCRIPT>
+
+</HEAD>
+<LINK rel="stylesheet" type="text/css" href="style.css">
+<BODY TEXT="#000000" BGCOLOR="#1d1d1d" LINK="#000000" VLINK="#000000" ALINK="#000000" BACKGROUND="../images/bg_top.gif">
+
+<SCRIPT LANGUAGE=JAVASCRIPT>
+
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+   var links   = ["menutools", "menuhome", "menumusic"];
+   var gifs    = ["menu_tools", "menu_home", "menu_music"];
+
+   for(var i = 0; i < links.length; ++i) {
+      document.writeln('<A href="' + links[i] + '.htm"  target=LEFT>');   
+      document.writeln('<IMG id=' + links[i] + ' src="../images/' + gifs[i] + gifadd[language] + '"></A>'); 
+   }
+
+   document.close();
+
+//<A href="menutools.htm" target=LEFT><IMG id=menutools src="..\images\menu_tools.gif"></A> 
+//<A href="menuhome.htm" target=LEFT> <IMG id=menuhome  src="..\images\menu_home.gif"></A> 
+//<A href="menumusic.htm"  target=LEFT><IMG id=menumusic src="..\images\menu_music.gif"></A> 
+
+</SCRIPT>
+
+<!--SCRIPT LANGUAGE=javascript SRC="http://www.kbnet.co.uk/rome97/9lives/9lbanner.js"></SCRIPT-->
+</BODY>
+</HTML>

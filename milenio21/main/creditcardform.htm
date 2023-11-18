@@ -1,0 +1,152 @@
+<html>
+<head>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+</head>
+
+<script LANGUAGE="JavaScript" SRC="../main/utils.js"></script>
+
+<!-- Translations for page --------------------------------------------------->
+<script>
+	str_headings = [ "Credit Card Details", "Kreditkarten Information", "Informacion Tarjeta de Credito" ];
+	
+	str_formwarning = [ "Please complete the form before you proceed",
+							  "Bitte formular ausfüllen bevor Du weiter gehst",
+							  "Por favor rellena el formulario antes de continuar"];
+							 
+	str_fields = [ [ "Credit Card Number", "Expiration Date", "Reference", "Purchase Cost"],
+						
+						[ "Kreditkarten Nr.", "Ablaufdatum", "Reference", "Betrag" ],							
+						
+						[ "Numero de Tarjeta", "Fecha de Caduc.", "Referencia", "Importe" ]]; 
+
+</script>
+
+
+<!-- Init page and submissions ----------------------------------------------->
+<script>     
+   
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+
+
+	function submitter(theForm) {
+		
+		if(checkFormFilled(theForm) == false) {
+			alert(str_formwarning[language]);				
+			return false;
+		}
+		
+		theForm.submit();             
+	}                     
+	
+	function checkFormFilled(theForm) {
+  		var rval = true    
+  		
+  		rval &= checkValue(theForm.Tarjeta.value, -1, -1);
+  		rval &= checkValue(theForm.Caducidad_Month.value, 1, 12);
+  		rval &= checkValue(theForm.Caducidad_Year.value, 2000, -1);
+  		
+  		return rval;
+  		
+	}                                            
+	
+	function checkValue(val, min, max) {
+		if(val.length < 1) return false;
+		
+		for(var i = 0; i < val.length; ++i ) { 
+			if(val.charAt(i) < '0' || val.charAt(i) > '9') return false;
+		}
+		
+		var intVal = parseInt(val);
+		if(min > -1 && val < min) return false;
+		if(max > -1 && val > max) return false;
+		return true;
+	}
+  
+  parent.reference = calcular_referencia();
+
+</script>
+
+<body id=textarea>
+
+<H1><script>document.writeln(str_headings[language]);</script></H1>
+
+<form method="POST" action="https://www.milenio21.com:200/scripts/FormMail.pl" name="po" id="po">
+	<input type="hidden" name="recipient" value="order-entry@milenio21.com">
+	<input type="hidden" name="redirect" value="https://www.milenio21.com:200/main/orderconfirm.htm">
+	<input type="hidden" name="referencia" value>
+	<input type="hidden" name="coste" value>
+   <input type="hidden" name="Nombre" value>
+   <input type="hidden" name="Apellidos" value>
+   <input type="hidden" name="Direccion" value>
+	<input type="hidden" name="Codigo_Postal" value>
+   <input type="hidden" name="Ciudad" value>
+   <input type="hidden" name="Pais" value>
+   <input type="hidden" name="Numero_de_telefono" value>
+   <input type="hidden" name="Numero_de_fax" value>
+   <input type="hidden" name="Direccion_Email" value>
+   
+	<script> 
+		for(var i = 0; i < basket.length; ++i) {
+			var str = basket[i][1] + ', ';
+			str += basket[i][0][ITEM_TITLE] + ', ';
+			str += basket[i][0][ITEM_ARTNO] + ', ';
+			str += basket[i][0][ITEM_PRICE_PTAS];
+		
+			document.writeln('<input type="hidden" name="order' + i + '" value="' + str + '">');
+		}
+	</script>
+  
+  <!--Credit Card Details -->
+  <table BORDER="0" CELLPADDING="0" CELLSPACING="0" style="FONT-SIZE: 12px">
+    <tr>
+      <td><script>document.write(str_fields[language][0])</script>:&nbsp</td>
+      <td><input type="text" name="Tarjeta" SIZE=20 MAXLENGTH=17></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][1])</script>:&nbsp</td>
+      <td><input type="text" name="Caducidad_Month" SIZE=3 MAXLENGTH=2>&nbsp&nbsp
+      	 <input type="text" name="Caducidad_Year" SIZE=5 MAXLENGTH=4></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][2])</script>:&nbsp</td>
+      <td><SCRIPT>document.writeln(parent.reference);</SCRIPT></td>
+    </tr>
+    <tr>
+      <td><script>document.write(str_fields[language][3])</script>:&nbsp</td>
+      <td><SCRIPT>document.writeln(getTotalString(SPANISH));</SCRIPT></td>
+    </tr>
+  </table>
+  
+  <div id=detailssend><img id=next border=0 onClick="submitter(document.po)" style="cursor:hand"></div>   
+
+</form>        
+
+<img id=sslstamp src="../images/ssl_stamp.gif">
+<P><img id=cccards src="../images/credit_cards.gif"></p>
+
+<!-- Fill in details of form ------------------------------------------------>
+<SCRIPT>
+	if(customer != null) {   
+		var theForm = document.po; 
+		
+		theForm.Nombre.value 				= customer[CUST_FORENAME];
+		theForm.Apellidos.value 			= customer[CUST_SURNAME];
+		theForm.Direccion.value 			= customer[CUST_ADDRESS];
+		theForm.Ciudad.value 				= customer[CUST_CITY];
+		theForm.Codigo_Postal.value 		= customer[CUST_POSTCODE];
+		theForm.Pais.value 					= customer[CUST_COUNTRY];
+		theForm.Numero_de_telefono.value = customer[CUST_PHONE];
+		theForm.Numero_de_fax.value 		= customer[CUST_FAX];
+		theForm.Direccion_Email.value 	= customer[CUST_EMAIL];
+		theForm.referencia.value			= parent.reference;
+		theForm.coste.value					= getTotalString(SPANISH);  
+	} 
+	
+   var gifadd  = [".gif", "_de.gif", "_sp.gif"];
+	
+	document.all("next").src = '../images/button_next' + gifadd[language];
+	
+</SCRIPT>
+
+</body>
+</html>

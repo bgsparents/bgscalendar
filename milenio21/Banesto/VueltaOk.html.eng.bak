@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Milanio21 Payment</title>
+<!--LINK rel="stylesheet" type="text/css" href="http://www.milenio21.com/main/style.css"-->
+</head>       
+
+<SCRIPT>
+	function paymentOk() {
+		var doc = window.opener.document;
+		doc.location.replace("../sendingorder.htm");
+	}
+</SCRIPT>
+
+
+<body onload="paymentOk()">
+
+<H1>You may close this window now.</H1>
+
+</body>
+</html>

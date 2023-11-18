@@ -1,0 +1,39 @@
+<html>
+<head>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+</head>
+
+<script LANGUAGE="JavaScript" SRC="../main/utils.js"></script>
+
+<body id=textarea>
+
+<SCRIPT LANGUAGE=JAVASCRIPT>
+	var str_header = [
+		'<H1>Order Confirmation</H1>Your order has been successfully processed. You will receive confirmation by e-mail.<BR>',
+ 		'<H1>German</H1>German<BR>',
+ 		'<H1>Spanish</H1>Spanish<BR>'];
+ 
+	var str_ref  = ["Reference:", "German", "Spanish"];
+	var str_cost = ["Cost:", "German", "Spanish"];
+		
+	selectLanguage();   
+	
+	alert("One");
+	alert(parent.reference);
+	
+	document.writeln(str_header[language]);
+	document.writeln('<P><TABLE border="0"><TR>');
+	document.writeln('<TD><STRONG>' + str_ref[language] + '</STRONG></TD>');
+	document.writeln('<TD>' + parent.reference + '</TD>');
+	document.writeln('</TR>');
+	document.writeln('<TR>');
+	document.writeln('<TD><STRONG>' + str_cost[language] + '</STRONG></TD>');
+	document.writeln('<TD>' + getTotalString(SPANISH) + '</TD>');
+	document.writeln('</TR></TABLE></P>');
+	
+</SCRIPT>
+
+
+
+</body>
+</html>

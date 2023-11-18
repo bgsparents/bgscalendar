@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<LINK rel="stylesheet" type="text/css" href="../main/style.css">
+</HEAD>
+<SCRIPT LANGUAGE=JAVASCRIPT SRC="../main/utils.js"></SCRIPT>
+<SCRIPT LANGUAGE=JAVASCRIPT>
+	function startPaymentWindow() {
+		var theForm= document.busqueda;
+		parent.reference = calcular_referencia();
+		theForm.coste.value=getTotal(SPANISH); 
+		theForm.referencia.value= parent.reference;
+		theForm.target="CreditCardWindow";
+		theForm.submit();
+	}
+</SCRIPT>
+
+<BODY id=textarea onload=startPaymentWindow()>
+
+<!--ENGLISH -->
+<DIV id=textenglish>
+<H1>Credit Card Payment</H1>
+<P>                         
+Please enter your credit card details in the Electronic Payement System window. 
+When you have submitted your details wait for this page to confirm your transaction.
+</P>
+</DIV>
+
+<!--GERMAN -->
+<DIV id=textgerman>
+</DIV>
+
+<!--SPANISH -->
+<DIV id=textspanish>
+</DIV>
+
+<FORM name="busqueda" method="get"  action="https://www.milenio21.com:200/cgi-bin/totalizacion.exe">
+	<input type="hidden" name="nombre_comercio" value="MILENIO21">
+	<input type="hidden" name="referencia" value>
+	<input type="hidden" name="coste" value>
+	<input type="hidden" name="idioma" value="eng">
+</FORM>
+
+<SCRIPT LANGUAGE=JAVASCRIPT>selectLanguage()</SCRIPT>
+
+</BODY>
+</HTML>
