@@ -95,7 +95,7 @@ function buildsubmenu(md) {
 			document.writeln('<BR><IMG src="../images/bg_main.gif" width=70 height=2><BR>');
 		}
 		else if(md[i+3] && md[i+3].charAt(0) == '>') {
-   		document.writeln('<li id="foldheader">' + md[i + language] + '</li>');
+   		document.writeln('<li id="foldheader">' + md[i + language]);
    		document.writeln('<ul id="foldinglist" style="display:none" style=&{head};>');
 			//document.writeln('&nbsp;<label id=tree' + treemenu + ' onclick="expandMenu(this)" style="position:relative">' + md[i + language] + '<BR>');
 			//document.writeln('<span id=tree' + treemenu + 'items style="visibility:hidden">');
@@ -104,7 +104,7 @@ function buildsubmenu(md) {
 		}
 		
 		else if(md[i].charAt(0) == '<') {
-			document.writeln('</ul>');
+			document.writeln('</ul></li>');
 			//document.writeln('</span>');
 			doingtreemenu = false;
 		}
@@ -126,16 +126,14 @@ function buildsubmenu(md) {
 	document.writeln('</DIV>');
 }   
 
-function change(){
-   if(!document.all)
-      return
+function change(event) {
+   // if(!document.all)
+   //    return
    if (event.srcElement.id=="foldheader") {
       if(selectedlist != null) {
       	selectedlist.style.display="none";
       }
-      
-      var srcIndex = event.srcElement.sourceIndex
-      var nested = document.all[srcIndex+1]
+      var nested = event.target.querySelector('#foldinglist')
       if (nested.style.display=="none") {
          nested.style.display=''
          selectedlist = nested;
