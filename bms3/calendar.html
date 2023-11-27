@@ -39,16 +39,16 @@ css: calendar.css?cb=7
         },
 
         games: {
-            uniform: "Sports kit",
+            uniform: gamesKit,
             //games: ["Games/Hockey"],
             kit: commonKit.concat("School uniform"),
             timings: timings
         },
 
         pe: {
-            uniform: "School uniform",
+            uniform: peKit,
             games: ["PE"],
-            kit: ["Sports bag with PE & Games kit & trainers"].concat(commonKit),
+            kit: ["School uniform and blazer"].concat(commonKit),
             timings: timings
         },
 
@@ -78,13 +78,11 @@ css: calendar.css?cb=7
         },
 
         netball: {
-            // uniform: whiteKit,
             games: "Netball",
             kit: whiteKit
         },
 
         hockey: {
-            //uniform: damsonKit,
             games: "Hockey",
             kit: hockeyKit.concat([gamesKit])
         },
@@ -163,7 +161,7 @@ css: calendar.css?cb=7
         yeargroup: {
             rota: {
                 always: {
-                    monday: commonDayData.monday,
+                    monday: commonDayData.regular,
                     tuesday: commonDayData.regular,
                     wednesday: commonDayData.swimmingAndLibrary,
                     thursday: commonDayData.pe,
@@ -243,18 +241,30 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Music Concert", time: "4:00pm"}]
                 },
+                '2023-12-01': {
+                    kit: ["Christmas Event Costume - black trousers, a Christmas jumper or T shirt and any festive headwear or extra garments in a named bag" ],
+                },
                 '2023-12-07': {
                     games: ["Christmas Event"],
                     timings: [
                         {title: "Christmas Event", time: "4:30pm"}]
                 },
                 '2023-12-08': {
-                    games: ["Christmas Event"],
+                    games: ["Christmas Tree Festival @ St. Pauls", "Christmas Event"],
                     timings: [
-                        {title: "Christmas Event", time: "2:00pm"}, {title: "Christmas Event", time: "6:00pm"}]
+                        {title: "Christmas Tree Festival", time: "11:00am"},
+                        {title: "Christmas Event", time: "2:00pm"},
+                        {title: "Christmas Event", time: "6:00pm"}]
                 },
                 '2023-12-11': {
                     games: ["PA Christmas Gift Event"]
+                },
+                '2023-12-13': {
+                    games: ["Christmas Lunch"]
+                },
+                '2023-12-14': {
+                    uniform: ["Christmas Jumper"],
+                    games: ["House Quiz"]
                 },
                 '2024-02-06': {
                     games: ["Rocks and Soils Day"]
@@ -304,9 +314,18 @@ css: calendar.css?cb=7
                     games: ["Egypt Day"],
                     kit: commonKit
                 },
+                '2023-12-15': {
+                    uniform: ["School uniform"],
+                    games: ["Christmas Breakfast", 'End of Term'],
+                    kit: commonKit,
+                    timings: [
+                        {title: "Drop Off", time: "8:00am"},
+                        {title: "Pick Up", time: "12:00pm"}],
+                },
             },
             deadlines: {
                 // '2023-09-04': ['<a href=\'https://jhodgkin.wufoo.com/forms/rd7tmfw0kdsqh8/\' target=\'d1\'>Parents\' Information Talk Registration</a>'],
+                '2023-12-01': ['Christmas Event Costume Deadline', '<a href=\'https://www.ticketsource.co.uk/bedfordmodernschool/junior-school-christmas-event/e-xgkdpx\' target=\'d1\'>Christmas Event Reservation</a>'],
            }
         },
 
@@ -583,6 +602,7 @@ css: calendar.css?cb=7
                         always: {
                             matcher: matchers.as_hockey,
                             monday: {
+                                uniform: gamesKit,
                                 games: ["Hockey (AS)"],
                                 kit: hockeyKit,
                                 //kit: hockeyKit.concat(gamesKit),
@@ -596,6 +616,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             monday: {
+                                uniform: gamesKit,
                                 games: ["Rugby (AS)"],
                                 kit: rugbyKit,
                                 //kit: rugbyKit.concat(gamesKit),
@@ -761,23 +782,6 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             friday: {timings: [{title: "After-School Care", time: "6:00pm"}, {title: "-Pick Up"}]},
-                        }
-                    }
-                },
-
-                "damson": {
-                    rota: {
-                        weekA: {
-                            matcher: matchers.weekA,
-                            tuesday: commonDayData.netball,
-                            wednesday: commonDayData.hockey,
-                            friday: commonDayData.swimming
-                        },
-
-                        weekB: {
-                            matcher: matchers.weekB,
-                            tuesday: commonDayData.netball,
-                            wednesday: commonDayData.hockey,
                         }
                     }
                 },
