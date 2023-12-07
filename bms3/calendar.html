@@ -123,7 +123,7 @@ css: calendar.css?cb=7
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_sport: function(currentDate) {
-            const startsAgain = moment('2023-09-11');
+            const startsAgain = moment('2024-01-03');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_hockey: function(currentDate) {
@@ -600,7 +600,7 @@ css: calendar.css?cb=7
                 "as_hockey": {
                     rota: {
                         always: {
-                            matcher: matchers.as_hockey,
+                            matcher: matchers.as_sport,
                             monday: {
                                 uniform: gamesKit,
                                 games: ["Hockey (AS)"],
@@ -615,6 +615,7 @@ css: calendar.css?cb=7
                 "as_rugby": {
                     rota: {
                         always: {
+                            matcher: matchers.as_sport,
                             monday: {
                                 uniform: gamesKit,
                                 games: ["Rugby (AS)"],
