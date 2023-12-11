@@ -90,7 +90,7 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const starts =  [moment('2023-09-04'), moment('2024-01-08'), moment('2024-04-22')];
+            const starts =  [moment('2023-09-04'), moment('2024-01-01'), moment('2024-02-19'), moment('2024-04-22')];
             const start = starts.reverse().find((o, i, a) => { return o.isSameOrBefore(currentDate)});
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 0;
@@ -103,11 +103,11 @@ css: calendar.css?cb=7
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_sport: function(currentDate) {
-            const startsAgain = moment('2023-09-11');
+            const startsAgain = moment('2024-01-08');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_netball: function(currentDate) {
-            const startsAgain = moment('2023-09-18');
+            const startsAgain = moment('2024-01-08');
             return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
@@ -246,6 +246,11 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Carol Service", time: "2:00pm"}]
                 },
+                '2024-01-13': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"}, {title: "Pick Up", time: "11:30am"},]
+                },
                 '2024-01-15': {
                     games: ["Transition Assessments"],
                 },
@@ -260,6 +265,31 @@ css: calendar.css?cb=7
                 },
                 '2024-01-19': {
                     games: ["Transition Assessments"],
+                },
+                '2024-01-20': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "9:00am"}, {title: "Pick Up", time: "11:30am"},]
+                },
+                '2024-02-03': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "10:15am"}, {title: "Pick Up", time: "11:45am"},]
+                },
+                '2024-02-10': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "10:15am"}, {title: "Pick Up", time: "11:45am"},]
+                },
+                '2024-03-02': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "10:15am"}, {title: "Pick Up", time: "11:45am"},]
+                },
+                '2024-03-09': {
+                    games: ["Netball Training"],
+                    timings: [
+                        {title: "Drop Off", time: "10:15am"}, {title: "Pick Up", time: "11:45am"},]
                 },
                 '2024-02-04': {
                     games: ["Young Voices Concert)"],
@@ -279,6 +309,14 @@ css: calendar.css?cb=7
                     timings: [
                         {title: "Leave", time: "8:20am"},
                         {title: "Arrive", time: "5:30pm"}]
+                },
+                '2023-12-13': {
+                    uniform: ["Mufti & Christmas Jumper"],
+                },
+                '2023-12-15': {
+                    uniform: ["School Uniform"],
+                    timings: [
+                        {title: "Pick Up", time: "12:00am"}]
                 },
                 '2024-05-08': {
                     uniform: ["Mufti"],
@@ -316,6 +354,7 @@ css: calendar.css?cb=7
                 '2023-11-17': ['<a href=\'https://jhodgkin.wufoo.com/forms/s1xh2okh0yucm75/\' target=\'d11\'>Lacrosse Kit Orders</a>', '<a href=\'https://jhodgkin.wufoo.com/forms/rimpi5q0p7zh9x/\' target=\'d12\'>Movie Night Consent</a>'],
                 '2023-11-30': ['<a href=\'https://jhodgkin.wufoo.com/forms/suzbmru0yxdvcn/\' target=\'d13\'>Christmas Concert Tickets</a>'],
                 '2023-12-06': ['<a href=\'https://jhodgkin.wufoo.com/forms/sq7dg360u9m791/\' target=\'d14\'>Carol Service Tickets</a>'],
+                '2024-01-05': ['<a href=\'https://jhodgkin.wufoo.com/forms/s1d2jglu1xka7di/\' target=\'d15\'>Spring Term Sports Registration</a>'],
            }
         },
 
@@ -474,9 +513,9 @@ css: calendar.css?cb=7
                         { key: "as_hiphop", value: "Hip Hop (Mon)" },
                         { key: "as_swim_tue", value: "Swimming (Tue)" },
                         { key: "as_choir", value: "Choir (Tue)" },
-                        { key: "as_hockey", value: "Hockey (Wed)" },
+                        { key: "as_netball", value: "Netball (Wed)" },
                         { key: "as_ballet", value: "Ballet (Wed)" },
-                        { key: "as_netball", value: "Netball (Fri)" },
+                        { key: "as_hockey", value: "Hockey (Thu)" },
 
                         // { key: "as_netball", value: "Netball (Mon)" },
                         // { key: "as_athletics", value: "Athletics (Tue)" },
@@ -586,7 +625,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             matcher: matchers.as_netball,
-                            friday: {
+                            wednesday: {
                                 games: "Netball (AS)",
                                 kit: [whiteKit],
                                 timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
@@ -599,7 +638,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            wednesday: {
+                            thursday: {
                                 games: "Hockey (AS)",
                                 kit: hockeyKit,
                                 timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
@@ -612,7 +651,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            monday: {
+                            tuesday: {
                                 games: "Swimming (AS)",
                                 kit: swimmingKit,
                                 timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
