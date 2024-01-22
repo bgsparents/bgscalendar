@@ -126,6 +126,12 @@ css: calendar.css?cb=7
             const startsAgain = moment('2024-01-03');
             return startsAgain.isSameOrBefore(currentDate);
         },
+        as_sport_w1: function(currentDate) {
+            return matchers.as_sport(currentDate) && matchers.week1(currentDate);
+        },
+        as_sport_w2: function(currentDate) {
+            return matchers.as_sport(currentDate) && matchers.week2(currentDate);
+        },
         as_hockey: function(currentDate) {
             const startsAgain = moment('2023-09-25');
             return startsAgain.isSameOrBefore(currentDate);
@@ -390,8 +396,8 @@ css: calendar.css?cb=7
                     title: "Games Group",
                     multiselect: false,
                     values: [
-                        { key: "hockey", value: "Hockey" },
-                        { key: "rugby", value: "Rugby" },
+                        { key: "hockey", value: "Girls Sport" },
+                        { key: "rugby", value: "Boys Sport" },
                         { key: "none", value: "None - Select Hockey or Rugby for KS/Games kit list" }
                     ]
                 },
@@ -422,28 +428,55 @@ css: calendar.css?cb=7
                     ]
                 },
                 {
-                    title: "After School",
+                    title: "After School - Monday",
                     multiselect: true,
                     values: [
-                        { key: "as_hockey", value: "Hockey (Mon)" },
-                        { key: "as_rugby", value: "Rugby (Mon)" },
+                        { key: "as_film", value: "Film Club (Mon)" },
                         { key: "as_art", value: "Art & Craft (Mon)" },
-                        { key: "as_lego", value: "Lego Club (Tue)" },
-                        { key: "as_chill", value: "Chill Chat Colour (Tue)" },
-                        { key: "as_cards", value: "Card Making Club (Wed)" },
-                        { key: "as_zentangle", value: "Zentangle Club (Wed)" },
-                        { key: "as_yahtzee", value: "Yahtzee Club (Thu)" },
-                        { key: "as_xcountry", value: "Cross Country (Thu)" },
-                        { key: "as_film", value: "Film Club (Thu)" },
-                        { key: "as_ttrock", value: "TT Rockstars (Fri)" },
-                        { key: "as_orchestra", value: "Orchestra (Fri)" },
+                        { key: "as_hockey_boys", value: "Hockey Boys (Mon)" },
+                        { key: "as_hockey", value: "Hockey Girls (Mon)" },
+                        { key: "as_football_boys", value: "Football Boys (Mon)" },
+                        { key: "as_football_girls", value: "Football Girls (Mon)" },
+                        { key: "as_netball", value: "Netball (Mon)" },
                         { key: "as_late_care_mon", value: "After-School Care (Mon)" },
+                    ]
+                },
+                {
+                    title: "After School - Tuesday",
+                    multiselect: true,
+                    values: [
+                        { key: "as_lego", value: "Lego Club (Tue)" },
+                        { key: "as_roald", value: "Roald Dahl Club (Tue)" },
+                        { key: "as_coding", value: "Coding Club (Tue)" },
                         { key: "as_late_care_tue", value: "After-School Care (Tue)" },
+                    ]
+                },
+                {
+                    title: "After School - Wednesday",
+                    multiselect: true,
+                    values: [
+                        { key: "as_ttrock", value: "TT Rockstars (Wed)" },
+                        { key: "as_zentangle", value: "Zentangle Club (Wed)" },
                         { key: "as_late_care_wed", value: "After-School Care (Wed)" },
+                    ]
+                },
+                {
+                    title: "After School - Thursday",
+                    multiselect: true,
+                    values: [
+                        { key: "as_loom", value: "Loom Bands (Thu)" },
+                        { key: "as_xcountry", value: "Cross Country (Thu)" },
                         { key: "as_late_care_thu", value: "After-School Care (Thu)" },
+                    ]
+                },
+                {
+                    title: "After School - Friday",
+                    multiselect: true,
+                    values: [
+                        { key: "as_orchestra", value: "Orchestra (Fri)" },
                         { key: "as_late_care_fri", value: "After-School Care (Fri) " },
                     ]
-                }
+                },
             ],
 
             data: {
@@ -597,7 +630,7 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_hockey": {
+                "as_hockey_boys": {
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
@@ -612,20 +645,73 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_rugby": {
+                "as_hockey": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport_w2,
+                            monday: {
+                                uniform: gamesKit,
+                                games: ["Hockey (AS)"],
+                                kit: hockeyKit,
+                                //kit: hockeyKit.concat(gamesKit),
+                                timings: [{title: "Hockey", time: "5:00pm"}, {title: "-Pick Up"}]
+                            },
+                        }
+                    }
+                },
+                "as_netball": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport_w1,
+                            monday: {
+                                uniform: gamesKit,
+                                games: ["Netball (AS)"],
+                                //kit: hockeyKit.concat(gamesKit),
+                                timings: [{title: "Netball", time: "5:00pm"}, {title: "-Pick Up"}]
+                            },
+                        }
+                    }
+                },
+                "as_football_boys": {
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
                             monday: {
                                 uniform: gamesKit,
-                                games: ["Rugby (AS)"],
-                                kit: rugbyKit,
-                                //kit: rugbyKit.concat(gamesKit),
-                                timings: [{title: "Rugby", time: "5:00pm"}, {title: "-Pick Up"}]
+                                games: ["Football (AS)"],
+                                kit: ['Shin pads', 'football boots'],
+                                timings: [{title: "Football", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
                     }
                 },
+                "as_football_girls": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport_w2,
+                            monday: {
+                                uniform: gamesKit,
+                                games: ["Football (AS)"],
+                                kit: ['Shin pads', 'football boots'],
+                                timings: [{title: "Football", time: "5:00pm"}, {title: "-Pick Up"}]
+                            },
+                        }
+                    }
+                },
+                // "as_rugby": {
+                //     rota: {
+                //         always: {
+                //             matcher: matchers.as_sport,
+                //             monday: {
+                //                 uniform: gamesKit,
+                //                 games: ["Rugby (AS)"],
+                //                 kit: rugbyKit,
+                //                 //kit: rugbyKit.concat(gamesKit),
+                //                 timings: [{title: "Rugby", time: "5:00pm"}, {title: "-Pick Up"}]
+                //             },
+                //         }
+                //     }
+                // },
 
                 "as_art": {
                     rota: {
@@ -651,25 +737,25 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_chill": {
+                "as_roald": {
                     rota: {
                         always: {
                             matcher: matchers.as_clubs,
                             tuesday: {
-                                games: ["Chill Chat Colour (AS)"],
-                                timings: [{title: "Chill Chat Colour", time: "5:00pm"}, {title: "-Pick Up"}]
+                                games: ["Roald Dahl Club (AS)"],
+                                timings: [{title: "Roald Dahl Club", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
                     }
                 },
 
-                "as_cards": {
+                "as_coding": {
                     rota: {
                         always: {
                             matcher: matchers.as_clubs,
-                            wednesday: {
-                                games: ["Card Making Club (AS)"],
-                                timings: [{title: "Card Making Club", time: "5:00pm"}, {title: "-Pick Up"}]
+                            tuesday: {
+                                games: ["Coding Club (AS)"],
+                                timings: [{title: "Coding Club", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
                     }
@@ -678,7 +764,7 @@ css: calendar.css?cb=7
                 "as_zentangle": {
                     rota: {
                         always: {
-                            matcher: matchers.as_clubs2,
+                            matcher: matchers.as_clubs,
                             wednesday: {
                                 games: ["Zentangle Club (AS)"],
                                 timings: [{title: "Zentangle Club", time: "5:00pm"}, {title: "-Pick Up"}]
@@ -687,13 +773,13 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_yahtzee": {
+                "as_loom": {
                     rota: {
                         always: {
                             matcher: matchers.as_clubs,
                             thursday: {
-                                games: ["Yahtzee Club (AS)"],
-                                timings: [{title: "Yahtzee Club", time: "5:00pm"}, {title: "-Pick Up"}]
+                                games: ["Loom Bands Club (AS)"],
+                                timings: [{title: "Loom Bands", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
                         }
                     }
@@ -711,11 +797,12 @@ css: calendar.css?cb=7
                     }
                 },
 
+
                 "as_film": {
                     rota: {
                         always: {
                             matcher: matchers.as_clubs,
-                            thursday: {
+                            monday: {
                                 games: ["Film Club (AS)"],
                                 timings: [{title: "Film Club", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
@@ -727,7 +814,7 @@ css: calendar.css?cb=7
                     rota: {
                         always: {
                             matcher: matchers.as_clubs,
-                            friday: {
+                            wednesday: {
                                 games: ["TT Rockstars (AS)"],
                                 timings: [{title: "TT Rockstars", time: "5:00pm"}, {title: "-Pick Up"}]
                             },
@@ -789,10 +876,23 @@ css: calendar.css?cb=7
 
                 "hockey": {
                     rota: {
-                        always: {
+                        week1: {
+                            matcher: matchers.week1,
+                            tuesday: {
+                                games: "Key Skills/Netball",
+                                kit: hockeyKit.concat(gamesKit),
+                                // kit: gamesKit.concat(hockeyKit)
+                            },
+                            friday: {
+                                games: "Games/Netball",
+                                kit: hockeyKit
+                            }
+                        },
+                        week2: {
+                            matcher: matchers.week2,
                             tuesday: {
                                 games: "Key Skills/Hockey",
-                                kit: hockeyKit,
+                                kit: hockeyKit.concat(gamesKit),
                                 // kit: gamesKit.concat(hockeyKit)
                             },
                             friday: {
