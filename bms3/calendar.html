@@ -880,12 +880,13 @@ css: calendar.css?cb=7
                             matcher: matchers.week1,
                             tuesday: {
                                 games: "Key Skills/Netball",
-                                kit: hockeyKit.concat(gamesKit),
+                                kit: gamesKit,
                                 // kit: gamesKit.concat(hockeyKit)
                             },
                             friday: {
                                 games: "Games/Netball",
-                                kit: hockeyKit
+                                kit: gamesKit,
+                                timings: [{title: "Pick Up - Manton Lane", time: "3:45pm"}, {title: "-Pick Up"}],
                             }
                         },
                         week2: {
@@ -897,7 +898,8 @@ css: calendar.css?cb=7
                             },
                             friday: {
                                 games: "Games/Hockey",
-                                kit: hockeyKit
+                                kit: hockeyKit,
+                                timings: [{title: "Pick Up - Manton Lane", time: "3:45pm"}, {title: "-Pick Up"}],
                             }
                         },
                     }
@@ -908,12 +910,13 @@ css: calendar.css?cb=7
                         always: {
                             tuesday: {
                                 games: "Key Skills/Rugby",
-                                kit: rugbyKit
+                                kit: rugbyKit,
                                 //kit: gamesKit.concat(rugbyKit)
                             },
                             friday: {
                                 games: "Games/Rugby",
-                                kit: rugbyKit
+                                kit: rugbyKit,
+                                timings: [{title: "Pick Up - Manton Lane", time: "3:45pm"}, {title: "-Pick Up"}],
                                 //kit: gamesKit.concat(rugbyKit)
                             }
                         },
