@@ -16,6 +16,7 @@ css: calendar.css?cb=7
     const damsonKit = "Damson top, damson socks, black skort, trainers";
     const gamesKit = "Damson top, white socks, black skort, trainers";
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
+    const lacrosseKit = ["Lacrosse stick, eye guard, gum shield, lacrosse boots"];
     const whiteKit = "White top, white socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -65,6 +66,12 @@ css: calendar.css?cb=7
             //uniform: damsonKit,
             games: "Hockey",
             kit: hockeyKit.concat([damsonKit])
+        },
+
+        lacrosse: {
+            //uniform: damsonKit,
+            games: "Lacrosse",
+            kit: lacrosseKit.concat([damsonKit])
         },
 
         dance: {
@@ -738,15 +745,15 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            tuesday: commonDayData.netball,
-                            wednesday: commonDayData.hockey,
+                            tuesday: commonDayData.lacrosse,
+                            wednesday: commonDayData.netball,
                             friday: commonDayData.swimming
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.netball,
-                            wednesday: commonDayData.hockey,
+                            tuesday: commonDayData.lacrosse,
+                            wednesday: commonDayData.netball,
                         }
                     }
                 },
@@ -756,18 +763,18 @@ css: calendar.css?cb=7
                         weekA: {
                             matcher: matchers.weekA,
                             tuesday: commonDayData.swimming,
-                            wednesday: commonDayData.hockey,
+                            wednesday: commonDayData.netball,
                             friday: {
-                                uniform: gamesKit,
-                                games: "Netball",
-                                kit: ['School Uniform & shoes']
+                                uniform: damsonKit,
+                                games: "Lacrosse",
+                                kit: ['School Uniform & shoes'].concat(lacrosseKit)
                             }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
                             tuesday: commonDayData.swimming,
-                            wednesday: commonDayData.hockey,
+                            wednesday: commonDayData.netball,
                         }
                     }
                 },
@@ -776,18 +783,18 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            tuesday: commonDayData.netball,
+                            tuesday: commonDayData.lacrosse,
                             wednesday: commonDayData.swimming,
                             friday: {
-                                uniform: damsonKit,
-                                games: "Hockey",
-                                kit: hockeyKit.concat(['School Uniform & shoes'])
+                                uniform: whiteKit,
+                                games: "Netball",
+                                kit: ['School Uniform & shoes']
                             }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.netball,
+                            tuesday: commonDayData.lacrosse,
                             wednesday: commonDayData.swimming,
                         }
                     }
