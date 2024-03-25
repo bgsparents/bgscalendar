@@ -118,12 +118,8 @@ css: calendar.css?cb=7
         week2: function(currentDate) {
             return !matchers.week1(currentDate);
         },
-        lu_sport: function(currentDate) {
-            const startsAgain = moment('2023-09-11');
-            return startsAgain.isSameOrBefore(currentDate);
-        },
         as_sport: function(currentDate) {
-            const startsAgain = moment('2024-01-03');
+            const startsAgain = moment('2024-04-23');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_sport_w1: function(currentDate) {
@@ -133,7 +129,7 @@ css: calendar.css?cb=7
             return matchers.as_sport(currentDate) && matchers.week2(currentDate);
         },
         as_hockey: function(currentDate) {
-            const startsAgain = moment('2023-09-25');
+            const startsAgain = moment('2024-04-23');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_clubs: function(currentDate) {
