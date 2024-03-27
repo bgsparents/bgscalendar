@@ -405,9 +405,9 @@ css: calendar.css?cb=7
                     title: "Games Group",
                     multiselect: false,
                     values: [
-                        { key: "hockey", value: "Girls Sport" },
-                        { key: "rugby", value: "Boys Sport" },
-                        { key: "none", value: "None - Select Hockey or Rugby for KS/Games kit list" }
+                        { key: "cricket_girls", value: "Girls Sport" },
+                        { key: "cricket_boys", value: "Boys Sport" },
+                        { key: "none", value: "None" }
                     ]
                 },
                 {
@@ -848,49 +848,46 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "hockey": {
+                "cricket_girls": {
                     rota: {
                         week1: {
                             matcher: matchers.week1,
                             tuesday: {
-                                games: "Key Skills/Netball",
-                                kit: gamesKit,
+                                games: "Key Skills/Cricket",
+                                kit: peKit,
                                 // kit: gamesKit.concat(hockeyKit)
                             },
                             friday: {
-                                games: "Games/Netball",
-                                kit: gamesKit,
-                                timings: [{title: "Pick Up", time: "3:45pm"}, {title: "-Pick Up"}],
+                                games: "Games/Cricket",
+                                kit: peKit
                             }
                         },
                         week2: {
                             matcher: matchers.week2,
                             tuesday: {
-                                games: "Key Skills/Hockey",
-                                kit: hockeyKit.concat(gamesKit),
-                                // kit: gamesKit.concat(hockeyKit)
+                                games: "Key Skills/Cricket",
+                                kit: peKit
                             },
                             friday: {
-                                games: "Games/Hockey",
-                                kit: hockeyKit,
-                                timings: [{title: "Pick Up", time: "3:45pm"}, {title: "-Pick Up"}],
+                                games: "Games/Cricket",
+                                kit: peKit
                             }
                         },
                     }
                 },
 
-                "rugby": {
+                "cricket_boys": {
                     rota: {
                         always: {
                             tuesday: {
-                                games: "Key Skills/Rugby",
-                                kit: rugbyKit,
+                                games: "Key Skills/Cricket",
+                                kit: peKit,
                                 //kit: gamesKit.concat(rugbyKit)
                             },
                             friday: {
-                                games: "Games/Rugby",
-                                kit: rugbyKit,
-                                timings: [{title: "Pick Up", time: "3:45pm"}, {title: "-Pick Up"}],
+                                games: "Games/Cricket",
+                                kit: peKit,
+                                //timings: [{title: "Pick Up", time: "3:45pm"}, {title: "-Pick Up"}],
                                 //kit: gamesKit.concat(rugbyKit)
                             }
                         },
