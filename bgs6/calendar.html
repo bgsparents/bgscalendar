@@ -674,7 +674,7 @@ css: calendar.css?cb=7
                 "lu_cricket": {
                     rota: {
                         always: {
-                            wednesday: {
+                            tuesday: {
                                 matcher: matchers.lu_sport,
                                 games: "Cricket (Lunch)",
                                 kit: [gamesKit],
@@ -825,15 +825,19 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            // tuesday: commonDayData.lacrosse,
-                            // wednesday: commonDayData.netball,
-                            // friday: commonDayData.swimming
+                            tuesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Athletics",
+                                kit: ['School uniform & shoes']
+                            }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            // tuesday: commonDayData.lacrosse,
-                            // wednesday: commonDayData.netball,
+                            tuesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
                         }
                     }
                 },
@@ -842,19 +846,19 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            // tuesday: commonDayData.swimming,
-                            // wednesday: commonDayData.netball,
-                            // friday: {
-                            //     uniform: damsonKit,
-                            //     games: "Lacrosse",
-                            //     kit: ['School Uniform & shoes'].concat(lacrosseKit)
-                            // }
+                            tuesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Athletics",
+                                kit: ['School uniform & shoes']
+                            }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            // tuesday: commonDayData.swimming,
-                            // wednesday: commonDayData.netball,
+                            tuesday: commonDayData.tennis,
+                            wednesday: commonDayData.cricket,
                         }
                     }
                 },
@@ -863,19 +867,19 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            // tuesday: commonDayData.lacrosse,
-                            // wednesday: commonDayData.swimming,
-                            // friday: {
-                            //     uniform: whiteKit,
-                            //     games: "Netball",
-                            //     kit: ['School Uniform & shoes']
-                            // }
+                            tuesday: commonDayData.cricket,
+                            wednesday: commonDayData.tennis,
+                            friday: {
+                                uniform: whiteKit,
+                                games: "Athletics",
+                                kit: ['School uniform & shoes']
+                            }
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            // tuesday: commonDayData.lacrosse,
-                            // wednesday: commonDayData.swimming,
+                            tuesday: commonDayData.cricket,
+                            wednesday: commonDayData.tennis,
                         }
                     }
                 },
