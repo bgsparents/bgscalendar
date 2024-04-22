@@ -106,15 +106,19 @@ css: calendar.css?cb=7
             return !matchers.weekA(currentDate);
         },
         lu_sport: function(currentDate) {
-            const startsAgain = moment('2024-04-23');
+            const startsAgain = moment('2024-04-22');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_sport: function(currentDate) {
-            const startsAgain = moment('2024-04-23');
+            const startsAgain = moment('2024-04-22');
             return startsAgain.isSameOrBefore(currentDate);
         },
         as_netball: function(currentDate) {
-            const startsAgain = moment('2024-04-23');
+            const startsAgain = moment('2024-04-22');
+            return startsAgain.isSameOrBefore(currentDate);
+        },
+        as_choir: function(currentDate) {
+            const startsAgain = moment('2024-04-29');
             return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
@@ -783,7 +787,7 @@ css: calendar.css?cb=7
                 "as_choir": {
                     rota: {
                         always: {
-                            matcher: matchers.as_sport,
+                            matcher: matchers.as_choir,
                             tuesday: {
                                 games: "Choir (AS)",
                                 timings: [ {title: "Choir Pick Up", time: "5:15pm"}, {title: "-Pick Up"} ]
