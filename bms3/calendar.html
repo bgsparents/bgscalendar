@@ -121,10 +121,10 @@ css: calendar.css?cb=7
         as_sport: function(currentDate) {
             const startsAgain = moment('2024-04-23');
             return startsAgain.isSameOrBefore(currentDate)
-                && !currentDate.isSame(moment('2024-05-01'))
-                && !currentDate.isSame(moment('2024-05-07'))
-                && !currentDate.isSame(moment('2024-05-16'))
-                && !currentDate.isSame(moment('2024-06-17'));
+                && !moment('2024-05-01').isSame(currentDate)
+                && !moment('2024-05-07').isSame(currentDate)
+                && !moment('2024-05-16').isSame(currentDate)
+                && !moment('2024-06-17').isSame(currentDate);
         },
         as_sport_w1: function(currentDate) {
             return matchers.as_sport(currentDate) && matchers.week1(currentDate);
@@ -754,7 +754,7 @@ css: calendar.css?cb=7
                 "as_dobble": {
                     rota: {
                         always: {
-                            matcher: matchers.as_clubs(),
+                            matcher: matchers.as_clubs,
                             thursday: {
                                 games: ["Dobble & Uno Club (AS)"],
                                 timings: [{title: "Dobble & Uno Club", time: "5:00pm"}, {title: "-Pick Up"}]
