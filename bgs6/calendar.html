@@ -82,7 +82,7 @@ css: calendar.css?cb=7
         cricket: {
             //uniform: damsonKit,
             games: "Cricket",
-            kit: [damsonKit].concat(['Hat', 'Sun Cream'])
+            kit: [gamesKit].concat(['Hat', 'Sun Cream'])
         },
         tennis: {
             //uniform: whiteKit,
@@ -90,7 +90,7 @@ css: calendar.css?cb=7
             kit: [whiteKit].concat(['Tennis Racket'])
         },
         athletics: {
-            uniform: whiteKit,
+            uniform: gamesKit,
             games: "Athletics",
         },
     };
@@ -571,7 +571,7 @@ css: calendar.css?cb=7
                     values: [
                         { key: "lu_tap", value: "Tap Dancing (Tue)" },
                         { key: "lu_ballet", value: "Ballet (Wed)" },
-                        { key: "lu_cricket", value: "Cricket (Tue)" },
+                        { key: "lu_cricket", value: "Cricket (Wed)" },
                         { key: "lu_lacrosse", value: "Lacrosse (Thu)" },
                         { key: "lu_modern", value: "Modern Dance (Thu)" },
                         { key: "lu_babybels", value: "Baby Bels (Fri)" },
@@ -674,7 +674,7 @@ css: calendar.css?cb=7
                 "lu_cricket": {
                     rota: {
                         always: {
-                            tuesday: {
+                            wednesday: {
                                 matcher: matchers.lu_sport,
                                 games: "Cricket (Lunch)",
                                 kit: [gamesKit],
@@ -726,7 +726,7 @@ css: calendar.css?cb=7
                             matcher: matchers.as_sport,
                             tuesday: {
                                 games: "Athletics (AS)",
-                                kit: [whiteKit],
+                                kit: [gamesKit],
                                 timings: [ {title: "Athletics Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
@@ -828,7 +828,7 @@ css: calendar.css?cb=7
                             tuesday: commonDayData.tennis,
                             wednesday: commonDayData.cricket,
                             friday: {
-                                uniform: whiteKit,
+                                uniform: gamesKit,
                                 games: "Athletics",
                                 kit: ['School uniform & shoes']
                             }
@@ -849,7 +849,7 @@ css: calendar.css?cb=7
                             tuesday: commonDayData.tennis,
                             wednesday: commonDayData.cricket,
                             friday: {
-                                uniform: whiteKit,
+                                uniform: gamesKit,
                                 games: "Athletics",
                                 kit: ['School uniform & shoes']
                             }
@@ -870,7 +870,7 @@ css: calendar.css?cb=7
                             tuesday: commonDayData.cricket,
                             wednesday: commonDayData.tennis,
                             friday: {
-                                uniform: whiteKit,
+                                uniform: gamesKit,
                                 games: "Athletics",
                                 kit: ['School uniform & shoes']
                             }
