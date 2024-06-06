@@ -97,7 +97,7 @@ css: calendar.css?cb=7
 
     const matchers = {
         weekA: function(currentDate) {
-            const starts =  [moment('2023-09-04'), moment('2024-01-01'), moment('2024-02-19'), moment('2024-04-22')];
+            const starts =  [moment('2023-09-04'), moment('2024-01-01'), moment('2024-02-19'), moment('2024-04-22'), moment('2024-06-03')];
             const start = starts.reverse().find((o, i, a) => { return o.isSameOrBefore(currentDate)});
             const weeks = currentDate.diff(start, "week");
             return weeks >= 0 && weeks % 2 === 0;
