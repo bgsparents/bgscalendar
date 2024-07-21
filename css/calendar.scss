@@ -117,6 +117,18 @@ body:not(.has-options) .toggle-options {
   display: none !important;
 }
 
+.is-holiday .info dd, .is-holiday .info dt, .is-holiday .info dd div:has(.normal) {
+  display: none !important;
+}
+
+.is-holiday .info:has(.special) {
+  display: block !important;
+}
+
+.is-holiday .info dd:has(.special), .is-holiday .info dt:has(+dd .special) {
+  display: block !important;
+}
+
 .is-holiday .holiday {
   display: block;
   padding: 0.5rem;
