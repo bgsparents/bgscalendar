@@ -4,7 +4,7 @@
 
 header {
   h1:before {
-    background-image: url('/img/logo.png');
+    background-image: url($baseurl + '/img/logo.png');
     background-repeat: no-repeat;
     background-position: top left;
     background-size: 3rem;
