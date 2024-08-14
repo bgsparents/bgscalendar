@@ -380,17 +380,17 @@ css: calendar.css?cb=7
         additional: {
             meta:
             [
-                {
-                    title: "Sports Group",
-                    multiselect: false,
-                    values: [
-                        { key: "damson", value: "Damson" },
-                        { key: "teal", value: "Teal" },
-                        // { key: "white", value: "White" },
-                        { key: "lime", value: "Lime" },
-                        { key: "none", value: "None" }
-                    ]
-                },
+                // {
+                //     title: "Sports Group",
+                //     multiselect: false,
+                //     values: [
+                //         { key: "damson", value: "Damson" },
+                //         { key: "teal", value: "Teal" },
+                //         // { key: "white", value: "White" },
+                //         { key: "lime", value: "Lime" },
+                //         { key: "none", value: "None" }
+                //     ]
+                // },
                 {
                     title: "Before School",
                     multiselect: true,
@@ -399,37 +399,36 @@ css: calendar.css?cb=7
                         { key: "bs_tennis_thu", value: "Riverside Tennis (Thu)" },
                     ]
                 },
-                {
-                    title: "Lunch Clubs",
-                    multiselect: true,
-                    values: [
-                        { key: "lu_tap", value: "Tap Dancing (Tue)" },
-                        { key: "lu_ballet", value: "Ballet (Wed)" },
-                        { key: "lu_cricket", value: "Cricket (Wed)" },
-                        { key: "lu_lacrosse", value: "Lacrosse (Thu)" },
-                        { key: "lu_modern", value: "Modern Dance (Thu)" },
-                        { key: "lu_babybels", value: "Baby Bels (Fri)" },
-                        // { key: "lu_swimming_thu", value: "Swimming (Thu)" },
-                        { key: "lu_tennis", value: "Tennis (Fri)" },
-                        // { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
-                        // { key: "lu_science", value: "Science Club (Wed)" },
-                        // { key: "lu_soprano", value: "Soprano Practice (Tue)" },
-                        // { key: "lu_alto", value: "Alto Practice (Thu)" }
-                    ]
-                },
+                // {
+                //     title: "Lunch Clubs",
+                //     multiselect: true,
+                //     values: [
+                //         { key: "lu_tap", value: "Tap Dancing (Tue)" },
+                //         { key: "lu_ballet", value: "Ballet (Wed)" },
+                //         { key: "lu_cricket", value: "Cricket (Wed)" },
+                //         { key: "lu_lacrosse", value: "Lacrosse (Thu)" },
+                //         { key: "lu_modern", value: "Modern Dance (Thu)" },
+                //         { key: "lu_babybels", value: "Baby Bels (Fri)" },
+                //         // { key: "lu_swimming_thu", value: "Swimming (Thu)" },
+                //         { key: "lu_tennis", value: "Tennis (Fri)" },
+                //         // { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
+                //         // { key: "lu_science", value: "Science Club (Wed)" },
+                //         // { key: "lu_soprano", value: "Soprano Practice (Tue)" },
+                //         // { key: "lu_alto", value: "Alto Practice (Thu)" }
+                //     ]
+                // },
                 {
                     title: "After School",
                     multiselect: true,
                     values: [
-                        { key: "as_tennis", value: "Tennis (Mon)" },
-                        { key: "as_hiphop", value: "Hip Hop (Mon)" },
-                        { key: "as_athletics", value: "Athletics (Tue)" },
-                        { key: "as_choir", value: "Choir (Tue)" },
-                        { key: "as_swim_wed", value: "Swimming (Wed)" },
-                        { key: "as_ballet", value: "Ballet (Wed)" },
-                        { key: "as_cricket", value: "Cricket (Fri)" },
-                        { key: "as_late_care_jr", value: "Late Care (Jr)" },
-                        { key: "as_late_care_sr", value: "Late Care (Sr)" },
+                        // { key: "as_tennis", value: "Tennis (Mon)" },
+                        // { key: "as_hiphop", value: "Hip Hop (Mon)" },
+                        // { key: "as_athletics", value: "Athletics (Tue)" },
+                        // { key: "as_choir", value: "Choir (Tue)" },
+                        // { key: "as_swim_wed", value: "Swimming (Wed)" },
+                        // { key: "as_ballet", value: "Ballet (Wed)" },
+                        // { key: "as_cricket", value: "Cricket (Fri)" },
+                        { key: "as_late_care", value: "Late Care" },
                     ]
                 }
             ],
@@ -631,26 +630,14 @@ css: calendar.css?cb=7
                 },
 
 
-                "as_late_care_jr": {
+                "as_late_care": {
                     rota: {
                         always: {
-                            monday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            tuesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            wednesday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            thursday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                            friday: { timings: [ {title: "Late Care (Jr)", time: "6:00pm"}, {title: "-Pick Up"} ] },
-                        }
-                    }
-                },
-
-                "as_late_care_sr": {
-                    rota: {
-                        always: {
-                            monday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            tuesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            wednesday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            thursday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
-                            friday: { timings: [ {title: "Late Care (Sr)", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            monday: { timings: [ {title: "Late Care", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            tuesday: { timings: [ {title: "Late Care", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            wednesday: { timings: [ {title: "Late Care", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            thursday: { timings: [ {title: "Late Care", time: "7:00pm"}, {title: "-Pick Up"} ] },
+                            friday: { timings: [ {title: "Late Care", time: "7:00pm"}, {title: "-Pick Up"} ] },
                         }
                     }
                 },
