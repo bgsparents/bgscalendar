@@ -122,10 +122,10 @@ css: calendar.css?cb=7
             return startsAgain.isSameOrBefore(currentDate);
         },
         tennis: function(currentDate) {
-            const start1 = moment('2023-09-18');
-            const end1 = moment('2023-10-20');
-            const start2 = moment('2023-11-06');
-            const end2 = moment('2023-12-08');
+            const start1 = moment('2024-09-16'); // FIXME had to set this to Monday
+            const end1 = moment('2024-10-17');
+            const start2 = moment('2024-11-04'); // Same
+            const end2 = moment('2024-12-05');
             return (start1.isSameOrBefore(currentDate) && end1.isSameOrAfter(currentDate))
                 || (start2.isSameOrBefore(currentDate) && end2.isSameOrAfter(currentDate));
         },
@@ -293,6 +293,7 @@ css: calendar.css?cb=7
 
             deadlines: {
                 '2024-09-09': ['<a href=\'https://jhodgkin.wufoo.com/forms/5245-year-7-bushcraft-day-17924/\' target=\'d1\'>Bushcraft Day Registration</a>'],
+                '2024-09-12': ['<a href=\'https://clubspark.lta.org.uk/RiversideTennisCoaching/Coaching/Course/d60ad2b7-579e-4602-9334-ce567f10436e\' target=\'d1\'>Tennis Academies Registration</a>'],
                 '2024-09-13': ['<a href=\'https://jhodgkin.wufoo.com/forms/s1rynt7711gjt1i/\' target=\'d1\'>Information Evening Registration</a>'],
 
            }
@@ -395,7 +396,7 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "bs_breakfast_club", value: "Breakfast Club" },
-                        // { key: "bs_tennis_tue", value: "Riverside Tennis (Tue)" },
+                        { key: "bs_tennis_thu", value: "Riverside Tennis (Thu)" },
                     ]
                 },
                 {
@@ -446,11 +447,11 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "bs_tennis_tue": {
+                "bs_tennis_thu": {
                     rota: {
                         always: {
                             matcher: matchers.tennis,
-                            tuesday: {
+                            thursday: {
                                 uniform: damsonKit,
                                 games: "*Riverside Tennis (BS)",
                                 kit: ['*Tennis racket', "School uniform & school shoes"],
