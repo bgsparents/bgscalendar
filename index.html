@@ -16,7 +16,7 @@ css: calendar.css?cb=7
     const damsonKit = "Damson top, damson socks, black skort, trainers";
     const gamesKit = "Damson top, white socks, black skort, trainers";
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
-    const lacrosseKit = ["Lacrosse stick, eye guard, gum shield, lacrosse boots"];
+    const lacrosseKit = ["Lacrosse stick, eye guard, gum shield, football boots, trainers"].concat(damsonKit);
     const whiteKit = "White top, white socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -65,13 +65,13 @@ css: calendar.css?cb=7
         hockey: {
             //uniform: damsonKit,
             games: "Hockey",
-            kit: hockeyKit.concat([damsonKit])
+            kit: hockeyKit
         },
 
         lacrosse: {
             //uniform: damsonKit,
             games: "Lacrosse",
-            kit: lacrosseKit.concat([damsonKit])
+            kit: lacrosseKit
         },
 
         dance: {
@@ -380,17 +380,17 @@ css: calendar.css?cb=7
         additional: {
             meta:
             [
-                // {
-                //     title: "Sports Group",
-                //     multiselect: false,
-                //     values: [
-                //         { key: "damson", value: "Damson" },
-                //         { key: "teal", value: "Teal" },
-                //         // { key: "white", value: "White" },
-                //         { key: "lime", value: "Lime" },
-                //         { key: "none", value: "None" }
-                //     ]
-                // },
+                {
+                    title: "Sports Group",
+                    multiselect: false,
+                    values: [
+                        { key: "damson", value: "Damson" },
+                        { key: "teal", value: "Teal" },
+                        { key: "white", value: "White" },
+                        { key: "lime", value: "Lime" },
+                        { key: "none", value: "None" }
+                    ]
+                },
                 {
                     title: "Before School",
                     multiselect: true,
@@ -646,19 +646,15 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            tuesday: commonDayData.tennis,
-                            wednesday: commonDayData.cricket,
-                            friday: {
-                                uniform: gamesKit,
-                                games: "Athletics",
-                                kit: ['School uniform & shoes']
-                            }
+                            monday: commonDayData.netball,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.lacrosse,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.tennis,
-                            wednesday: commonDayData.cricket,
+                            thursday: commonDayData.hockey,
+                            friday: commonDayData.lacrosse,
                         }
                     }
                 },
@@ -667,19 +663,32 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            tuesday: commonDayData.tennis,
-                            wednesday: commonDayData.cricket,
-                            friday: {
-                                uniform: gamesKit,
-                                games: "Athletics",
-                                kit: ['School uniform & shoes']
-                            }
+                            monday: commonDayData.netball,
+                            thursday: commonDayData.lacrosse,
+                            friday: commonDayData.hockey,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.tennis,
-                            wednesday: commonDayData.cricket,
+                            thursday: commonDayData.lacrosse,
+                            friday: commonDayData.hockey,
+                        }
+                    }
+                },
+
+                "white": {
+                    rota: {
+                        weekA: {
+                            matcher: matchers.weekA,
+                            monday: commonDayData.lacrosse,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.hockey,
+                        },
+
+                        weekB: {
+                            matcher: matchers.weekB,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.hockey,
                         }
                     }
                 },
@@ -688,19 +697,15 @@ css: calendar.css?cb=7
                     rota: {
                         weekA: {
                             matcher: matchers.weekA,
-                            tuesday: commonDayData.cricket,
-                            wednesday: commonDayData.tennis,
-                            friday: {
-                                uniform: gamesKit,
-                                games: "Athletics",
-                                kit: ['School uniform & shoes']
-                            }
+                            monday: commonDayData.lacrosse,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.football,
                         },
 
                         weekB: {
                             matcher: matchers.weekB,
-                            tuesday: commonDayData.cricket,
-                            wednesday: commonDayData.tennis,
+                            thursday: commonDayData.netball,
+                            friday: commonDayData.football,
                         }
                     }
                 },
