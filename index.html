@@ -427,6 +427,9 @@ css: calendar.css?cb=7
                     title: "After School",
                     multiselect: true,
                     values: [
+                        { key: "as_hockey", value: "Hockey (Mon)" },
+                        { key: "as_netball", value: "Netball (Wed)" },
+                        { key: "as_lacrosse", value: "Lacrosse (Fri)" },
                         // { key: "as_tennis", value: "Tennis (Mon)" },
                         // { key: "as_hiphop", value: "Hip Hop (Mon)" },
                         // { key: "as_athletics", value: "Athletics (Tue)" },
@@ -541,6 +544,45 @@ css: calendar.css?cb=7
                                 matcher: matchers.lu_sport,
                                 games: "Tennis (Lunch)",
                                 kit: [whiteKit].concat(['Tennis Racket'])
+                            },
+                        }
+                    }
+                },
+
+                "as_hockey": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            monday: {
+                                games: "Hockey (AS)",
+                                kit: hockeyKit,
+                                timings: [ {title: "Hockey Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_netball": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            wednesday: {
+                                games: "Netball (AS)",
+                                kit: whiteKit,
+                                timings: [ {title: "Netball Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_lacrosse": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            friday: {
+                                games: "Lacrosse (AS)",
+                                kit: lacrosseKit,
+                                timings: [ {title: "Lacrosse Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
