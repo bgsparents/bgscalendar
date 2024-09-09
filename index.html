@@ -405,24 +405,26 @@ css: calendar.css?cb=7
                         { key: "bs_tennis_thu", value: "Riverside Tennis (Thu)" },
                     ]
                 },
-                // {
-                //     title: "Lunch Clubs",
-                //     multiselect: true,
-                //     values: [
-                //         { key: "lu_tap", value: "Tap Dancing (Tue)" },
-                //         { key: "lu_ballet", value: "Ballet (Wed)" },
-                //         { key: "lu_cricket", value: "Cricket (Wed)" },
-                //         { key: "lu_lacrosse", value: "Lacrosse (Thu)" },
-                //         { key: "lu_modern", value: "Modern Dance (Thu)" },
-                //         { key: "lu_babybels", value: "Baby Bels (Fri)" },
-                //         // { key: "lu_swimming_thu", value: "Swimming (Thu)" },
-                //         { key: "lu_tennis", value: "Tennis (Fri)" },
-                //         // { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
-                //         // { key: "lu_science", value: "Science Club (Wed)" },
-                //         // { key: "lu_soprano", value: "Soprano Practice (Tue)" },
-                //         // { key: "lu_alto", value: "Alto Practice (Thu)" }
-                //     ]
-                // },
+                {
+                    title: "Lunch Clubs",
+                    multiselect: true,
+                    values: [
+                        // { key: "lu_tap", value: "Tap Dancing (Tue)" },
+                        // { key: "lu_ballet", value: "Ballet (Wed)" },
+                        // { key: "lu_cricket", value: "Cricket (Wed)" },
+                        { key: "lu_netball", value: "Netball (Mon)" },
+                        { key: "lu_hockey", value: "Hockey (Tue)" },
+                        { key: "lu_lacrosse", value: "Lacrosse (Wed)" },
+                        // { key: "lu_modern", value: "Modern Dance (Thu)" },
+                        // { key: "lu_babybels", value: "Baby Bels (Fri)" },
+                        // { key: "lu_swimming_thu", value: "Swimming (Thu)" },
+                        // { key: "lu_tennis", value: "Tennis (Fri)" },
+                        // { key: "lu_hockey_damson", value: "Hockey Club - Damson (Wed)" },
+                        // { key: "lu_science", value: "Science Club (Wed)" },
+                        // { key: "lu_soprano", value: "Soprano Practice (Tue)" },
+                        // { key: "lu_alto", value: "Alto Practice (Thu)" }
+                    ]
+                },
                 {
                     title: "After School",
                     multiselect: true,
@@ -525,13 +527,37 @@ css: calendar.css?cb=7
                     }
                 },
 
+                "lu_netball": {
+                    rota: {
+                        always: {
+                            monday: {
+                                matcher: matchers.lu_sport,
+                                games: "Netball (Lunch)",
+                                kit: whiteKit,
+                            },
+                        }
+                    }
+                },
+
+                "lu_hockey": {
+                    rota: {
+                        always: {
+                            tuesday: {
+                                matcher: matchers.lu_sport,
+                                games: "Hockey (Lunch)",
+                                kit: hockeyKit,
+                            },
+                        }
+                    }
+                },
+
                 "lu_lacrosse": {
                     rota: {
                         always: {
-                            thursday: {
+                            wednesday: {
                                 matcher: matchers.lu_sport,
                                 games: "Lacrosse (Lunch)",
-                                kit: lacrosseKit.concat([damsonKit]),
+                                kit: lacrosseKit,
                             },
                         }
                     }
