@@ -437,14 +437,14 @@ css: calendar.css?cb=7
                     multiselect: true,
                     values: [
                         { key: "as_hockey", value: "Hockey (Mon)" },
+                        { key: "as_swimming", value: "Swimming (Tue)" },
                         { key: "as_netball", value: "Netball (Wed)" },
-                        { key: "as_lacrosse", value: "Lacrosse (Fri)" },
                         { key: "as_rowing", value: "Rowing (Wed)" },
+                        { key: "as_lacrosse", value: "Lacrosse (Fri)" },
                         // { key: "as_tennis", value: "Tennis (Mon)" },
                         // { key: "as_hiphop", value: "Hip Hop (Mon)" },
                         // { key: "as_athletics", value: "Athletics (Tue)" },
                         // { key: "as_choir", value: "Choir (Tue)" },
-                        // { key: "as_swim_wed", value: "Swimming (Wed)" },
                         // { key: "as_ballet", value: "Ballet (Wed)" },
                         // { key: "as_cricket", value: "Cricket (Fri)" },
                         { key: "as_late_care", value: "Late Care" },
@@ -661,11 +661,11 @@ css: calendar.css?cb=7
                     }
                 },
 
-                "as_swim_wed": {
+                "as_swimming": {
                     rota: {
                         always: {
                             matcher: matchers.as_sport,
-                            wednesday: {
+                            tuesday: {
                                 games: "Swimming (AS)",
                                 kit: swimmingKit,
                                 timings: [ {title: "Swimming Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
