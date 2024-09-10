@@ -18,6 +18,7 @@ css: calendar.css?cb=7
     const hockeyKit = ["Hockey stick, shin pads, gum shield"].concat(astrosKit).concat(damsonKit);
     const lacrosseKit = ["Lacrosse stick, eye guard, gum shield, football boots, trainers"].concat(damsonKit);
     const footballKit = ["Football boots, shin pads"].concat(damsonKit);
+    const rowingKit = "All in one, leggings, lycra top, splash top";
     const whiteKit = "White top, white socks, black skort, trainers";
     const danceKit = "Black t-shirt, leggings & dance socks/shoes";
     const timings = [
@@ -438,6 +439,7 @@ css: calendar.css?cb=7
                         { key: "as_hockey", value: "Hockey (Mon)" },
                         { key: "as_netball", value: "Netball (Wed)" },
                         { key: "as_lacrosse", value: "Lacrosse (Fri)" },
+                        { key: "as_rowing", value: "Rowing (Wed)" },
                         // { key: "as_tennis", value: "Tennis (Mon)" },
                         // { key: "as_hiphop", value: "Hip Hop (Mon)" },
                         // { key: "as_athletics", value: "Athletics (Tue)" },
@@ -628,6 +630,19 @@ css: calendar.css?cb=7
                                 games: "Tennis (AS)",
                                 kit: [whiteKit].concat(['Tennis Racket']),
                                 timings: [ {title: "Tennis Pick Up", time: "5:30pm"}, {title: "-Pick Up"} ]
+                            },
+                        }
+                    }
+                },
+
+                "as_rowing": {
+                    rota: {
+                        always: {
+                            matcher: matchers.as_sport,
+                            wednesday: {
+                                games: "Rowing (AS)",
+                                kit: [rowingKit],
+                                timings: [ {title: "Rowing Pick Up", time: "6:00pm"}, {title: "-Pick Up"} ]
                             },
                         }
                     }
